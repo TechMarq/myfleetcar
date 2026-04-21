@@ -1,0 +1,438 @@
+﻿<!DOCTYPE html>
+
+<html class="light" lang="pt-br">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Configurações - AutoFlow</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed": "#351000",
+                        "tertiary": "#0062a1",
+                        "surface-container-high": "#e2e7ff",
+                        "on-tertiary-container": "#003357",
+                        "background": "#faf8ff",
+                        "primary-fixed": "#ffdbcc",
+                        "error-container": "#ffdad6",
+                        "error": "#ba1a1a",
+                        "outline": "#8e7164",
+                        "surface-variant": "#dae2fd",
+                        "on-error": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container": "#eaedff",
+                        "secondary-fixed": "#d5e3fc",
+                        "on-primary-container": "#572000",
+                        "on-secondary-fixed": "#0d1c2e",
+                        "surface-container-low": "#f2f3ff",
+                        "inverse-on-surface": "#eef0ff",
+                        "tertiary-container": "#059eff",
+                        "on-primary": "#ffffff",
+                        "primary-fixed-dim": "#ffb693",
+                        "on-surface-variant": "#5a4136",
+                        "on-primary-fixed-variant": "#7a3000",
+                        "tertiary-fixed": "#d0e4ff",
+                        "surface-bright": "#faf8ff",
+                        "on-background": "#131b2e",
+                        "surface-tint": "#a04100",
+                        "on-secondary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "on-surface": "#131b2e",
+                        "surface": "#faf8ff",
+                        "on-secondary-container": "#57657a",
+                        "inverse-primary": "#ffb693",
+                        "tertiary-fixed-dim": "#9ccaff",
+                        "outline-variant": "#e2bfb0",
+                        "primary-container": "#ff6b00",
+                        "primary": "#a04100",
+                        "surface-dim": "#d2d9f4",
+                        "secondary-container": "#d5e3fc",
+                        "secondary-fixed-dim": "#b9c7df",
+                        "inverse-surface": "#283044",
+                        "secondary": "#515f74",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-fixed": "#001d35",
+                        "on-secondary-fixed-variant": "#3a485b",
+                        "surface-container-highest": "#dae2fd",
+                        "on-tertiary-fixed-variant": "#00497b"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+        }
+
+        .orange-glow:focus-within {
+            box-shadow: 0 0 0 2px #ff6b00, 0 0 8px rgba(255, 107, 0, 0.4);
+        }
+
+        .ghost-border {
+            border: 1px solid rgba(226, 191, 176, 0.15);
+        }
+    </style>
+</head>
+
+<body class="bg-surface font-body text-on-surface">
+    <!-- SideNavBar -->
+    <aside
+        class="h-screen w-64 fixed left-0 top-0 -translate-x-full lg:translate-x-0 transition-transform duration-300 z-[100] sidebar-mobile bg-slate-50 dark:bg-slate-900 flex flex-col py-6 space-y-2 z-50 overflow-y-auto border-r border-orange-100/15">
+        <div class="px-6 mb-8">
+            <h1 class="text-xl font-bold text-orange-600 workshop-name-display">AutoFlow</h1>
+            <p class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Mechanical Excellence</p>
+        </div>
+
+        <nav class="flex-1 px-4 space-y-1">
+            <a class="flex items-center space-x-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:text-orange-50 transition-all active:scale-95 duration-200 transition-all font-sans"
+                href="home.html">
+                <span class="material-symbols-outlined">home</span>
+                <span class="text-sm">Home</span>
+            </a>
+            <a class="flex items-center space-x-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:text-orange-50 transition-all active:scale-95 duration-200 transition-all font-sans"
+                href="lista-clientes.html">
+                <span class="material-symbols-outlined">group</span>
+                <span class="text-sm">Clientes</span>
+            </a>
+            <a class="flex items-center space-x-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:text-orange-50 transition-all active:scale-95 duration-200 transition-all font-sans"
+                href="lista-ordem.html">
+                <span class="material-symbols-outlined">description</span>
+                <span class="text-sm">Ordens de Serviço</span>
+            </a>
+
+            <a class="flex items-center space-x-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:text-orange-50 transition-all active:scale-95 duration-200 transition-all font-sans"
+                href="agendamento.html">
+                <span class="material-symbols-outlined">calendar_today</span>
+                <span class="text-sm">Agendamento</span>
+            </a>
+            <a class="flex items-center space-x-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:text-orange-50 transition-all active:scale-95 duration-200 transition-all font-sans"
+                href="lista-estoque.html">
+                <span class="material-symbols-outlined">inventory_2</span>
+                <span class="text-sm font-medium">Estoque</span>
+            </a>
+            <a class="flex items-center space-x-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:text-orange-50 transition-all active:scale-95 duration-200 transition-all font-sans"
+                href="painel-financeiro.html">
+                <span class="material-symbols-outlined">payments</span>
+                <span class="text-sm font-medium">Financeiro</span>
+            </a>
+            <a class="flex items-center space-x-3 px-4 py-3 rounded-xl text-orange-600 dark:text-orange-400 border-r-4 border-orange-600 dark:border-orange-500 bg-orange-50/50 dark:bg-orange-950/10 font-bold active:scale-95 duration-200 transition-all font-sans"
+                href="painel-configuracao.html">
+                <span class="material-symbols-outlined">settings</span>
+                <span class="text-sm font-bold">Configurações</span>
+            </a>
+        </nav>
+        <div class="px-4 mt-auto">
+            <div class="p-4 rounded-xl bg-surface-container-low flex items-center space-x-3 mb-2">
+                <img class="w-10 h-10 rounded-full object-cover"
+                    data-alt="professional male workshop manager portrait"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhPLBS7s1ZuQnGXymXiuBJ9868nnRddz-gP3XAOrY68Jq9o0KixW-BUonODLYl3srJtQGdWkN5_hv6A6IF9R7-3N7IIY07p3v3-Hk3h336t834MZYCX-4YCqmBz9mCX8NOYAAALVVu-cIt2MMISgYj5kzscUNzzN_lS_KLNdiehWiGTqxXxzj1CPXQvQ7LDF2RhdjSvTpng9INFVDk-nm_joxt429ETmCldwckpOU2lyL4OxGroqrKIqhzHc42pIxKWLdFaqgNpd8" />
+                <div>
+                    <p class="text-xs font-bold text-on-surface user-name-display">Usuário</p>
+                    <p class="text-[10px] text-slate-500">Workshop Owner</p>
+                </div>
+            </div>
+            <a id="logout-btn"
+                class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-red-500 hover:bg-red-50 transition-all mb-4"
+                href="#">
+                <span class="material-symbols-outlined">logout</span>
+                <span class="text-sm font-bold">Sair</span>
+            </a>
+        </div>
+    </aside>
+    </aside>
+    <!-- TopNavBar -->
+    <header
+        class="fixed top-0 right-0 w-full lg:w-[calc(100%-16rem)] z-40 z-40 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl border-b border-orange-100/15 dark:border-slate-800/50 shadow-sm">
+        <div class="flex justify-between items-center px-8 h-16 w-full">
+            <div class="flex items-center text-primary">
+                <h2 class="text-lg font-bold text-slate-900 dark:text-slate-50 mr-8 workshop-name-display">Configurações</h2>
+            </div>
+            <div class="flex items-center gap-4">
+                <button class="text-slate-500 hover:text-orange-500 transition-all active:scale-95 duration-200">
+                    <span class="material-symbols-outlined">notifications</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Settings Module Sub-navigation -->
+        <nav class="flex px-8 border-t border-orange-100/5">
+            <a href="painel-configuracao.html"
+                class="px-4 py-3 text-xs font-medium text-slate-500 hover:text-primary transition-colors">Info Oficina</a>
+            <a href="usuario-permisoes-configuracao.html"
+                class="px-4 py-3 text-xs font-medium text-on-surface-variant hover:text-primary transition-colors">Usuários & Permissões</a>
+            <a href="seguranca-preferencia-configuracao.html"
+                class="px-4 py-3 text-xs font-bold border-b-2 border-primary text-primary">Segurança & Preferências</a>
+        </nav>
+    </header>
+    <!-- Main Content Canvas -->
+    <main class="lg:ml-64 mt-28 p-8 min-h-screen bg-surface">
+        <div class="max-w-6xl mx-auto">
+            <!-- Header Section -->
+            <div class="mb-12">
+                <span class="text-primary font-bold tracking-widest text-[10px] uppercase mb-2 block">ADMINISTRAÃ‡ÃƒO DO
+                    SISTEMA</span>
+                <h2 class="text-4xl font-extrabold text-on-surface tracking-tight">Segurança e Preferências</h2>
+            </div>
+            <!-- Bento Grid Layout -->
+            <div class="grid grid-cols-12 gap-6">
+                <!-- Left Column: Security Section -->
+                <div class="col-span-12 lg:col-span-7 space-y-6">
+                    <!-- Alterar Senha Card -->
+                    <section class="bg-surface-container-lowest rounded-xl p-8 ghost-border shadow-sm">
+                        <div class="flex items-center gap-4 mb-8">
+                            <div
+                                class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+                                <span class="material-symbols-outlined"
+                                    style="font-variation-settings: 'FILL' 1;">lock</span>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-on-surface">Alterar Senha</h3>
+                                <p class="text-sm text-on-secondary-container">Mantenha sua conta protegida com uma
+                                    senha forte.</p>
+                            </div>
+                        </div>
+                        <form class="space-y-4">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="col-span-2">
+                                    <label
+                                        class="text-[11px] font-bold text-slate-500 uppercase tracking-tighter mb-1 block">Senha
+                                        Atual</label>
+                                    <input
+                                        class="w-full bg-surface px-4 py-3 rounded-lg ghost-border focus:ring-0 focus:border-primary-container outline-none orange-glow transition-all"
+                                        placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" type="password" />
+                                </div>
+                                <div>
+                                    <label
+                                        class="text-[11px] font-bold text-slate-500 uppercase tracking-tighter mb-1 block">Nova
+                                        Senha</label>
+                                    <input
+                                        class="w-full bg-surface px-4 py-3 rounded-lg ghost-border focus:ring-0 focus:border-primary-container outline-none orange-glow transition-all"
+                                        placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" type="password" />
+                                </div>
+                                <div>
+                                    <label
+                                        class="text-[11px] font-bold text-slate-500 uppercase tracking-tighter mb-1 block">Confirmar
+                                        Nova Senha</label>
+                                    <input
+                                        class="w-full bg-surface px-4 py-3 rounded-lg ghost-border focus:ring-0 focus:border-primary-container outline-none orange-glow transition-all"
+                                        placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" type="password" />
+                                </div>
+                            </div>
+                            <div class="pt-4 flex justify-end">
+                                <button
+                                    class="px-6 py-2.5 bg-gradient-to-r from-primary to-primary-container text-on-primary font-bold text-sm rounded-lg hover:brightness-110 active:scale-95 transition-all shadow-md shadow-primary/20">
+                                    Atualizar Senha
+                                </button>
+                            </div>
+                        </form>
+                    </section>
+                    <!-- Session Management Card -->
+                    <section class="bg-surface-container-lowest rounded-xl p-8 ghost-border shadow-sm">
+                        <div class="flex items-center justify-between mb-8">
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="w-12 h-12 rounded-lg bg-tertiary/10 flex items-center justify-center text-tertiary">
+                                    <span class="material-symbols-outlined">devices</span>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-bold text-on-surface">Sessões Ativas</h3>
+                                    <p class="text-sm text-on-secondary-container">Gerencie os dispositivos onde você
+                                        está logado.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between p-4 bg-surface rounded-lg">
+                                <div class="flex items-center gap-4">
+                                    <span class="material-symbols-outlined text-slate-400">desktop_windows</span>
+                                    <div>
+                                        <p class="text-sm font-bold">MacBook Pro - Chrome</p>
+                                        <p class="text-[11px] text-slate-500">São Paulo, Brasil â€¢ <span
+                                                class="text-tertiary">Atual</span></p>
+                                    </div>
+                                </div>
+                                <span class="text-[11px] font-bold text-slate-400 uppercase">SESSÃƒO ATIVA</span>
+                            </div>
+                            <div
+                                class="flex items-center justify-between p-4 hover:bg-surface rounded-lg transition-colors group">
+                                <div class="flex items-center gap-4">
+                                    <span class="material-symbols-outlined text-slate-400">smartphone</span>
+                                    <div>
+                                        <p class="text-sm font-bold">iPhone 14 Pro - App</p>
+                                        <p class="text-[11px] text-slate-500">Rio de Janeiro, Brasil â€¢ 2 horas atrás</p>
+                                    </div>
+                                </div>
+                                <button
+                                    class="text-error text-[11px] font-bold uppercase opacity-0 group-hover:opacity-100 transition-opacity">Encerrar</button>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <!-- Right Column: Preferences Section -->
+                <div class="col-span-12 lg:col-span-5 space-y-6">
+                    <!-- Regional & Formats Card -->
+                    <section class="bg-surface-container-lowest rounded-xl p-8 ghost-border shadow-sm">
+                        <h3 class="text-lg font-bold text-on-surface mb-6">Formatos e Localização</h3>
+                        <div class="space-y-6">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label
+                                        class="text-[11px] font-bold text-slate-500 uppercase tracking-tighter mb-2 block">Data</label>
+                                    <div class="relative">
+                                        <select
+                                            class="w-full bg-surface-container-low px-4 py-3 rounded-lg border-0 text-sm font-medium focus:ring-2 focus:ring-primary-container/20 appearance-none">
+                                            <option>DD/MM/AAAA</option>
+                                            <option>MM/DD/AAAA</option>
+                                            <option>AAAA-MM-DD</option>
+                                        </select>
+                                        <span
+                                            class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">expand_more</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label
+                                        class="text-[11px] font-bold text-slate-500 uppercase tracking-tighter mb-2 block">Moeda</label>
+                                    <div class="relative">
+                                        <select
+                                            class="w-full bg-surface-container-low px-4 py-3 rounded-lg border-0 text-sm font-medium focus:ring-2 focus:ring-primary-container/20 appearance-none">
+                                            <option>BRL (R$)</option>
+                                            <option>USD ($)</option>
+                                            <option>EUR (â‚¬)</option>
+                                        </select>
+                                        <span
+                                            class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">expand_more</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <!-- Notifications Toggles -->
+                    <section class="bg-surface-container-lowest rounded-xl p-8 ghost-border shadow-sm">
+                        <h3 class="text-lg font-bold text-on-surface mb-6">Notificações</h3>
+                        <div class="space-y-5">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm font-bold">Alertas de Agendamento</p>
+                                    <p class="text-[11px] text-slate-500">Notificar novos pedidos de serviço</p>
+                                </div>
+                                <div class="w-12 h-6 bg-primary-container rounded-full relative cursor-pointer">
+                                    <div class="absolute right-1 top-1 w-4 h-4 bg-white rounded-full"></div>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm font-bold">Relatórios Financeiros</p>
+                                    <p class="text-[11px] text-slate-500">Resumo semanal por e-mail</p>
+                                </div>
+                                <div class="w-12 h-6 bg-slate-200 rounded-full relative cursor-pointer">
+                                    <div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full"></div>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm font-bold">Alertas de Estoque</p>
+                                    <p class="text-[11px] text-slate-500">Peças com baixo nível</p>
+                                </div>
+                                <div class="w-12 h-6 bg-primary-container rounded-full relative cursor-pointer">
+                                    <div class="absolute right-1 top-1 w-4 h-4 bg-white rounded-full"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <!-- Scheduling Settings Card -->
+                    <section class="bg-surface-container-lowest rounded-xl p-8 ghost-border shadow-sm">
+                        <h3 class="text-lg font-bold text-on-surface mb-6">Agendamentos</h3>
+                        <div class="space-y-6">
+                            <div>
+                                <label
+                                    class="text-[11px] font-bold text-slate-500 uppercase tracking-tighter mb-2 block">Intervalos
+                                    de Tempo</label>
+                                <div class="flex gap-2">
+                                    <button
+                                        class="flex-1 py-2 text-xs font-bold rounded-lg bg-primary/10 text-primary border border-primary/20">30
+                                        min</button>
+                                    <button
+                                        class="flex-1 py-2 text-xs font-bold rounded-lg bg-surface hover:bg-slate-100 text-slate-600 transition-colors">60
+                                        min</button>
+                                    <button
+                                        class="flex-1 py-2 text-xs font-bold rounded-lg bg-surface hover:bg-slate-100 text-slate-600 transition-colors">2
+                                        horas</button>
+                                </div>
+                            </div>
+                            <div>
+                                <label
+                                    class="text-[11px] font-bold text-slate-500 uppercase tracking-tighter mb-2 block">Dias
+                                    Disponíveis</label>
+                                <div class="flex flex-wrap gap-2">
+                                    <span
+                                        class="px-3 py-1 rounded-full bg-slate-100 text-[10px] font-black text-slate-600">SEG</span>
+                                    <span
+                                        class="px-3 py-1 rounded-full bg-slate-100 text-[10px] font-black text-slate-600">TER</span>
+                                    <span
+                                        class="px-3 py-1 rounded-full bg-slate-100 text-[10px] font-black text-slate-600">QUA</span>
+                                    <span
+                                        class="px-3 py-1 rounded-full bg-slate-100 text-[10px] font-black text-slate-600">QUI</span>
+                                    <span
+                                        class="px-3 py-1 rounded-full bg-slate-100 text-[10px] font-black text-slate-600">SEX</span>
+                                    <span
+                                        class="px-3 py-1 rounded-full bg-slate-100/50 text-[10px] font-black text-slate-400 line-through">SÁB</span>
+                                    <span
+                                        class="px-3 py-1 rounded-full bg-slate-100/50 text-[10px] font-black text-slate-400 line-through">DOM</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+            <!-- Footer Actions -->
+            <div class="mt-12 pt-8 border-t border-slate-200 flex justify-end gap-4">
+                <button
+                    class="px-8 py-3 rounded-lg text-slate-500 font-bold text-sm hover:bg-slate-100 transition-colors">
+                    Descartar Alterações
+                </button>
+                <button
+                    class="px-8 py-3 rounded-lg bg-inverse-surface text-white font-bold text-sm hover:brightness-125 transition-all shadow-lg">
+                    Salvar Todas as Preferências
+                </button>
+            </div>
+        </div>
+    </main>
+    <!-- Visual Accents -->
+    <div
+        class="fixed bottom-0 right-0 w-64 h-64 bg-primary-container/5 rounded-full blur-[100px] -z-10 pointer-events-none">
+    </div>
+    <div class="fixed top-20 left-64 w-32 h-32 bg-tertiary/5 rounded-full blur-[60px] -z-10 pointer-events-none"></div>
+</body>
+
+</html>

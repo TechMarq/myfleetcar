@@ -1,0 +1,164 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>AutoFlow - Gerenciamento de Equipe</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#a04100",
+                        "primary-container": "#ff6b00",
+                        surface: "#faf8ff",
+                        "on-surface": "#131b2e",
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .btn-primary-gradient { background: linear-gradient(to right, #a04100, #ff6b00); }
+    </style>
+</head>
+<body class="bg-surface text-on-surface flex min-h-screen">
+    <!-- SideNavBar -->
+    <aside class="h-screen w-64 fixed left-0 top-0 -translate-x-full lg:translate-x-0 transition-transform duration-300 z-[100] sidebar-mobile bg-slate-50 flex flex-col py-6 space-y-2 z-50 overflow-y-auto border-r border-orange-100/15">
+        <div class="px-6 mb-8">
+            <h1 class="text-xl font-bold text-orange-600 workshop-name-display">AutoFlow</h1>
+            <p class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Mechanical Excellence</p>
+        </div>
+        <nav class="flex-1 px-4 space-y-1">
+            <a class="flex items-center space-x-3 px-4 py-3 rounded-xl text-slate-600 hover:text-orange-50 transition-all" href="home.html">
+                <span class="material-symbols-outlined">home</span>
+                <span class="text-sm">Home</span>
+            </a>
+            <a class="flex items-center space-x-3 px-4 py-3 rounded-xl text-slate-600 hover:text-orange-50 transition-all" href="lista-clientes.html">
+                <span class="material-symbols-outlined">group</span>
+                <span class="text-sm">Clientes</span>
+            </a>
+            <a class="flex items-center space-x-3 px-4 py-3 rounded-xl text-slate-600 hover:text-orange-50 transition-all" href="lista-ordem.html">
+                <span class="material-symbols-outlined">description</span>
+                <span class="text-sm">Ordens de Serviço</span>
+            </a>
+            <a class="flex items-center space-x-3 px-4 py-3 rounded-xl text-slate-600 hover:text-orange-50 transition-all font-sans" href="agendamento.html">
+                <span class="material-symbols-outlined">calendar_today</span>
+                <span class="text-sm">Agendamento</span>
+            </a>
+            <a class="flex items-center space-x-3 px-4 py-3 rounded-xl text-slate-600 hover:text-orange-50 transition-all font-sans" href="lista-estoque.html">
+                <span class="material-symbols-outlined">inventory_2</span>
+                <span class="text-sm">Estoque</span>
+            </a>
+            <a class="flex items-center space-x-3 px-4 py-3 rounded-xl text-slate-600 hover:text-orange-50 transition-all" href="painel-financeiro.html">
+                <span class="material-symbols-outlined">payments</span>
+                <span class="text-sm font-medium">Financeiro</span>
+            </a>
+            <a class="flex items-center space-x-3 px-4 py-3 rounded-xl text-orange-600 border-r-4 border-orange-600 bg-orange-50/50 font-bold" href="painel-configuracao.html">
+                <span class="material-symbols-outlined">settings</span>
+                <span class="text-sm font-bold">Configurações</span>
+            </a>
+        </nav>
+    </aside>
+
+    <main class="lg:ml-64 flex-1">
+        <!-- TopNavBar -->
+        <header class="fixed top-0 right-0 w-full lg:w-[calc(100%-16rem)] z-40 z-40 bg-white/80 backdrop-blur-xl border-b border-orange-100/15 shadow-sm">
+            <div class="flex justify-between items-center px-8 h-16 w-full">
+                <h2 class="text-lg font-bold text-slate-900">Configurações</h2>
+            </div>
+            <nav class="flex px-8 border-t border-orange-100/5">
+                <a href="painel-configuracao.html" class="px-4 py-3 text-xs font-medium text-slate-500 hover:text-primary transition-colors">Info Oficina</a>
+                <a href="usuario-permisoes-configuracao.html" class="px-4 py-3 text-xs font-medium text-slate-500 hover:text-primary transition-colors">Usuários & Permissões</a>
+                <a href="equipe-configuracao.html" class="px-4 py-3 text-xs font-bold border-b-2 border-primary text-primary">Gerenciar Equipe</a>
+                <a href="seguranca-preferencia-configuracao.html" class="px-4 py-3 text-xs font-medium text-slate-500 hover:text-primary transition-colors">Segurança & Preferências</a>
+            </nav>
+        </header>
+
+        <section class="mt-32 p-10 max-w-7xl mx-auto">
+            <div class="flex justify-between items-end mb-8">
+                <div>
+                    <h1 class="text-3xl font-extrabold tracking-tight text-on-surface">Gestão da Equipe</h1>
+                    <p class="text-slate-500 mt-1">Cadastre seus funcionários e defina modelos de remuneração.</p>
+                </div>
+                <button onclick="openStaffModal()" class="btn-primary-gradient text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 shadow-lg shadow-primary/20 transition-all active:scale-95">
+                    <span class="material-symbols-outlined">person_add</span>
+                    Novo Funcionário
+                </button>
+            </div>
+
+            <!-- Staff Table -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+                <table class="w-full text-left">
+                    <thead class="bg-slate-50">
+                        <tr>
+                            <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Nome / Cargo</th>
+                            <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Remuneração</th>
+                            <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Valor/Porcentagem</th>
+                            <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-right">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="staff-list" class="divide-y divide-slate-50">
+                        <!-- Content loaded via JS -->
+                        <tr>
+                            <td colspan="4" class="px-6 py-20 text-center text-slate-400 italic">Carregando equipe...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal: Cadastro de Funcionário -->
+    <div id="modal-staff" class="fixed inset-0 z-[100] hidden">
+        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"></div>
+        <div class="absolute inset-0 flex items-center justify-center p-4">
+            <div class="bg-white rounded-3xl w-full max-w-md shadow-2xl overflow-hidden">
+                <div class="p-8">
+                    <h3 class="text-xl font-bold text-slate-900 mb-6">Cadastrar Funcionário</h3>
+                    <form id="staff-form" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-black text-slate-400 uppercase mb-2">Nome Completo</label>
+                            <input type="text" id="staff-name" required class="w-full bg-slate-50 border-none rounded-xl p-4 text-sm focus:ring-2 focus:ring-orange-500/20">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-black text-slate-400 uppercase mb-2">Cargo</label>
+                            <input type="text" id="staff-role" required placeholder="Ex: Mecânico Chefe" class="w-full bg-slate-50 border-none rounded-xl p-4 text-sm focus:ring-2 focus:ring-orange-500/20">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-black text-slate-400 uppercase mb-2">Tipo de Remuneração</label>
+                            <select id="staff-pay-type" onchange="togglePayFields()" class="w-full bg-slate-50 border-none rounded-xl p-4 text-sm focus:ring-2 focus:ring-orange-500/20">
+                                <option value="Comissão">Comissão (%)</option>
+                                <option value="Salário Fixo">Salário Fixo (R$)</option>
+                            </select>
+                        </div>
+                        <div id="commission-field">
+                            <label class="block text-xs font-black text-slate-400 uppercase mb-2">Porcentagem da Comissão (%)</label>
+                            <input type="number" id="staff-commission" class="w-full bg-slate-50 border-none rounded-xl p-4 text-sm focus:ring-2 focus:ring-orange-500/20">
+                        </div>
+                        <div id="salary-field" class="hidden">
+                            <label class="block text-xs font-black text-slate-400 uppercase mb-2">Valor do Salário (R$)</label>
+                            <input type="number" id="staff-salary" class="w-full bg-slate-50 border-none rounded-xl p-4 text-sm focus:ring-2 focus:ring-orange-500/20">
+                        </div>
+                        <div class="flex gap-3 pt-4">
+                            <button type="button" onclick="closeModal('modal-staff')" class="flex-1 px-6 py-4 rounded-xl text-sm font-bold text-slate-500 hover:bg-slate-50">Cancelar</button>
+                            <button type="submit" class="flex-1 px-6 py-4 btn-primary-gradient rounded-xl text-sm font-bold text-white shadow-lg">Salvar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="navigation.js"></script>
+    <script src="staff.js"></script>
+</body>
+</html>
+

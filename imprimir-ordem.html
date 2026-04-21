@@ -1,0 +1,213 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Imprimir Ordem de Serviço</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+    <style>
+        body { font-family: 'Inter', sans-serif; font-size: 11px; line-height: 1.2; color: #1e293b; background: #fff; }
+        @page { size: A4; margin: 1cm; }
+        @media print {
+            body { margin: 0; padding: 0; }
+            .no-print { display: none !important; }
+        }
+        .table-custom th, .table-custom td { padding: 4px 8px; border-bottom: 1px solid #e2e8f0; }
+        .bg-slate { background-color: #f8fafc; }
+        .border-orange { border-color: #f97316; }
+        .text-orange { color: #f97316; }
+    </style>
+</head>
+<body>
+    <div class="max-w-[21cm] mx-auto p-4">
+        <!-- Header -->
+        <div class="flex justify-between items-start border-b-2 border-orange pb-4 mb-4">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 bg-slate-900 rounded-lg flex items-center justify-center text-white font-black text-xl">
+                    <span id="workshop-initials">OS</span>
+                </div>
+                <div>
+                    <h1 id="print-workshop-name" class="text-xl font-black text-slate-900 leading-none">Minha Oficina</h1>
+                    <p class="text-[8px] text-slate-400 uppercase tracking-widest mt-1 font-bold">Processado via AutoFlow SaaS</p>
+                </div>
+            </div>
+            <div class="text-right">
+                <p class="text-[9px] font-bold text-slate-400 uppercase">Ordem de Serviço</p>
+                <div class="text-2xl font-black text-orange-600 order-no-display">#0000</div>
+                <p class="text-[10px] font-bold text-slate-600 order-date-display">00/00/0000</p>
+            </div>
+        </div>
+
+        <!-- Info Grid: Client & Vehicle -->
+        <div class="grid grid-cols-2 gap-4 mb-4">
+            <div class="bg-slate p-3 rounded-lg border border-slate-100">
+                <h3 class="text-[9px] font-black text-slate-400 uppercase mb-2">Cliente</h3>
+                <p class="font-bold text-sm customer-name-display">Carregando...</p>
+                <p class="text-[10px] text-slate-600 customer-phone-display">--</p>
+                <p class="text-[10px] text-slate-600 customer-email-display">--</p>
+            </div>
+            <div class="bg-slate p-3 rounded-lg border border-slate-100">
+                <h3 class="text-[9px] font-black text-slate-400 uppercase mb-2">Veículo</h3>
+                <p class="font-bold text-sm vehicle-name-display">--</p>
+                <div class="flex gap-4 mt-1">
+                    <div><span class="text-[9px] font-bold text-slate-400 uppercase">Placa:</span> <span class="font-bold text-[10px] vehicle-plate-display">--</span></div>
+                    <div><span class="text-[9px] font-bold text-slate-400 uppercase">KM:</span> <span class="font-bold text-[10px] vehicle-km-display">--</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Problem Description -->
+        <div class="mb-4">
+            <h3 class="text-[9px] font-black text-slate-400 uppercase mb-1">Reclamação do Cliente / Diagnóstico</h3>
+            <div class="p-3 border border-slate-200 rounded-lg text-xs leading-relaxed diagnosis-display italic bg-white">
+                Nenhum detalhe informado.
+            </div>
+        </div>
+
+        <!-- Services Table -->
+        <div class="mb-4">
+            <h3 class="text-[9px] font-black text-slate-400 uppercase mb-1">Serviços e Peças</h3>
+            <table class="w-full text-left table-custom border border-slate-200 rounded-lg overflow-hidden">
+                <thead class="bg-slate text-[9px] font-black text-slate-500 uppercase">
+                    <tr>
+                        <th class="w-2/3">Descrição do Serviço / Peça</th>
+                        <th class="text-center">Mecânico</th>
+                        <th class="text-center">Qtd</th>
+                        <th class="text-right">Total</th>
+                    </tr>
+                </thead>
+                <tbody id="items-body">
+                    <!-- Dynamic Items -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- History -->
+        <div class="mb-4">
+            <h3 class="text-[9px] font-black text-slate-400 uppercase mb-1">Histórico de Observações</h3>
+            <div id="history-summary" class="grid grid-cols-1 gap-1 text-[9px] text-slate-600 border border-slate-100 rounded-lg p-2">
+                <!-- History entries -->
+            </div>
+        </div>
+
+        <!-- Bottom Summary Footer -->
+        <div class="mt-6 pt-4 border-t border-slate-100 flex justify-between items-end">
+            <div class="space-y-4">
+                <div class="w-64 border-b border-slate-300"></div>
+                <p class="text-[9px] font-bold text-slate-400 uppercase">Assinatura do Cliente</p>
+            </div>
+            <div class="text-right bg-slate p-4 rounded-xl border border-slate-200 min-w-[200px]">
+                <div class="flex justify-between gap-8 mb-1">
+                    <span class="text-[10px] font-bold text-slate-500 uppercase">Subtotal Itens:</span>
+                    <span id="subtotal-val" class="font-bold">R$ 0,00</span>
+                </div>
+                <div class="flex justify-between gap-8 mb-1">
+                    <span class="text-[10px] font-bold text-slate-500 uppercase font-medium">Acresc./Taxas:</span>
+                    <span id="additional-val" class="font-bold text-slate-700">R$ 0,00</span>
+                </div>
+                <div class="flex justify-between gap-8 mb-1">
+                    <span class="text-[10px] font-bold text-slate-500 uppercase font-medium">Descontos:</span>
+                    <span id="discount-val" class="font-bold text-red-600">- R$ 0,00</span>
+                </div>
+                <div class="flex justify-between gap-8 pt-2 mt-2 border-t border-slate-300">
+                    <span class="text-xs font-black text-slate-900 uppercase">Valor Total:</span>
+                    <span id="total-val" class="text-xl font-black text-orange-600">R$ 0,00</span>
+                </div>
+                <div id="status-print" class="text-[10px] font-black uppercase text-orange-500 mt-1">Status: AGUARDANDO</div>
+            </div>
+        </div>
+
+        <div class="no-print fixed bottom-8 right-8 flex gap-3">
+             <button onclick="window.close()" class="bg-slate-100 text-slate-500 px-6 py-2 rounded-lg font-bold">Fechar</button>
+             <button onclick="window.print()" class="bg-orange-600 text-white px-8 py-2 rounded-lg font-bold shadow-lg">Imprimir Documento</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const id = urlParams.get('id');
+            if (!id) return;
+
+            const { data: order, error } = await AutoFlow.DB.select('service_orders', {
+                select: '*, customers(*), vehicles(*)',
+                match: { id }
+            });
+
+            if (error || !order[0]) return;
+            const o = order[0];
+
+            // Load Workshop Profile for branding
+            const { data: profile } = await AutoFlow.DB.select('profiles', { match: { id: o.workshop_id } });
+            if (profile && profile[0]) {
+                document.getElementById('print-workshop-name').textContent = profile[0].workshop_name;
+                document.getElementById('workshop-initials').textContent = profile[0].workshop_name.slice(0, 2).toUpperCase();
+            }
+
+            // Fill Basics
+            document.querySelector('.order-no-display').textContent = o.os_number || o.id.slice(-6).toUpperCase();
+            document.querySelector('.order-date-display').textContent = new Date(o.entry_date).toLocaleDateString('pt-BR');
+            document.querySelector('.customer-name-display').textContent = o.customers?.full_name || 'N/A';
+            document.querySelector('.customer-phone-display').textContent = o.customers?.phone || 'Não informado';
+            document.querySelector('.customer-email-display').textContent = o.customers?.email || '';
+            document.querySelector('.vehicle-name-display').textContent = `${o.vehicles?.brand || ''} ${o.vehicles?.model || ''}`;
+            document.querySelector('.vehicle-plate-display').textContent = o.vehicles?.license_plate || '--';
+            document.querySelector('.vehicle-km-display').textContent = o.mileage ? o.mileage + ' KM' : '--';
+            document.querySelector('.diagnosis-display').textContent = o.description || 'Nenhum sintoma ou diagnóstico informado.';
+            document.getElementById('status-print').textContent = `STATUS: ${o.status.toUpperCase()}`;
+
+            // Load History
+            const { data: history } = await AutoFlow.DB.select('service_order_history', { 
+                match: { service_order_id: id }, 
+                order: { column: 'created_at', ascending: true } 
+            });
+            if (history && history.length > 0) {
+                document.getElementById('history-summary').innerHTML = history.map(h => `
+                    <div class="flex gap-2 py-1 border-b border-slate-50 last:border-none">
+                        <span class="font-bold text-slate-400 whitespace-nowrap pt-[1px]">${new Date(h.created_at).toLocaleDateString('pt-BR', {day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit'})}:</span>
+                        <span>${h.description}</span>
+                    </div>
+                `).join('');
+            } else {
+                document.getElementById('history-summary').innerHTML = '<p class="italic text-slate-400">Nenhum histórico registrado.</p>';
+            }
+
+            // Fill Items
+            const itemsBody = document.getElementById('items-body');
+            let subtotalLabor = 0;
+            if (o.labor_services && o.labor_services.length > 0) {
+                itemsBody.innerHTML = o.labor_services.map(i => {
+                    const price = i.price || 0;
+                    const qty = i.qty || 1;
+                    subtotalLabor += (price * qty);
+                    return `
+                        <tr>
+                            <td><span class="font-bold text-slate-700">${i.name || i.description}</span></td>
+                            <td class="text-center">${i.mechanic_name || o.mechanic_name || '--'}</td>
+                            <td class="text-center">${qty}</td>
+                            <td class="text-right font-bold">R$ ${(price * qty).toLocaleString('pt-BR', {minimumFractionDigits:2})}</td>
+                        </tr>
+                    `;
+                }).join('');
+            } else {
+                itemsBody.innerHTML = '<tr><td colspan="4" class="py-4 text-center italic text-slate-400">Nenhum serviço ou peça vinculada.</td></tr>';
+            }
+
+            // Totals
+            document.getElementById('subtotal-val').textContent = `R$ ${subtotalLabor.toLocaleString('pt-BR', {minimumFractionDigits:2})}`;
+            document.getElementById('additional-val').textContent = `R$ ${(o.additional_charges || 0).toLocaleString('pt-BR', {minimumFractionDigits:2})}`;
+            document.getElementById('discount-val').textContent = `- R$ ${(o.discount_amount || 0).toLocaleString('pt-BR', {minimumFractionDigits:2})}`;
+            document.getElementById('total-val').textContent = `R$ ${o.total_amount.toLocaleString('pt-BR', {minimumFractionDigits:2})}`;
+
+            // Auto print if not in preview
+            if (urlParams.get('print') === 'true') {
+                setTimeout(() => window.print(), 1000);
+            }
+        });
+    </script>
+</body>
+</html>
+

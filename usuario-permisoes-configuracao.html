@@ -1,0 +1,408 @@
+﻿<!DOCTYPE html>
+
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed": "#351000",
+                        "tertiary": "#0062a1",
+                        "surface-container-high": "#e2e7ff",
+                        "on-tertiary-container": "#003357",
+                        "background": "#faf8ff",
+                        "primary-fixed": "#ffdbcc",
+                        "error-container": "#ffdad6",
+                        "error": "#ba1a1a",
+                        "outline": "#8e7164",
+                        "surface-variant": "#dae2fd",
+                        "on-error": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container": "#eaedff",
+                        "secondary-fixed": "#d5e3fc",
+                        "on-primary-container": "#572000",
+                        "on-secondary-fixed": "#0d1c2e",
+                        "surface-container-low": "#f2f3ff",
+                        "inverse-on-surface": "#eef0ff",
+                        "tertiary-container": "#059eff",
+                        "on-primary": "#ffffff",
+                        "primary-fixed-dim": "#ffb693",
+                        "on-surface-variant": "#5a4136",
+                        "on-primary-fixed-variant": "#7a3000",
+                        "tertiary-fixed": "#d0e4ff",
+                        "surface-bright": "#faf8ff",
+                        "on-background": "#131b2e",
+                        "surface-tint": "#a04100",
+                        "on-secondary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "on-surface": "#131b2e",
+                        "surface": "#faf8ff",
+                        "on-secondary-container": "#57657a",
+                        "inverse-primary": "#ffb693",
+                        "tertiary-fixed-dim": "#9ccaff",
+                        "outline-variant": "#e2bfb0",
+                        "primary-container": "#ff6b00",
+                        "primary": "#a04100",
+                        "surface-dim": "#d2d9f4",
+                        "secondary-container": "#d5e3fc",
+                        "secondary-fixed-dim": "#b9c7df",
+                        "inverse-surface": "#283044",
+                        "secondary": "#515f74",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-fixed": "#001d35",
+                        "on-secondary-fixed-variant": "#3a485b",
+                        "surface-container-highest": "#dae2fd",
+                        "on-tertiary-fixed-variant": "#00497b"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #faf8ff;
+            color: #131b2e;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        .gradient-btn {
+            background: linear-gradient(to right, #a04100, #ff6b00);
+        }
+
+        .gradient-btn:hover {
+            filter: brightness(1.1);
+        }
+
+        .ghost-border {
+            border: 1px solid rgba(226, 191, 176, 0.15);
+        }
+    </style>
+</head>
+
+<body class="bg-surface selection:bg-primary-fixed selection:text-on-primary-fixed">
+    <!-- SideNavBar Anchor -->
+    <aside
+        class="h-screen w-64 fixed left-0 top-0 -translate-x-full lg:translate-x-0 transition-transform duration-300 z-[100] sidebar-mobile bg-slate-50 dark:bg-slate-900 flex flex-col py-6 space-y-2 z-50 overflow-y-auto border-r border-orange-100/15">
+        <div class="px-6 mb-8">
+            <h1 class="text-xl font-bold text-orange-600 workshop-name-display">AutoFlow</h1>
+            <p class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Mechanical Excellence</p>
+        </div>
+
+        <nav class="flex-1 px-4 space-y-1">
+            <a class="flex items-center space-x-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:text-orange-50 transition-all active:scale-95 duration-200 transition-all"
+                href="home.html">
+                <span class="material-symbols-outlined">home</span>
+                <span class="text-sm">Home</span>
+            </a>
+            <a class="flex items-center space-x-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:text-orange-50 transition-all active:scale-95 duration-200 transition-all"
+                href="lista-clientes.html">
+                <span class="material-symbols-outlined">group</span>
+                <span class="text-sm">Clientes</span>
+            </a>
+            <a class="flex items-center space-x-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:text-orange-50 transition-all active:scale-95 duration-200 transition-all"
+                href="lista-ordem.html">
+                <span class="material-symbols-outlined">description</span>
+                <span class="text-sm">Ordens de Serviço</span>
+            </a>
+
+            <a class="flex items-center space-x-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:text-orange-50 transition-all active:scale-95 duration-200 transition-all"
+                href="agendamento.html">
+                <span class="material-symbols-outlined">calendar_today</span>
+                <span class="text-sm">Agendamento</span>
+            </a>
+            <a class="flex items-center space-x-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:text-orange-50 transition-all active:scale-95 duration-200 transition-all"
+                href="lista-estoque.html">
+                <span class="material-symbols-outlined">inventory_2</span>
+                <span class="text-sm">Estoque</span>
+            </a>
+            <a class="flex items-center space-x-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:text-orange-50 transition-all active:scale-95 duration-200 transition-all"
+                href="painel-financeiro.html">
+                <span class="material-symbols-outlined">payments</span>
+                <span class="text-sm font-medium">Financeiro</span>
+            </a>
+            <a class="flex items-center space-x-3 px-4 py-3 rounded-xl text-orange-600 dark:text-orange-400 border-r-4 border-orange-600 dark:border-orange-500 bg-orange-50/50 dark:bg-orange-950/10 font-bold active:scale-95 duration-200 transition-all"
+                href="painel-configuracao.html">
+                <span class="material-symbols-outlined">settings</span>
+                <span class="text-sm font-bold">Configurações</span>
+            </a>
+        </nav>
+        <div class="px-4 mt-auto">
+            <div class="p-4 rounded-xl bg-surface-container-low flex items-center space-x-3 mb-2">
+                <img class="w-10 h-10 rounded-full object-cover"
+                    data-alt="professional male workshop manager portrait"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhPLBS7s1ZuQnGXymXiuBJ9868nnRddz-gP3XAOrY68Jq9o0KixW-BUonODLYl3srJtQGdWkN5_hv6A6IF9R7-3N7IIY07p3v3-Hk3h336t834MZYCX-4YCqmBz9mCX8NOYAAALVVu-cIt2MMISgYj5kzscUNzzN_lS_KLNdiehWiGTqxXxzj1CPXQvQ7LDF2RhdjSvTpng9INFVDk-nm_joxt429ETmCldwckpOU2lyL4OxGroqrKIqhzHc42pIxKWLdFaqgNpd8" />
+                <div>
+                    <p class="text-xs font-bold text-on-surface user-name-display">Usuário</p>
+                    <p class="text-[10px] text-slate-500">Workshop Owner</p>
+                </div>
+            </div>
+            <a id="logout-btn"
+                class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-red-500 hover:bg-red-50 transition-all mb-4"
+                href="#">
+                <span class="material-symbols-outlined">logout</span>
+                <span class="text-sm font-bold">Sair</span>
+            </a>
+        </div>
+    </aside>
+    </aside>
+    <!-- Main Content Shell -->
+    <main class="lg:ml-64 mt-28 p-8 min-h-screen">
+        <!-- TopNavBar Anchor -->
+    <header
+        class="fixed top-0 right-0 w-full lg:w-[calc(100%-16rem)] z-40 z-40 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl border-b border-orange-100/15 dark:border-slate-800/50 shadow-sm">
+        <div class="flex justify-between items-center px-8 h-16 w-full">
+            <div class="flex items-center gap-4 flex-1 text-primary">
+                <h2 class="text-lg font-bold text-slate-900 dark:text-slate-50 mr-8 workshop-name-display">Configurações</h2>
+            </div>
+            <div class="flex items-center gap-6">
+                <button class="text-slate-500 hover:text-orange-500 transition-all active:scale-95 duration-200">
+                    <span class="material-symbols-outlined">notifications</span>
+                </button>
+                <button class="text-slate-500 hover:text-orange-500 transition-all active:scale-95 duration-200">
+                    <span class="material-symbols-outlined">help_outline</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Settings Module Sub-navigation -->
+        <nav class="flex px-8 border-t border-orange-100/5">
+            <a href="painel-configuracao.html"
+                class="px-4 py-3 text-xs font-medium text-slate-500 hover:text-primary transition-colors">Perfil da Oficina</a>
+            <a href="usuario-permisoes-configuracao.html"
+                class="px-4 py-3 text-xs font-bold border-b-2 border-primary text-primary">Usuários e Permissões</a>
+            <a href="equipe-configuracao.html"
+                class="px-4 py-3 text-xs font-medium text-slate-500 hover:text-primary transition-colors">Gerenciar Equipe</a>
+            <a href="seguranca-configuracao.html"
+                class="px-4 py-3 text-xs font-medium text-slate-500 hover:text-primary transition-colors">Segurança</a>
+            <a href="preferencias-sistema.html"
+                class="px-4 py-3 text-xs font-medium text-slate-500 hover:text-primary transition-colors">Preferências</a>
+        </nav>
+    </header>
+        <!-- Content Canvas -->
+        <section class="pt-24 px-8 pb-12 max-w-7xl mx-auto">
+            <div class="flex justify-between items-end mb-8">
+                <div>
+                    <h2 class="text-3xl font-extrabold tracking-tight text-on-surface">Usuários e Permissões</h2>
+                    <p class="text-on-surface-variant mt-1">Gerencie quem tem acesso ao AutoFlow e seus níveis de
+                        autoridade.</p>
+                </div>
+                <button
+                    class="gradient-btn text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 shadow-xl shadow-primary/20 active:scale-95 transition-transform">
+                    <span class="material-symbols-outlined" data-icon="person_add">person_add</span>
+                    + Novo Usuário
+                </button>
+            </div>
+            <div class="grid grid-cols-1 gap-8">
+                <!-- User Table Section -->
+                <div class="bg-surface-container-low rounded-xl overflow-hidden shadow-sm">
+                    <div class="overflow-x-auto">
+                        <table class="w-full border-collapse">
+                            <thead>
+                                <tr class="bg-surface-container text-left">
+                                    <th
+                                        class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-on-surface-variant">
+                                        Usuário</th>
+                                    <th
+                                        class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-on-surface-variant">
+                                        Cargo / Role</th>
+                                    <th
+                                        class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-on-surface-variant">
+                                        Status</th>
+                                    <th
+                                        class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-on-surface-variant text-right">
+                                        Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-surface-container" id="users-list">
+                                <tr>
+                                    <td colspan="4" class="px-6 py-20 text-center text-slate-400 text-xs italic">
+                                        Nenhum usuário cadastrado.
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- Permission Configuration Card (Simulating Active Context/Modal Content) -->
+                <div class="bg-surface-container-lowest rounded-xl shadow-xl overflow-hidden ghost-border">
+                    <div class="p-8 border-b border-surface-container-low flex justify-between items-center bg-white">
+                        <div>
+                            <span class="text-xs font-black text-primary uppercase tracking-[0.2em]">Configuração de
+                                Nível</span>
+                            <h3 class="text-2xl font-bold text-on-surface">Definir Permissões Granulares</h3>
+                        </div>
+                        <div class="flex gap-3">
+                            <button
+                                class="px-4 py-2 rounded-lg font-bold text-secondary text-sm hover:bg-surface-container-low transition-colors">Cancelar</button>
+                            <button
+                                class="px-6 py-2 rounded-lg font-bold gradient-btn text-white text-sm shadow-md active:scale-95 transition-transform">Salvar
+                                Alterações</button>
+                        </div>
+                    </div>
+                    <div class="p-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 bg-surface-container-low/30">
+                        <!-- Permission Item -->
+                        <div
+                            class="bg-white p-6 rounded-xl ghost-border flex items-start gap-4 hover:shadow-md transition-shadow">
+                            <div class="p-3 rounded-lg bg-orange-50 text-orange-600">
+                                <span class="material-symbols-outlined" data-icon="group">group</span>
+                            </div>
+                            <div class="flex-1">
+                                <div class="flex justify-between items-center mb-1">
+                                    <h4 class="font-bold text-on-surface">Acesso a Clientes</h4>
+                                    <input checked=""
+                                        class="h-5 w-5 rounded border-outline-variant text-primary focus:ring-primary-container"
+                                        type="checkbox" />
+                                </div>
+                                <p class="text-xs text-on-surface-variant leading-relaxed">Visualizar histórico, dados
+                                    de contato e veículos vinculados.</p>
+                            </div>
+                        </div>
+                        <!-- Permission Item -->
+                        <div
+                            class="bg-white p-6 rounded-xl ghost-border flex items-start gap-4 hover:shadow-md transition-shadow">
+                            <div class="p-3 rounded-lg bg-blue-50 text-tertiary">
+                                <span class="material-symbols-outlined" data-icon="add_notes">add_notes</span>
+                            </div>
+                            <div class="flex-1">
+                                <div class="flex justify-between items-center mb-1">
+                                    <h4 class="font-bold text-on-surface">Criar Ordens</h4>
+                                    <input checked=""
+                                        class="h-5 w-5 rounded border-outline-variant text-primary focus:ring-primary-container"
+                                        type="checkbox" />
+                                </div>
+                                <p class="text-xs text-on-surface-variant leading-relaxed">Gerar novos orçamentos e
+                                    ordens de serviço iniciais.</p>
+                            </div>
+                        </div>
+                        <!-- Permission Item -->
+                        <div
+                            class="bg-white p-6 rounded-xl ghost-border flex items-start gap-4 hover:shadow-md transition-shadow">
+                            <div class="p-3 rounded-lg bg-indigo-50 text-indigo-600">
+                                <span class="material-symbols-outlined" data-icon="edit_note">edit_note</span>
+                            </div>
+                            <div class="flex-1">
+                                <div class="flex justify-between items-center mb-1">
+                                    <h4 class="font-bold text-on-surface">Editar Ordens</h4>
+                                    <input
+                                        class="h-5 w-5 rounded border-outline-variant text-primary focus:ring-primary-container"
+                                        type="checkbox" />
+                                </div>
+                                <p class="text-xs text-on-surface-variant leading-relaxed">Alterar status, peças e
+                                    valores de serviços em andamento.</p>
+                            </div>
+                        </div>
+                        <!-- Permission Item -->
+                        <div
+                            class="bg-white p-6 rounded-xl ghost-border flex items-start gap-4 hover:shadow-md transition-shadow">
+                            <div class="p-3 rounded-lg bg-emerald-50 text-emerald-600">
+                                <span class="material-symbols-outlined" data-icon="payments">payments</span>
+                            </div>
+                            <div class="flex-1">
+                                <div class="flex justify-between items-center mb-1">
+                                    <h4 class="font-bold text-on-surface">Financeiro</h4>
+                                    <input
+                                        class="h-5 w-5 rounded border-outline-variant text-primary focus:ring-primary-container"
+                                        type="checkbox" />
+                                </div>
+                                <p class="text-xs text-on-surface-variant leading-relaxed">Acesso a fluxo de caixa,
+                                    pagamentos e relatórios de lucro.</p>
+                            </div>
+                        </div>
+                        <!-- Permission Item -->
+                        <div
+                            class="bg-white p-6 rounded-xl ghost-border flex items-start gap-4 hover:shadow-md transition-shadow">
+                            <div class="p-3 rounded-lg bg-amber-50 text-amber-600">
+                                <span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+                            </div>
+                            <div class="flex-1">
+                                <div class="flex justify-between items-center mb-1">
+                                    <h4 class="font-bold text-on-surface">Estoque</h4>
+                                    <input checked=""
+                                        class="h-5 w-5 rounded border-outline-variant text-primary focus:ring-primary-container"
+                                        type="checkbox" />
+                                </div>
+                                <p class="text-xs text-on-surface-variant leading-relaxed">Gerenciar entrada de peças e
+                                    controle de inventário.</p>
+                            </div>
+                        </div>
+                        <!-- Permission Item -->
+                        <div
+                            class="bg-white p-6 rounded-xl ghost-border flex items-start gap-4 hover:shadow-md transition-shadow">
+                            <div class="p-3 rounded-lg bg-slate-100 text-slate-700">
+                                <span class="material-symbols-outlined"
+                                    data-icon="settings_suggest">settings_suggest</span>
+                            </div>
+                            <div class="flex-1">
+                                <div class="flex justify-between items-center mb-1">
+                                    <h4 class="font-bold text-on-surface">Configurações</h4>
+                                    <input
+                                        class="h-5 w-5 rounded border-outline-variant text-primary focus:ring-primary-container"
+                                        type="checkbox" />
+                                </div>
+                                <p class="text-xs text-on-surface-variant leading-relaxed">Alterar dados da empresa e
+                                    permissões de outros usuários.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <!-- Bottom Navigation for Mobile -->
+    <nav
+        class="md:hidden fixed bottom-0 left-0 right-0 glass-panel border-t border-surface-container flex justify-around items-center h-16 px-4 z-50">
+        <a class="flex flex-col items-center text-slate-500" href="#">
+            <span class="material-symbols-outlined" data-icon="home">home</span>
+            <span class="text-[10px] font-bold">Home</span>
+        </a>
+        <a class="flex flex-col items-center text-slate-500" href="#">
+            <span class="material-symbols-outlined" data-icon="build">build</span>
+            <span class="text-[10px] font-bold">Orders</span>
+        </a>
+        <a class="flex flex-col items-center text-orange-600" href="#">
+            <span class="material-symbols-outlined" data-icon="settings">settings</span>
+            <span class="text-[10px] font-bold">Settings</span>
+        </a>
+        <div class="h-8 w-8 rounded-full overflow-hidden border-2 border-primary">
+            <img class="w-full h-full object-cover" data-alt="user avatar in bottom navigation bar"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuA7EbqcVFA6ewrhV4BFkrQiFgXx_a2QOUKibp6e5j6Q0CZ5k1g0CqohvqqjNq8CzoyLO5O90WEUSGZtdVsE8nBay1KniwiSv9s_pQ-ym1yYP0mwz9UygrmkEtGfNBTSQvo1LGTIBXrMZDjkW3Y8Qafi73Zb-q2n48_FP3wjt7Ey3C1JHhYVEw6pIrxq03JQeoEgpjI-f0yinJ4QlXEju2c3LW4M1ANflL2fhseZem_a9lAaCx843xdNjeVl_dS5BBKnzGG2WInKOcU" />
+        </div>
+    </nav>
+</body>
+
+</html>

@@ -1,0 +1,242 @@
+﻿<!DOCTYPE html>
+<html class="light" lang="pt-BR">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>AutoFlow - Gestão de Comissões</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet">
+
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#a04100",
+                        "tertiary-fixed": "#d0e4ff",
+                        "surface-container-low": "#f2f3ff",
+                        "secondary-fixed-dim": "#b9c7df",
+                        "on-error": "#ffffff",
+                        "primary-container": "#ff6b00",
+                        "outline": "#8e7164",
+                        "on-tertiary-fixed-variant": "#00497b",
+                        "secondary-container": "#d5e3fc",
+                        "primary-fixed": "#ffdbcc",
+                        "on-tertiary": "#ffffff",
+                        "tertiary": "#0062a1",
+                        "on-tertiary-fixed": "#001d35",
+                        "primary-fixed-dim": "#ffb693",
+                        "on-primary": "#ffffff",
+                        "inverse-surface": "#283044",
+                        "surface-container-highest": "#dae2fd",
+                        "surface-tint": "#a04100",
+                        "outline-variant": "#e2bfb0",
+                        "tertiary-fixed-dim": "#9ccaff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-fixed": "#351000",
+                        "surface-variant": "#dae2fd",
+                        "on-surface": "#131b2e",
+                        "surface-dim": "#d2d9f4",
+                        "on-secondary-container": "#57657a",
+                        "surface": "#faf8ff",
+                        "tertiary-container": "#059eff",
+                        "on-tertiary-container": "#003357",
+                        "on-error-container": "#93000a",
+                        "secondary": "#515f74",
+                        "inverse-primary": "#ffb693",
+                        "error": "#ba1a1a",
+                        "inverse-on-surface": "#eef0ff",
+                        "surface-container-high": "#e2e7ff",
+                        "on-primary-fixed-variant": "#7a3000",
+                        "error-container": "#ffdad6",
+                        "secondary-fixed": "#d5e3fc",
+                        "on-surface-variant": "#5a4136",
+                        "on-primary-container": "#572000",
+                        "on-background": "#131b2e",
+                        "on-secondary-fixed": "#0d1c2e",
+                        "surface-bright": "#faf8ff",
+                        "background": "#faf8ff",
+                        "surface-container": "#eaedff",
+                        "on-secondary-fixed-variant": "#3a485b",
+                        "on-secondary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #faf8ff;
+        }
+    </style>
+</head>
+
+<body class="bg-surface text-on-surface min-h-screen">
+
+    <!-- Sidebar Replicated from Main App -->
+    <aside
+        class="h-screen w-64 fixed left-0 top-0 -translate-x-full lg:translate-x-0 transition-transform duration-300 z-[100] sidebar-mobile bg-slate-50 flex flex-col py-6 space-y-2 z-50 overflow-y-auto border-r border-orange-100/15">
+        <div class="px-6 mb-8">
+            <h1 class="text-xl font-bold text-orange-600 workshop-name-display">AutoFlow</h1>
+            <p class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Mechanical Excellence</p>
+        </div>
+
+        <nav class="flex-1 px-4 space-y-1">
+            <a class="flex items-center space-x-3 px-4 py-3 rounded-xl text-slate-600 hover:text-orange-500 transition-all active:scale-95"
+                href="home.html">
+                <span class="material-symbols-outlined">home</span>
+                <span class="text-sm">Home</span>
+            </a>
+            <a class="flex items-center space-x-3 px-4 py-3 rounded-xl text-slate-600 hover:text-orange-500 transition-all active:scale-95"
+                href="lista-clientes.html">
+                <span class="material-symbols-outlined">group</span>
+                <span class="text-sm">Clientes</span>
+            </a>
+            <a class="flex items-center space-x-3 px-4 py-3 rounded-xl text-slate-600 hover:text-orange-500 transition-all active:scale-95"
+                href="lista-ordem.html">
+                <span class="material-symbols-outlined">description</span>
+                <span class="text-sm">Ordens de Serviço</span>
+            </a>
+            <a class="flex items-center space-x-3 px-4 py-3 rounded-xl text-slate-600 hover:text-orange-500 transition-all active:scale-95"
+                href="agendamento.html">
+                <span class="material-symbols-outlined">calendar_today</span>
+                <span class="text-sm">Agendamento</span>
+            </a>
+            <a class="flex items-center space-x-3 px-4 py-3 rounded-xl text-slate-600 hover:text-orange-500 transition-all active:scale-95"
+                href="lista-estoque.html">
+                <span class="material-symbols-outlined">inventory_2</span>
+                <span class="text-sm">Estoque</span>
+            </a>
+            <a class="flex items-center space-x-3 px-4 py-3 rounded-xl text-orange-600 border-r-4 border-orange-600 bg-orange-50/50 font-bold active:scale-95 transition-all"
+                href="painel-financeiro.html">
+                <span class="material-symbols-outlined">payments</span>
+                <span class="text-sm font-bold">Financeiro</span>
+            </a>
+            <a class="flex items-center space-x-3 px-4 py-3 rounded-xl text-slate-600 hover:text-orange-500 transition-all active:scale-95"
+                href="painel-configuracao.html">
+                <span class="material-symbols-outlined">settings</span>
+                <span class="text-sm font-medium">Configurações</span>
+            </a>
+        </nav>
+        <div class="px-4 mt-auto">
+            <div class="p-4 rounded-xl bg-surface-container-low flex items-center space-x-3 mb-2">
+                <img class="w-10 h-10 rounded-full object-cover" data-alt="user portrait"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhPLBS7s1ZuQnGXymXiuBJ9868nnRddz-gP3XAOrY68Jq9o0KixW-BUonODLYl3srJtQGdWkN5_hv6A6IF9R7-3N7IIY07p3v3-Hk3h336t834MZYCX-4YCqmBz9mCX8NOYAAALVVu-cIt2MMISgYj5kzscUNzzN_lS_KLNdiehWiGTqxXxzj1CPXQvQ7LDF2RhdjSvTpng9INFVDk-nm_joxt429ETmCldwckpOU2lyL4OxGroqrKIqhzHc42pIxKWLdFaqgNpd8" />
+                <div>
+                    <p class="text-xs font-bold text-on-surface user-name-display">Usuário</p>
+                    <p class="text-[10px] text-slate-500">Membro da Oficina</p>
+                </div>
+            </div>
+            <a id="logout-btn"
+                class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-red-500 hover:bg-red-50 transition-all mb-4"
+                href="#">
+                <span class="material-symbols-outlined">logout</span>
+                <span class="text-sm font-bold">Sair</span>
+            </a>
+        </div>
+    </aside>
+
+    <header class="ml-64 bg-surface border-b border-orange-100/10 sticky top-0 z-40 backdrop-blur-md bg-white/80">
+        <div class="px-8 py-6 flex justify-between items-center">
+            <div class="flex items-center gap-4">
+                <h1 class="text-2xl font-black text-on-surface tracking-tight">Gestão de Comissões</h1>
+                <span class="material-symbols-outlined text-slate-200">chevron_right</span>
+                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Financeiro</p>
+            </div>
+            <div class="flex items-center gap-4">
+                <button onclick="Financial.initCommissionsPage()" class="p-2 text-slate-400 hover:text-primary transition-colors flex items-center gap-2 text-xs font-bold">
+                    <span class="material-symbols-outlined text-lg">refresh</span>
+                    Atualizar
+                </button>
+            </div>
+        </div>
+
+        <!-- Financial Module Sub-navigation -->
+        <nav class="flex px-8 border-t border-orange-100/5">
+            <a href="painel-financeiro.html"
+                class="px-4 py-3 text-xs font-medium text-slate-500 hover:text-primary transition-colors">Resumo Dashboard</a>
+            <a href="gestao-receita-financeiro.html"
+                class="px-4 py-3 text-xs font-medium text-slate-500 hover:text-primary transition-colors">Gestão de Receitas</a>
+            <a href="gestao-despesa-financeiro.html"
+                class="px-4 py-3 text-xs font-medium text-slate-500 hover:text-primary transition-colors">Gestão de Despesas</a>
+            <a href="gestao-comissoes-financeiro.html"
+                class="px-4 py-3 text-xs font-bold border-b-2 border-primary text-primary">Comissões</a>
+            <a href="fluxo-caixa-financeiro.html"
+                class="px-4 py-3 text-xs font-medium text-slate-500 hover:text-primary transition-colors">Fluxo de Caixa</a>
+        </nav>
+    </header>
+
+    <main class="lg:ml-64 p-8">
+        <!-- Page Description -->
+        <div class="mb-10 p-6 bg-primary/5 border border-primary/10 rounded-2xl flex items-center gap-6">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-primary-container text-white flex items-center justify-center shadow-lg shadow-primary/20">
+                <span class="material-symbols-outlined">payments</span>
+            </div>
+            <div>
+                <h2 class="text-sm font-black text-on-surface uppercase tracking-tight">Pagamento de Comissários</h2>
+                <p class="text-xs text-slate-500 mt-0.5">As comissões aparecem aqui somente após a **OS estar Concluída** e o **Pagamento do Cliente ser registrado** como "Pago" no financeiro.</p>
+            </div>
+        </div>
+
+        <!-- Main Grid for Employee Commission Cards -->
+        <div id="employee-commissions-grid" class="grid grid-cols-1 gap-8">
+            <!-- Loading State -->
+            <div class="col-span-full py-32 text-center text-slate-400">
+                <div class="animate-spin mb-4 inline-block">
+                    <span class="material-symbols-outlined text-4xl text-primary/30">autorenew</span>
+                </div>
+                <p class="text-[10px] font-bold uppercase tracking-widest">Consultando banco de dados...</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bulk Actions Bar para Comissões -->
+    <div id="commission-bulk-bar"
+        class="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 bg-slate-900 text-white px-8 py-4 rounded-2xl shadow-2xl flex items-center gap-8 translate-y-32 transition-all duration-500 border border-white/10 backdrop-blur-xl">
+        <div class="flex items-center gap-3">
+            <span id="commission-selected-count" class="bg-primary px-2 py-0.5 rounded-lg text-xs font-black text-white">0</span>
+            <p class="text-sm font-bold uppercase tracking-widest text-white/70">Selecionados</p>
+        </div>
+        <div class="h-6 w-[1px] bg-white/10"></div>
+        <div class="flex items-center gap-4">
+            <button onclick="bulkPayCommissions()" class="flex items-center gap-2 hover:text-green-400 transition-colors">
+                <span class="material-symbols-outlined text-xl">payments</span>
+                <span class="text-[10px] font-black uppercase tracking-tighter">Pagar Selecionados</span>
+            </button>
+        </div>
+        <button onclick="clearCommissionSelection()" class="text-white/40 hover:text-white transition-colors">
+            <span class="material-symbols-outlined">close</span>
+        </button>
+    </div>
+
+    <!-- Dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="navigation.js"></script>
+    <script src="financial.js"></script>
+</body>
+
+</html>
+

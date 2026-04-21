@@ -1,0 +1,225 @@
+﻿<!DOCTYPE html>
+
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>AutoFlow | Recuperação de Senha</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error": "#ba1a1a",
+                        "inverse-primary": "#ffb693",
+                        "surface-container-highest": "#dae2fd",
+                        "tertiary-fixed": "#d0e4ff",
+                        "inverse-on-surface": "#eef0ff",
+                        "on-surface-variant": "#5a4136",
+                        "on-secondary": "#ffffff",
+                        "on-background": "#131b2e",
+                        "error-container": "#ffdad6",
+                        "surface": "#faf8ff",
+                        "on-error": "#ffffff",
+                        "secondary-fixed-dim": "#b9c7df",
+                        "on-primary": "#ffffff",
+                        "background": "#faf8ff",
+                        "surface-tint": "#a04100",
+                        "on-secondary-container": "#57657a",
+                        "on-primary-fixed-variant": "#7a3000",
+                        "surface-container": "#eaedff",
+                        "secondary-fixed": "#d5e3fc",
+                        "surface-bright": "#faf8ff",
+                        "on-tertiary-fixed-variant": "#00497b",
+                        "primary-fixed": "#ffdbcc",
+                        "on-secondary-fixed": "#0d1c2e",
+                        "on-primary-container": "#572000",
+                        "on-error-container": "#93000a",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-fixed-variant": "#3a485b",
+                        "tertiary-fixed-dim": "#9ccaff",
+                        "secondary-container": "#d5e3fc",
+                        "outline-variant": "#e2bfb0",
+                        "tertiary": "#0062a1",
+                        "primary-fixed-dim": "#ffb693",
+                        "secondary": "#515f74",
+                        "on-surface": "#131b2e",
+                        "surface-container-low": "#f2f3ff",
+                        "primary-container": "#ff6b00",
+                        "inverse-surface": "#283044",
+                        "tertiary-container": "#059eff",
+                        "on-tertiary-fixed": "#001d35",
+                        "on-tertiary": "#ffffff",
+                        "primary": "#a04100",
+                        "surface-dim": "#d2d9f4",
+                        "on-tertiary-container": "#003357",
+                        "outline": "#8e7164",
+                        "surface-variant": "#dae2fd",
+                        "surface-container-high": "#e2e7ff",
+                        "on-primary-fixed": "#351000"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .kinetic-gradient {
+            background: linear-gradient(135deg, #a04100 0%, #ff6b00 100%);
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+        }
+    </style>
+</head>
+
+<body class="bg-surface font-body text-on-surface antialiased min-h-screen flex flex-col">
+    <!-- TopNavBar (Shared Component) -->
+    <header
+        class="bg-[#faf8ff]/80 backdrop-blur-md dark:bg-slate-950/80 font-inter antialiased text-sm font-medium docked full-width top-0 sticky z-50">
+        <div class="flex justify-between items-center w-full px-8 py-4 max-w-7xl mx-auto">
+            <div class="text-2xl font-black italic tracking-tighter text-[#131b2e] dark:text-slate-50">AutoFlow</div>
+            <nav class="hidden md:flex items-center gap-8">
+                <a class="text-[#57657a] hover:text-[#131b2e] dark:text-slate-400 dark:hover:text-slate-100 hover:opacity-80 transition-opacity"
+                    href="#">Entrar</a>
+                <a class="text-[#57657a] hover:text-[#131b2e] dark:text-slate-400 dark:hover:text-slate-100 hover:opacity-80 transition-opacity"
+                    href="#">Cadastrar</a>
+                <a class="text-[#57657a] hover:text-[#131b2e] dark:text-slate-400 dark:hover:text-slate-100 hover:opacity-80 transition-opacity"
+                    href="#">Suporte</a>
+            </nav>
+            <div class="flex items-center gap-4">
+                <button class="text-[#ff6b00] font-medium hover:opacity-80 transition-opacity px-4 py-2">Ajuda</button>
+            </div>
+        </div>
+    </header>
+    <main class="flex-grow flex items-center justify-center px-6 py-12">
+        <div class="w-full max-w-[480px]">
+            <!-- Hero Aesthetic Element -->
+            <div class="mb-12 text-center">
+                <div
+                    class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-surface-container-low mb-6">
+                    <span class="material-symbols-outlined text-primary-container text-3xl">key</span>
+                </div>
+                <h1 class="text-3xl md:text-4xl font-black tracking-tight text-on-surface mb-3 uppercase italic">
+                    Esqueceu a senha?</h1>
+                <p class="text-on-secondary-container text-md font-medium leading-relaxed max-w-[320px] mx-auto">
+                    Não se preocupe. Digite seu e-mail e enviaremos instruções de recuperação.
+                </p>
+            </div>
+            <!-- Focused Card -->
+            <section
+                class="surface-container-lowest glass-panel rounded-xl p-8 md:p-10 shadow-[0_8px_32px_rgba(19,27,46,0.06)] relative overflow-hidden">
+                <!-- Visual Accent -->
+                <div class="absolute top-0 left-0 w-full h-1 kinetic-gradient opacity-80"></div>
+                <form action="#" class="space-y-8">
+                    <div class="space-y-2">
+                        <label class="text-xs font-bold uppercase tracking-widest text-on-secondary-container px-1"
+                            for="email">Endereço de E-mail</label>
+                        <div class="relative">
+                            <input
+                                class="w-full bg-surface-container-lowest border border-outline-variant/15 rounded-xl px-4 py-4 text-on-surface placeholder:text-on-secondary-container/40 focus:ring-4 focus:ring-primary-container/10 focus:border-primary-container outline-none transition-all duration-200 font-medium"
+                                id="email" name="email" placeholder="exemplo@autoflow.com.br" required=""
+                                type="email" />
+                            <span
+                                class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-on-secondary-container/30">mail</span>
+                        </div>
+                    </div>
+                    <button
+                        class="w-full kinetic-gradient text-on-primary font-bold text-sm uppercase tracking-widest py-5 rounded-xl shadow-lg shadow-primary-container/20 hover:scale-[1.01] active:scale-[0.98] transition-all duration-150 flex items-center justify-center gap-3"
+                        type="submit">
+                        Enviar link de recuperação
+                        <span class="material-symbols-outlined text-lg">arrow_forward</span>
+                    </button>
+                </form>
+                <div class="mt-8 text-center">
+                    <a class="text-tertiary text-xs font-bold uppercase tracking-widest hover:opacity-70 transition-opacity flex items-center justify-center gap-2"
+                        href="#">
+                        <span class="material-symbols-outlined text-sm">arrow_back</span>
+                        Voltar para o Login
+                    </a>
+                </div>
+            </section>
+            <!-- Success State Mockup (Hidden by default but ready for logic) -->
+            <section class="mt-12 hidden">
+                <div
+                    class="bg-tertiary-container/10 border border-tertiary-container/20 rounded-xl p-6 flex gap-4 items-start">
+                    <div class="bg-tertiary rounded-full p-2 text-on-tertiary">
+                        <span class="material-symbols-outlined text-sm"
+                            style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-tertiary text-sm uppercase tracking-wide mb-1">E-mail enviado!</h4>
+                        <p class="text-on-tertiary-container text-xs leading-normal">
+                            Verifique sua caixa de entrada em exemplo@autoflow.com.br. Não esqueça de checar a pasta de
+                            spam.
+                        </p>
+                    </div>
+                </div>
+            </section>
+            <!-- Editorial Detail -->
+            <div class="mt-12 grid grid-cols-2 gap-4">
+                <div class="bg-surface-container-low p-4 rounded-xl">
+                    <p class="text-[10px] font-bold text-on-secondary-container uppercase tracking-tighter mb-1">Status
+                        do Sistema</p>
+                    <div class="flex items-center gap-2">
+                        <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                        <span class="text-xs font-medium text-on-surface">Operacional</span>
+                    </div>
+                </div>
+                <div class="bg-surface-container-low p-4 rounded-xl">
+                    <p class="text-[10px] font-bold text-on-secondary-container uppercase tracking-tighter mb-1">Tempo
+                        de Resposta</p>
+                    <div class="flex items-center gap-2 text-xs font-medium text-on-surface">
+                        <span class="material-symbols-outlined text-sm">speed</span>
+                        <span>~2 min</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- Footer (Shared Component) -->
+    <footer
+        class="bg-[#faf8ff] dark:bg-slate-950 font-inter text-xs uppercase tracking-widest full-width py-12 border-t border-[#e2bfb0]/15 flat no-shadows mt-auto">
+        <div class="flex flex-col md:flex-row justify-between items-center px-12 gap-6 max-w-7xl mx-auto w-full">
+            <div class="font-bold text-[#131b2e] dark:text-slate-200">AutoFlow</div>
+            <div class="text-[#57657a] text-center">© 2024 AutoFlow. Precisão em cada movimento.</div>
+            <div class="flex gap-8">
+                <a class="text-[#57657a] hover:text-[#ff6b00] transition-colors opacity-100 hover:opacity-70"
+                    href="#">Termos</a>
+                <a class="text-[#57657a] hover:text-[#ff6b00] transition-colors opacity-100 hover:opacity-70"
+                    href="#">Privacidade</a>
+                <a class="text-[#57657a] hover:text-[#ff6b00] transition-colors opacity-100 hover:opacity-70"
+                    href="#">Documentação</a>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>

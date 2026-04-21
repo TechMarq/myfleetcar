@@ -1,0 +1,481 @@
+﻿<!DOCTYPE html>
+
+<html class="light" lang="pt-br">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>AutoFlow | Perfil do Cliente</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;600;700;800;900&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+        }
+
+        .kinetic-gradient {
+            background: linear-gradient(135deg, #a04100 0%, #ff6b00 100%);
+        }
+    </style>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-fixed": "#001d35",
+                        "tertiary": "#0062a1",
+                        "primary-fixed-dim": "#ffb693",
+                        "on-primary": "#ffffff",
+                        "inverse-surface": "#283044",
+                        "surface-container-highest": "#dae2fd",
+                        "tertiary-fixed": "#d0e4ff",
+                        "primary": "#a04100",
+                        "outline": "#8e7164",
+                        "on-tertiary-fixed-variant": "#00497b",
+                        "primary-container": "#ff6b00",
+                        "surface-container-low": "#f2f3ff",
+                        "secondary-fixed-dim": "#b9c7df",
+                        "on-error": "#ffffff",
+                        "primary-fixed": "#ffdbcc",
+                        "secondary-container": "#d5e3fc",
+                        "inverse-on-surface": "#eef0ff",
+                        "error": "#ba1a1a",
+                        "secondary": "#515f74",
+                        "inverse-primary": "#ffb693",
+                        "on-tertiary-container": "#003357",
+                        "on-error-container": "#93000a",
+                        "error-container": "#ffdad6",
+                        "surface-container-high": "#e2e7ff",
+                        "on-primary-fixed-variant": "#7a3000",
+                        "surface-bright": "#faf8ff",
+                        "on-secondary-fixed": "#0d1c2e",
+                        "on-surface-variant": "#5a4136",
+                        "on-primary-container": "#572000",
+                        "on-background": "#131b2e",
+                        "secondary-fixed": "#d5e3fc",
+                        "surface-container": "#eaedff",
+                        "on-secondary-fixed-variant": "#3a485b",
+                        "on-secondary": "#ffffff",
+                        "background": "#faf8ff",
+                        "outline-variant": "#e2bfb0",
+                        "surface-tint": "#a04100",
+                        "surface-variant": "#dae2fd",
+                        "on-primary-fixed": "#351000",
+                        "tertiary-fixed-dim": "#9ccaff",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-dim": "#d2d9f4",
+                        "on-secondary-container": "#57657a",
+                        "on-surface": "#131b2e",
+                        "tertiary-container": "#059eff",
+                        "surface": "#faf8ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-surface text-on-surface antialiased min-h-screen flex overflow-hidden">
+    <!-- Sidebar Navigation -->
+    <aside
+        class="h-screen w-64 fixed left-0 top-0 -translate-x-full lg:translate-x-0 transition-transform duration-300 z-[100] sidebar-mobile bg-slate-50 dark:bg-slate-900 flex flex-col py-6 space-y-2 z-50 overflow-y-auto border-r border-orange-100/15">
+        <div class="px-6 mb-8">
+            <h1 class="text-xl font-bold text-orange-600 workshop-name-display">AutoFlow</h1>
+            <p class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Mechanical Excellence</p>
+        </div>
+
+        <nav class="flex-1 px-4 space-y-1">
+            <a class="flex items-center space-x-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:text-orange-50 transition-all active:scale-95 duration-200 transition-all font-sans"
+                href="home.html">
+                <span class="material-symbols-outlined">home</span>
+                <span class="text-sm">Home</span>
+            </a>
+            <a class="flex items-center space-x-3 px-4 py-3 rounded-xl text-orange-600 dark:text-orange-400 border-r-4 border-orange-600 dark:border-orange-500 bg-orange-50/50 dark:bg-orange-950/10 font-bold active:scale-95 duration-200 transition-all font-sans"
+                href="lista-clientes.html">
+                <span class="material-symbols-outlined">group</span>
+                <span class="text-sm font-bold">Clientes</span>
+            </a>
+            <a class="flex items-center space-x-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:text-orange-50 transition-all active:scale-95 duration-200 transition-all font-sans"
+                href="lista-ordem.html">
+                <span class="material-symbols-outlined">description</span>
+                <span class="text-sm">Ordens de Serviço</span>
+            </a>
+
+            <a class="flex items-center space-x-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:text-orange-50 transition-all active:scale-95 duration-200 transition-all font-sans"
+                href="agendamento.html">
+                <span class="material-symbols-outlined">calendar_today</span>
+                <span class="text-sm">Agendamento</span>
+            </a>
+            <a class="flex items-center space-x-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:text-orange-50 transition-all active:scale-95 duration-200 transition-all font-sans"
+                href="lista-estoque.html">
+                <span class="material-symbols-outlined">inventory_2</span>
+                <span class="text-sm">Estoque</span>
+            </a>
+            <a class="flex items-center space-x-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:text-orange-50 transition-all active:scale-95 duration-200 transition-all font-sans"
+                href="painel-financeiro.html">
+                <span class="material-symbols-outlined">payments</span>
+                <span class="text-sm font-medium">Financeiro</span>
+            </a>
+            <a class="flex items-center space-x-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:text-orange-50 transition-all active:scale-95 duration-200 transition-all font-sans"
+                href="painel-configuracao.html">
+                <span class="material-symbols-outlined">settings</span>
+                <span class="text-sm font-medium">Configurações</span>
+            </a>
+        </nav>
+        <div class="px-4 mt-auto">
+            <div class="p-4 rounded-xl bg-surface-container-low flex items-center space-x-3 mb-2">
+                <img class="w-10 h-10 rounded-full object-cover" data-alt="professional male workshop manager portrait"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhPLBS7s1ZuQnGXymXiuBJ9868nnRddz-gP3XAOrY68Jq9o0KixW-BUonODLYl3srJtQGdWkN5_hv6A6IF9R7-3N7IIY07p3v3-Hk3h336t834MZYCX-4YCqmBz9mCX8NOYAAALVVu-cIt2MMISgYj5kzscUNzzN_lS_KLNdiehWiGTqxXxzj1CPXQvQ7LDF2RhdjSvTpng9INFVDk-nm_joxt429ETmCldwckpOU2lyL4OxGroqrKIqhzHc42pIxKWLdFaqgNpd8" />
+                <div>
+                    <p class="text-xs font-bold text-on-surface user-name-display">Usuário</p>
+                    <p class="text-[10px] text-slate-500">Workshop Owner</p>
+                </div>
+            </div>
+            <a id="logout-btn"
+                class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-red-500 hover:bg-red-50 transition-all mb-4"
+                href="#">
+                <span class="material-symbols-outlined">logout</span>
+                <span class="text-sm font-bold">Sair</span>
+            </a>
+        </div>
+    </aside>
+    <!-- Main Content Canvas -->
+    <main class="flex-1 h-screen overflow-y-auto bg-surface-container-low relative ml-64">
+        <!-- Top Nav Bar (Embedded) -->
+        <header
+            class="fixed top-0 right-0 w-full lg:w-[calc(100%-16rem)] z-40 z-40 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl border-b border-orange-100/15 dark:border-slate-800/50 shadow-sm">
+            <div class="flex justify-between items-center px-8 h-16 w-full">
+                <div class="flex items-center text-primary">
+                    <h2 class="text-lg font-bold text-slate-900 dark:text-slate-50 mr-8 workshop-name-display">Clientes
+                    </h2>
+                </div>
+                <div class="flex items-center gap-4">
+                    <button class="text-slate-500 hover:text-orange-500 transition-all active:scale-95 duration-200">
+                        <span class="material-symbols-outlined">notifications</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Clients Module Sub-navigation -->
+            <nav class="flex px-8 border-t border-orange-100/5">
+                <a href="lista-clientes.html"
+                    class="px-4 py-3 text-xs font-medium text-slate-500 hover:text-primary transition-colors">Lista de
+                    Clientes</a>
+                <a href="cadastro-cliente.html"
+                    class="px-4 py-3 text-xs font-medium text-slate-500 hover:text-primary transition-colors">Novo
+                    Cliente</a>
+                <a href="#" class="px-4 py-3 text-xs font-bold border-b-2 border-primary text-primary">Perfil do
+                    Cliente</a>
+            </nav>
+        </header>
+        <!-- Page Header Content -->
+        <div class="px-8 pt-8 pb-12 mt-28 flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div class="flex items-start gap-6">
+                <div class="relative">
+                    <div
+                        class="w-24 h-24 rounded-2xl bg-slate-200 flex items-center justify-center border-4 border-white shadow-xl">
+                        <span class="material-symbols-outlined text-4xl text-slate-400">person</span>
+                    </div>
+                </div>
+                <div>
+                    <h2 id="client-name-display" class="text-4xl font-extrabold tracking-tight text-on-surface">Cliente
+                    </h2>
+                    <div class="flex items-center gap-4 mt-2">
+                        <span
+                            class="inline-flex items-center gap-1 text-label-md font-bold uppercase tracking-tighter text-slate-500">
+                            <span class="material-symbols-outlined text-[16px]">location_on</span> -
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col items-end gap-3">
+                <div
+                    class="flex items-center gap-4 bg-white px-6 py-3 rounded-xl shadow-sm border border-outline-variant/10">
+                    <div class="text-right">
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none mb-1">
+                            Total Gasto</p>
+                        <p id="client-total-spent" class="text-2xl font-black text-on-surface">R$ 0,00</p>
+                    </div>
+                    <div class="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-slate-300">payments</span>
+                    </div>
+                </div>
+
+                <button
+                    class="kinetic-gradient text-white px-8 py-4 rounded-xl font-bold text-sm tracking-tight flex items-center gap-3 shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all">
+                    <span class="material-symbols-outlined">add_task</span>
+                    Criar Ordem de Serviço
+                </button>
+            </div>
+        </div>
+        <!-- Dashboard Grid -->
+        <div class="px-8 pb-12 grid grid-cols-12 gap-8 items-start">
+            <!-- Left Column (4/12) -->
+            <div class="col-span-12 lg:col-span-4 space-y-8">
+                <!-- Personal Info Card -->
+                <section class="bg-surface-container-lowest rounded-xl p-6 shadow-sm border border-outline-variant/5">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-lg font-bold tracking-tight text-on-surface">Dados Pessoais</h3>
+                        <button 
+                            onclick="const id = new URLSearchParams(window.location.search).get('id'); if(id) window.location.href='cadastro-cliente.html?id='+id;"
+                            class="text-tertiary hover:bg-tertiary-fixed p-1.5 rounded-lg transition-colors" title="Editar Dados">
+                            <span class="material-symbols-outlined text-[20px]">edit</span>
+                        </button>
+                    </div>
+                    <div id="client-personal-info" class="space-y-4">
+                        <div>
+                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">E-mail</p>
+                            <p class="text-sm font-medium text-on-surface">-</p>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Telefone</p>
+                            <p class="text-sm font-medium text-on-surface">-</p>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">CPF</p>
+                            <p class="text-sm font-medium text-on-surface">-</p>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Endereço</p>
+                            <p class="text-sm font-medium text-on-surface">-</p>
+                        </div>
+                    </div>
+
+                </section>
+                <!-- Vehicles List -->
+                <section class="space-y-4">
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center gap-2">
+                            <h3 class="text-lg font-bold tracking-tight text-on-surface">Veículos</h3>
+                            <span id="vehicle-count"
+                                class="bg-orange-100 text-orange-600 text-[10px] font-bold px-2 py-0.5 rounded-full">0</span>
+                        </div>
+                        <button id="btn-add-vehicle"
+                            class="text-tertiary text-xs font-bold uppercase tracking-widest hover:text-primary transition-colors flex items-center gap-1">
+                            <span class="material-symbols-outlined text-sm">add</span>
+                            Adicionar
+                        </button>
+                    </div>
+                    <div id="client-vehicles-list" class="space-y-3">
+                        <div
+                            class="py-10 text-center text-slate-400 text-xs italic bg-white rounded-xl border border-dashed border-slate-200">
+                            Nenhum veículo cadastrado.
+                        </div>
+                    </div>
+                </section>
+
+                </section>
+            </div>
+            <!-- Right Column (8/12) -->
+            <div class="col-span-12 lg:col-span-8 space-y-8">
+                <!-- Performance Indicators Bento -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/5 shadow-sm">
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Total Gasto</p>
+                        <h4 class="text-2xl font-black text-on-surface leading-none">R$ 0</h4>
+                        <div class="mt-4 h-1 bg-slate-100 rounded-full overflow-hidden">
+                            <div class="h-full bg-primary w-0"></div>
+                        </div>
+                    </div>
+                    <div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/5 shadow-sm">
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Visitas</p>
+                        <h4 class="text-2xl font-black text-on-surface leading-none">0 <span
+                                class="text-sm font-medium text-slate-400">Ordens</span></h4>
+                        <div class="mt-4 h-1 bg-slate-100 rounded-full overflow-hidden">
+                            <div class="h-full bg-tertiary w-0"></div>
+                        </div>
+                    </div>
+                    <div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/5 shadow-sm">
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Ticket Médio</p>
+                        <h4 class="text-2xl font-black text-on-surface leading-none text-tertiary">R$ 0</h4>
+                        <div class="mt-4 h-1 bg-slate-100 rounded-full overflow-hidden">
+                            <div class="h-full bg-tertiary-container w-0"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- History Tabs & Table -->
+                <div
+                    class="bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant/5 overflow-hidden">
+                    <div class="flex border-b border-slate-100">
+                        <button class="px-8 py-5 text-sm font-bold text-primary border-b-2 border-primary">Ordens de
+                            Serviço</button>
+                        <button
+                            class="px-8 py-5 text-sm font-bold text-slate-400 hover:text-slate-600 transition-colors">Agendamentos</button>
+                        <button
+                            class="px-8 py-5 text-sm font-bold text-slate-400 hover:text-slate-600 transition-colors">Orçamentos</button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead class="bg-slate-50/50">
+                                <tr>
+                                    <th
+                                        class="px-6 py-4 text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                                        Data</th>
+                                    <th
+                                        class="px-6 py-4 text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                                        Veículo</th>
+                                    <th
+                                        class="px-6 py-4 text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                                        Serviço Principal</th>
+                                    <th
+                                        class="px-6 py-4 text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                                        Status</th>
+                                    <th
+                                        class="px-6 py-4 text-[10px] font-black text-slate-500 uppercase tracking-widest text-right">
+                                        Valor</th>
+                                    <th class="px-6 py-4"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="client-orders-history" class="divide-y divide-slate-100">
+                                <tr>
+                                    <td colspan="6" class="px-6 py-20 text-center text-slate-400 text-xs italic">
+                                        Nenhuma informação disponível.
+                                    </td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+                    </div>
+                    <div class="px-6 py-4 bg-slate-50/50 flex justify-between items-center">
+                        <span id="pagination-info" class="text-xs text-slate-500 font-medium">Mostrando 0 de 0
+                            registros</span>
+
+                        <div class="flex gap-2">
+                            <button
+                                class="w-8 h-8 rounded-lg border border-slate-200 flex items-center justify-center text-slate-400 hover:bg-white transition-colors">
+                                <span class="material-symbols-outlined text-sm">chevron_left</span>
+                            </button>
+                            <button
+                                class="w-8 h-8 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-sm font-bold text-on-surface shadow-sm">
+                                1
+                            </button>
+                            <button
+                                class="w-8 h-8 rounded-lg border border-slate-200 flex items-center justify-center text-slate-400 hover:bg-white transition-colors">
+                                <span class="material-symbols-outlined text-sm">chevron_right</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- Mobile Navigation -->
+    <nav
+        class="md:hidden fixed bottom-0 left-0 right-0 glass-effect border-t border-outline-variant/15 px-6 py-3 flex justify-between items-center z-50">
+        <button class="flex flex-col items-center gap-1 text-slate-400">
+            <span class="material-symbols-outlined">dashboard</span>
+            <span class="text-[10px] font-bold">Início</span>
+        </button>
+        <button class="flex flex-col items-center gap-1 text-primary">
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">group</span>
+            <span class="text-[10px] font-bold">Clientes</span>
+        </button>
+        <button class="flex flex-col items-center gap-1 text-slate-400">
+            <span class="material-symbols-outlined">directions_car</span>
+            <span class="text-[10px] font-bold">Veículos</span>
+        </button>
+        <button class="flex flex-col items-center gap-1 text-slate-400">
+            <span class="material-symbols-outlined">build</span>
+            <span class="text-[10px] font-bold">Serviços</span>
+        </button>
+    </nav>
+
+    <!-- VEHICLE MODAL -->
+    <div id="vehicle-modal" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg p-6">
+            <div class="bg-white rounded-2xl shadow-2xl border border-orange-100 overflow-hidden">
+                <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+                    <h3 class="font-bold text-on-surface">Cadastrar Novo Veículo</h3>
+                    <button id="close-vehicle-modal" class="text-slate-400 hover:text-slate-600 transition-colors">
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
+                </div>
+                <form id="vehicle-form" class="p-6 space-y-4">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="flex flex-col gap-1">
+                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Placa
+                                *</label>
+                            <input type="text" id="v-plate" required placeholder="ABC-1234"
+                                class="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none uppercase font-bold text-sm">
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Marca
+                                *</label>
+                            <input type="text" id="v-brand" required placeholder="Ex: Toyota"
+                                class="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="flex flex-col gap-1">
+                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Modelo
+                                *</label>
+                            <input type="text" id="v-model" required placeholder="Ex: Corolla"
+                                class="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm">
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Ano</label>
+                            <input type="number" id="v-year" placeholder="2024"
+                                class="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="flex flex-col gap-1">
+                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Cor</label>
+                            <input type="text" id="v-color" placeholder="Ex: Prata"
+                                class="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm">
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Chassi
+                                (VIN)</label>
+                            <input type="text" id="v-vin" placeholder="Opcional"
+                                class="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm">
+                        </div>
+                    </div>
+                    <div class="pt-4 flex gap-3">
+                        <button type="button" id="cancel-vehicle"
+                            class="flex-1 py-3 px-4 rounded-xl border border-slate-200 text-slate-500 font-bold text-xs hover:bg-slate-50 transition-all active:scale-95">CANCELAR</button>
+                        <button type="submit"
+                            class="flex-1 py-3 px-4 rounded-xl bg-gradient-to-r from-primary to-primary-container text-white font-bold text-xs shadow-lg shadow-orange-600/20 hover:brightness-110 transition-all active:scale-95 uppercase">Salvar
+                            Veículo</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Supabase & Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="navigation.js"></script>
+    <script src="clients.js"></script>
+    <script src="vehicles.js"></script>
+</body>
+
+</html>

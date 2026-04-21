@@ -1,0 +1,427 @@
+﻿<!DOCTYPE html>
+
+<html class="light" lang="pt-BR">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-highest": "#dae2fd",
+                        "on-primary-fixed": "#351000",
+                        "on-surface-variant": "#5a4136",
+                        "secondary-fixed": "#d5e3fc",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed": "#001d35",
+                        "on-surface": "#131b2e",
+                        "secondary-container": "#d5e3fc",
+                        "tertiary": "#0062a1",
+                        "surface-tint": "#a04100",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-fixed-dim": "#b9c7df",
+                        "on-secondary-container": "#57657a",
+                        "on-primary": "#ffffff",
+                        "secondary": "#515f74",
+                        "on-secondary-fixed-variant": "#3a485b",
+                        "inverse-surface": "#283044",
+                        "surface-dim": "#d2d9f4",
+                        "surface-container-low": "#f2f3ff",
+                        "surface": "#faf8ff",
+                        "primary-fixed-dim": "#ffb693",
+                        "primary": "#a04100",
+                        "on-secondary-fixed": "#0d1c2e",
+                        "on-tertiary": "#ffffff",
+                        "outline-variant": "#e2bfb0",
+                        "primary-fixed": "#ffdbcc",
+                        "on-tertiary-fixed-variant": "#00497b",
+                        "on-tertiary-container": "#003357",
+                        "on-error": "#ffffff",
+                        "on-primary-fixed-variant": "#7a3000",
+                        "on-background": "#131b2e",
+                        "surface-bright": "#faf8ff",
+                        "on-secondary": "#ffffff",
+                        "outline": "#8e7164",
+                        "primary-container": "#ff6b00",
+                        "surface-container-high": "#e2e7ff",
+                        "background": "#faf8ff",
+                        "surface-container": "#eaedff",
+                        "on-error-container": "#93000a",
+                        "tertiary-fixed-dim": "#9ccaff",
+                        "inverse-on-surface": "#eef0ff",
+                        "error-container": "#ffdad6",
+                        "inverse-primary": "#ffb693",
+                        "tertiary-fixed": "#d0e4ff",
+                        "on-primary-container": "#572000",
+                        "tertiary-container": "#059eff",
+                        "surface-variant": "#dae2fd"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+        }
+    </style>
+</head>
+
+<body class="bg-surface text-on-surface antialiased min-h-screen overflow-hidden">
+    <!-- Top Navigation Anchor -->
+    <header
+        class="fixed top-0 right-0 w-full lg:w-[calc(100%-16rem)] z-40 z-40 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl border-b border-orange-100/15 dark:border-slate-800/50 shadow-sm">
+        <div class="flex justify-between items-center px-8 h-16 w-full">
+            <div class="flex items-center text-primary">
+                <h2 class="text-lg font-bold text-slate-900 dark:text-slate-50 mr-8 workshop-name-display">Financeiro</h2>
+            </div>
+            <div class="flex items-center gap-4">
+                <button class="text-slate-500 hover:text-orange-500 transition-all active:scale-95 duration-200">
+                    <span class="material-symbols-outlined">notifications</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Financial Module Sub-navigation -->
+        <nav class="flex px-8 border-t border-orange-100/5">
+            <a href="painel-financeiro.html"
+                class="px-4 py-3 text-xs font-medium text-slate-500 hover:text-primary transition-colors">Visão Geral</a>
+            <a href="gestao-despesa-financeiro.html"
+                class="px-4 py-3 text-xs font-medium text-slate-500 hover:text-primary transition-colors">Despesas</a>
+            <a href="nova-receita-financeiro.html"
+                class="px-4 py-3 text-xs font-bold border-b-2 border-primary text-primary">Contas</a>
+        </nav>
+    </header>
+    <!-- Side Navigation Anchor -->
+    <aside
+        class="h-screen w-64 fixed left-0 top-0 -translate-x-full lg:translate-x-0 transition-transform duration-300 z-[100] sidebar-mobile bg-slate-50 dark:bg-slate-900 flex flex-col py-6 space-y-2 z-50 overflow-y-auto border-r border-orange-100/15">
+        <div class="px-6 mb-8">
+            <h1 class="text-xl font-bold text-orange-600 workshop-name-display">AutoFlow</h1>
+            <p class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Mechanical Excellence</p>
+        </div>
+
+        <nav class="flex-1 px-4 space-y-1">
+            <a class="flex items-center space-x-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:text-orange-50 transition-all active:scale-95 duration-200 transition-all font-sans"
+                href="home.html">
+                <span class="material-symbols-outlined">home</span>
+                <span class="text-sm">Home</span>
+            </a>
+            <a class="flex items-center space-x-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:text-orange-50 transition-all active:scale-95 duration-200 transition-all font-sans"
+                href="lista-clientes.html">
+                <span class="material-symbols-outlined">group</span>
+                <span class="text-sm">Clientes</span>
+            </a>
+            <a class="flex items-center space-x-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:text-orange-50 transition-all active:scale-95 duration-200 transition-all font-sans"
+                href="lista-ordem.html">
+                <span class="material-symbols-outlined">description</span>
+                <span class="text-sm">Ordens de Serviço</span>
+            </a>
+
+            <a class="flex items-center space-x-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:text-orange-50 transition-all active:scale-95 duration-200 transition-all font-sans"
+                href="agendamento.html">
+                <span class="material-symbols-outlined">calendar_today</span>
+                <span class="text-sm">Agendamento</span>
+            </a>
+            <a class="flex items-center space-x-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:text-orange-50 transition-all active:scale-95 duration-200 transition-all font-sans"
+                href="lista-estoque.html">
+                <span class="material-symbols-outlined">inventory_2</span>
+                <span class="text-sm">Estoque</span>
+            </a>
+            <a class="flex items-center space-x-3 px-4 py-3 rounded-xl text-orange-600 dark:text-orange-400 border-r-4 border-orange-600 dark:border-orange-500 bg-orange-50/50 dark:bg-orange-950/10 font-bold active:scale-95 duration-200 transition-all font-sans"
+                href="painel-financeiro.html">
+                <span class="material-symbols-outlined">payments</span>
+                <span class="text-sm font-bold">Financeiro</span>
+            </a>
+            <a class="flex items-center space-x-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:text-orange-50 transition-all active:scale-95 duration-200 transition-all font-sans"
+                href="painel-configuracao.html">
+                <span class="material-symbols-outlined">settings</span>
+                <span class="text-sm font-medium">Configurações</span>
+            </a>
+        </nav>
+        <div class="px-4 mt-auto">
+            <div class="p-4 rounded-xl bg-surface-container-low flex items-center space-x-3 mb-2">
+                <img class="w-10 h-10 rounded-full object-cover"
+                    data-alt="professional male workshop manager portrait"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhPLBS7s1ZuQnGXymXiuBJ9868nnRddz-gP3XAOrY68Jq9o0KixW-BUonODLYl3srJtQGdWkN5_hv6A6IF9R7-3N7IIY07p3v3-Hk3h336t834MZYCX-4YCqmBz9mCX8NOYAAALVVu-cIt2MMISgYj5kzscUNzzN_lS_KLNdiehWiGTqxXxzj1CPXQvQ7LDF2RhdjSvTpng9INFVDk-nm_joxt429ETmCldwckpOU2lyL4OxGroqrKIqhzHc42pIxKWLdFaqgNpd8" />
+                <div>
+                    <p class="text-xs font-bold text-on-surface user-name-display">Usuário</p>
+                    <p class="text-[10px] text-slate-500">Workshop Owner</p>
+                </div>
+            </div>
+            <a id="logout-btn"
+                class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-red-500 hover:bg-red-50 transition-all mb-4"
+                href="#">
+                <span class="material-symbols-outlined">logout</span>
+                <span class="text-sm font-bold">Sair</span>
+            </a>
+        </div>
+    </aside>
+    <!-- Main Content Canvas (Financial Module Background) -->
+    <main class="lg:ml-64 mt-28 p-8 min-h-screen relative">
+        <div class="max-w-6xl mx-auto">
+            <div class="flex justify-between items-end mb-8">
+                <div>
+                    <h1 class="text-3xl font-extrabold tracking-tight text-on-surface">Gestão Financeira</h1>
+                    <p class="text-on-secondary-container mt-1">Visão geral da sua oficina mecânica.</p>
+                </div>
+                <div class="flex gap-4">
+                    <button
+                        class="px-6 py-2.5 bg-surface-container-low text-on-surface font-semibold rounded-xl active:scale-95 transition-all">Exportar</button>
+                    <button
+                        class="px-6 py-2.5 bg-gradient-to-r from-primary to-primary-container text-on-primary font-bold rounded-xl shadow-lg shadow-primary/20 active:scale-95 transition-all">Nova
+                        Receita</button>
+                </div>
+            </div>
+            <!-- Dashboard Background Grid (Asymmetric) -->
+            <div class="grid grid-cols-12 gap-6">
+                <div class="col-span-8 space-y-6">
+                    <div
+                        class="h-64 bg-surface-container-lowest rounded-xl p-6 shadow-sm border border-outline-variant/15">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-sm font-bold uppercase tracking-widest text-secondary">Fluxo Mensal</h3>
+                            <span
+                                class="text-xs font-medium text-tertiary bg-tertiary-fixed px-2 py-1 rounded-full">+12.5%
+                                vs mês anterior</span>
+                        </div>
+                        <div class="flex items-end justify-between h-32 gap-2 mt-8">
+                            <div class="w-full bg-surface-container-low rounded-t-lg h-[0%]"></div>
+                            <div class="w-full bg-surface-container-low rounded-t-lg h-[0%]"></div>
+                            <div class="w-full bg-surface-container-low rounded-t-lg h-[0%]"></div>
+                            <div class="w-full bg-surface-container-low rounded-t-lg h-[0%]"></div>
+                            <div class="w-full bg-surface-container-low rounded-t-lg h-[0%]"></div>
+                            <div class="w-full bg-surface-container-low rounded-t-lg h-[0%]"></div>
+                        </div>
+                    </div>
+                    <div class="bg-surface-container-low rounded-xl p-6 h-80 overflow-hidden">
+                        <h3 class="text-sm font-bold uppercase tracking-widest text-secondary mb-4">Ãšltimos Lançamentos
+                        </h3>
+                        <div class="space-y-4" id="recent-income-list">
+                            <div class="py-12 text-center text-slate-400 text-xs italic bg-white rounded-xl border border-dashed border-slate-200">
+                                Nenhum lançamento recente.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-span-4 space-y-6">
+                    <div class="bg-surface-container-highest/40 rounded-xl p-6 border border-outline-variant/15">
+                        <p class="text-xs font-bold uppercase tracking-tighter text-on-secondary-container">Saldo Total
+                        </p>
+                        <h2 class="text-4xl font-black text-on-surface mt-2 text-primary" id="total-balance">R$ 0,00</h2>
+                        <div class="mt-6 space-y-3">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-secondary">Entradas</span>
+                                <span class="text-on-surface font-bold">R$ 0,00</span>
+                            </div>
+                            <div class="w-full bg-white/50 h-1 rounded-full overflow-hidden">
+                                <div class="bg-primary h-full w-[0%]"></div>
+                            </div>
+                            <div class="flex justify-between text-sm pt-2">
+                                <span class="text-secondary">Saídas</span>
+                                <span class="text-on-surface font-bold">R$ 0,00</span>
+                            </div>
+                            <div class="w-full bg-white/50 h-1 rounded-full overflow-hidden">
+                                <div class="bg-error h-full w-[0%]"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl p-6 shadow-sm border border-outline-variant/15">
+                        <h4 class="text-sm font-bold uppercase mb-4">Metas de Receita</h4>
+                        <div class="relative pt-1">
+                            <div class="flex mb-2 items-center justify-between">
+                                <div>
+                                    <span
+                                        class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-slate-400 bg-slate-100">Sem metas</span>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-xs font-semibold inline-block text-slate-400">0%</span>
+                                </div>
+                            </div>
+                            <div class="overflow-hidden h-2 mb-4 text-xs flex rounded bg-slate-100">
+                                <div class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-slate-200"
+                                    style="width:0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- MODAL OVERLAY -->
+    <div class="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm">
+        <!-- MODAL CONTAINER (The Nova Receita Screen) -->
+        <div class="w-full max-w-2xl bg-surface-container-lowest rounded-full shadow-2xl overflow-hidden flex flex-col border border-outline-variant/20 animate-in fade-in zoom-in duration-300"
+            style="border-radius: 1.5rem;">
+            <!-- Modal Header -->
+            <div class="px-8 py-6 border-b border-outline-variant/10 flex justify-between items-center">
+                <div>
+                    <h2 class="text-2xl font-black tracking-tight text-on-surface">Nova Receita</h2>
+                    <p class="text-sm text-secondary font-medium">Preencha os dados do faturamento.</p>
+                </div>
+                <button
+                    class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-low transition-colors text-secondary active:scale-95">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <!-- Modal Content (Form) -->
+            <form class="px-8 py-8 space-y-8 max-h-[716px] overflow-y-auto">
+                <!-- Amount Highlighted Section -->
+                <div class="text-center space-y-2">
+                    <label class="text-[10px] font-bold uppercase tracking-widest text-primary">Valor Total</label>
+                    <div class="relative inline-block w-full">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-2xl font-bold text-outline">R$</span>
+                        <input
+                            class="w-full text-5xl font-black text-center text-on-surface bg-transparent border-none focus:ring-0 placeholder:text-surface-container-highest"
+                            placeholder="0,00" type="text" value="0,00" />
+                    </div>
+                    <div class="h-[1px] w-48 bg-primary-container/20 mx-auto"></div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Description -->
+                    <div class="md:col-span-2 space-y-1.5">
+                        <label class="text-xs font-bold text-on-surface-variant flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-sm">description</span>
+                            Descrição
+                        </label>
+                        <input
+                            class="w-full px-4 py-3 bg-surface-container-low rounded-xl border border-outline-variant/15 focus:border-primary-container focus:ring-2 focus:ring-primary-container/20 transition-all text-on-surface"
+                            placeholder="Ex: Manutenção preventiva Corsa 2014" type="text" />
+                    </div>
+                    <!-- Payment Method -->
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-bold text-on-surface-variant flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-sm">payments</span>
+                            Meio de Pagamento
+                        </label>
+                        <div class="relative">
+                            <select
+                                class="w-full px-4 py-3 bg-surface-container-low rounded-xl border border-outline-variant/15 appearance-none focus:border-primary-container focus:ring-2 focus:ring-primary-container/20 transition-all text-on-surface">
+                                <option>Pix</option>
+                                <option>Cartão (Card)</option>
+                                <option>Dinheiro (Cash)</option>
+                                <option>Transferência (Transfer)</option>
+                            </select>
+                            <span
+                                class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-secondary">expand_more</span>
+                        </div>
+                    </div>
+                    <!-- Date -->
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-bold text-on-surface-variant flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-sm">calendar_today</span>
+                            Data
+                        </label>
+                        <input
+                            class="w-full px-4 py-3 bg-surface-container-low rounded-xl border border-outline-variant/15 focus:border-primary-container focus:ring-2 focus:ring-primary-container/20 transition-all text-on-surface"
+                            type="date" value="2023-11-20" />
+                    </div>
+                    <!-- Client (Autocomplete) -->
+                    <div class="md:col-span-2 space-y-1.5">
+                        <label class="text-xs font-bold text-on-surface-variant flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-sm">person</span>
+                            Cliente <span class="font-normal text-secondary">(Opcional)</span>
+                        </label>
+                        <div class="relative">
+                            <input
+                                class="w-full pl-11 pr-4 py-3 bg-surface-container-low rounded-xl border border-outline-variant/15 focus:border-primary-container focus:ring-2 focus:ring-primary-container/20 transition-all text-on-surface"
+                                placeholder="Buscar cliente por nome ou CPF..." type="text" />
+                            <span
+                                class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-secondary">search</span>
+                        </div>
+                    </div>
+                    <!-- Status Selection -->
+                    <div class="md:col-span-2 space-y-3">
+                        <label class="text-xs font-bold text-on-surface-variant">Status</label>
+                        <div class="flex p-1 bg-surface-container-low rounded-xl gap-1">
+                            <label class="flex-1 cursor-pointer group">
+                                <input checked="" class="sr-only peer" name="status" type="radio" value="received" />
+                                <div
+                                    class="py-3 px-4 rounded-lg text-center font-bold text-sm text-secondary peer-checked:bg-white peer-checked:text-on-surface peer-checked:shadow-sm transition-all flex items-center justify-center gap-2">
+                                    <span
+                                        class="material-symbols-outlined text-sm peer-checked:text-primary">check_circle</span>
+                                    Recebido
+                                </div>
+                            </label>
+                            <label class="flex-1 cursor-pointer group">
+                                <input class="sr-only peer" name="status" type="radio" value="pending" />
+                                <div
+                                    class="py-3 px-4 rounded-lg text-center font-bold text-sm text-secondary peer-checked:bg-white peer-checked:text-on-surface peer-checked:shadow-sm transition-all flex items-center justify-center gap-2">
+                                    <span class="material-symbols-outlined text-sm">schedule</span>
+                                    Pendente
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    <!-- Notes -->
+                    <div class="md:col-span-2 space-y-1.5">
+                        <label class="text-xs font-bold text-on-surface-variant flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-sm">sticky_note_2</span>
+                            Observações <span class="font-normal text-secondary">(Opcional)</span>
+                        </label>
+                        <textarea
+                            class="w-full px-4 py-3 bg-surface-container-low rounded-xl border border-outline-variant/15 focus:border-primary-container focus:ring-2 focus:ring-primary-container/20 transition-all text-on-surface resize-none"
+                            placeholder="Informações adicionais relevantes..." rows="3"></textarea>
+                    </div>
+                </div>
+            </form>
+            <!-- Modal Actions -->
+            <div
+                class="px-8 py-6 bg-surface-container-low/50 border-t border-outline-variant/10 flex flex-col md:flex-row gap-3 justify-end items-center">
+                <button
+                    class="w-full md:w-auto px-8 py-3.5 text-on-secondary-container font-bold text-sm rounded-xl hover:bg-secondary-container/40 transition-colors active:scale-95">
+                    Cancelar
+                </button>
+                <button
+                    class="w-full md:w-auto px-10 py-3.5 bg-gradient-to-r from-primary to-primary-container text-on-primary font-black text-sm rounded-xl shadow-lg shadow-primary/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined text-lg">save</span>
+                    Salvar Receita
+                </button>
+            </div>
+        </div>
+        <!-- Feedback Success State (Toast) -->
+        <div
+            class="fixed bottom-10 right-10 flex items-center gap-4 bg-white px-6 py-4 rounded-2xl shadow-2xl border border-tertiary/10 animate-in slide-in-from-bottom-5 duration-500 hidden">
+            <div class="w-10 h-10 rounded-full bg-tertiary flex items-center justify-center text-on-tertiary">
+                <span class="material-symbols-outlined">check</span>
+            </div>
+            <div>
+                <p class="font-black text-on-surface">Sucesso!</p>
+                <p class="text-xs text-secondary">A receita foi registrada com precisão.</p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

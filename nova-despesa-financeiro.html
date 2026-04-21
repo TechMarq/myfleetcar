@@ -1,0 +1,394 @@
+﻿<!DOCTYPE html>
+
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>AutoFlow - Nova Despesa</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-tint": "#a04100",
+                        "on-surface": "#131b2e",
+                        "on-secondary-fixed-variant": "#3a485b",
+                        "on-tertiary": "#ffffff",
+                        "on-surface-variant": "#5a4136",
+                        "surface-container-high": "#e2e7ff",
+                        "inverse-surface": "#283044",
+                        "on-secondary-container": "#57657a",
+                        "primary": "#a04100",
+                        "primary-container": "#ff6b00",
+                        "surface": "#faf8ff",
+                        "surface-container-low": "#f2f3ff",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-container": "#003357",
+                        "on-background": "#131b2e",
+                        "tertiary": "#0062a1",
+                        "on-primary-fixed-variant": "#7a3000",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary": "#515f74",
+                        "on-error-container": "#93000a",
+                        "error": "#ba1a1a",
+                        "on-primary-fixed": "#351000",
+                        "on-secondary": "#ffffff",
+                        "surface-container-highest": "#dae2fd",
+                        "surface-bright": "#faf8ff",
+                        "tertiary-fixed-dim": "#9ccaff",
+                        "secondary-container": "#d5e3fc",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed": "#d0e4ff",
+                        "inverse-on-surface": "#eef0ff",
+                        "secondary-fixed": "#d5e3fc",
+                        "on-secondary-fixed": "#0d1c2e",
+                        "on-primary-container": "#572000",
+                        "surface-variant": "#dae2fd",
+                        "background": "#faf8ff",
+                        "inverse-primary": "#ffb693",
+                        "surface-container": "#eaedff",
+                        "outline": "#8e7164",
+                        "on-error": "#ffffff",
+                        "primary-fixed": "#ffdbcc",
+                        "secondary-fixed-dim": "#b9c7df",
+                        "on-tertiary-fixed-variant": "#00497b",
+                        "on-tertiary-fixed": "#001d35",
+                        "tertiary-container": "#059eff",
+                        "surface-dim": "#d2d9f4",
+                        "primary-fixed-dim": "#ffb693",
+                        "outline-variant": "#e2bfb0"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+        }
+    </style>
+</head>
+
+<body class="bg-surface text-on-surface antialiased overflow-hidden">
+    <!-- Background Dashboard (Mockup Screen) -->
+    <div class="fixed inset-0 z-0">
+        <img class="w-full h-full object-cover opacity-60"
+            data-alt="Modern high-tech financial dashboard with professional data charts, cool blue and orange tones, sleek workshop analytics interface"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIypYw0SKKGiKm7SQJ6kouRWeHcnZIK1Luf4XQE6R47vKVHj207NhyQvX0zb5z0dsS2imLchbgAH3AcVhHerGQ3nTqc9yEI3IrM69aWEUBpobmJ7-T7DVTcZu1Bog4p0jrdAhDkdLG8U37cY5-vasf4HXzDGXj1eRrO8zswQFvZN9VdITDlymyzqwyMjPi9Mk1TbzfOYIu3zJHte76HN0vsAjKIpys-1GAG1bsr9DgpQZ_PIMMSnVfukFLzaTYoPfnPoKS_vv-Uek" />
+        <div class="absolute inset-0 bg-on-surface/30 backdrop-blur-sm"></div>
+    </div>
+    <!-- Centered Modal -->
+    <div class="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div
+            class="glass-effect w-full max-w-2xl rounded-xl shadow-2xl overflow-hidden flex flex-col border border-outline-variant/15">
+            <!-- Modal Header -->
+            <div class="px-8 py-6 flex items-center justify-between">
+                <div class="space-y-1">
+                    <h1 class="text-2xl font-extrabold tracking-tight text-on-surface">Nova Despesa</h1>
+                    <p class="text-sm font-medium text-secondary">Preencha os detalhes do novo lançamento financeiro.
+                    </p>
+                </div>
+                <button class="p-2 hover:bg-surface-container-high rounded-full transition-colors">
+                    <span class="material-symbols-outlined text-on-surface-variant">close</span>
+                </button>
+            </div>
+            <!-- Modal Content -->
+            <div class="px-8 pb-8 overflow-y-auto max-h-[768px]">
+                <form class="space-y-8">
+                    <!-- Large Currency Input -->
+                    <div class="bg-surface-container-low p-6 rounded-xl border border-outline-variant/10">
+                        <label class="block text-xs font-bold uppercase tracking-widest text-secondary mb-2">Valor
+                            Total</label>
+                        <div class="flex items-baseline gap-3">
+                            <span class="text-3xl font-light text-secondary">R$</span>
+                            <input id="expense-amount" autofocus=""
+                                class="bg-transparent border-none focus:ring-0 text-5xl font-black text-on-surface placeholder-on-surface/20 w-full"
+                                placeholder="0,00" type="text" />
+                        </div>
+                    </div>
+                    <!-- Form Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Descrição -->
+                        <div class="md:col-span-2 space-y-2">
+                            <label class="text-sm font-semibold text-on-surface-variant ml-1">Descrição /
+                                Favorecido</label>
+                            <div class="relative">
+                                <span
+                                    class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">description</span>
+                                <input id="expense-description"
+                                    class="w-full pl-11 pr-4 py-3 bg-surface-container-lowest border border-outline-variant/15 rounded-xl focus:border-primary-container focus:ring-4 focus:ring-primary-container/10 transition-all outline-none"
+                                    placeholder="Ex: Aluguel do Galpão" type="text" />
+                            </div>
+                        </div>
+                        <!-- Categoria -->
+                        <div class="space-y-2">
+                            <label class="text-sm font-semibold text-on-surface-variant ml-1">Categoria</label>
+                            <div class="relative">
+                                <span
+                                    class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">category</span>
+                                <select id="expense-category"
+                                    class="w-full pl-11 pr-4 py-3 bg-surface-container-lowest border border-outline-variant/15 rounded-xl appearance-none focus:border-primary-container focus:ring-4 focus:ring-primary-container/10 transition-all outline-none">
+                                    <option disabled="" selected="" value="">Selecionar...</option>
+                                    <option value="Fixo">Fixo</option>
+                                    <option value="Variável">Variável</option>
+                                    <option value="Combustível">Combustível</option>
+                                    <option value="Peças">Peças</option>
+                                    <option value="Outros">Outros</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- Meio de Pagamento -->
+                        <div class="space-y-2">
+                            <label class="text-sm font-semibold text-on-surface-variant ml-1">Meio de Pagamento</label>
+                            <div class="relative">
+                                <span
+                                    class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">payments</span>
+                                <select id="expense-payment-method"
+                                    class="w-full pl-11 pr-4 py-3 bg-surface-container-lowest border border-outline-variant/15 rounded-xl appearance-none focus:border-primary-container focus:ring-4 focus:ring-primary-container/10 transition-all outline-none">
+                                    <option disabled="" selected="" value="">Selecionar...</option>
+                                    <option value="Dinheiro">Dinheiro</option>
+                                    <option value="Cartão">Cartão</option>
+                                    <option value="Pix">Pix</option>
+                                    <option value="Transferência">Transferência</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- Data -->
+                        <div class="space-y-2">
+                            <label class="text-sm font-semibold text-on-surface-variant ml-1">Data / Vencimento</label>
+                            <div class="relative">
+                                <span
+                                    class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">calendar_today</span>
+                                <input id="expense-date"
+                                    class="w-full pl-11 pr-4 py-3 bg-surface-container-lowest border border-outline-variant/15 rounded-xl focus:border-primary-container focus:ring-4 focus:ring-primary-container/10 transition-all outline-none"
+                                    type="date" />
+                            </div>
+                        </div>
+                        <!-- Status -->
+                        <div class="space-y-2">
+                            <label class="text-sm font-semibold text-on-surface-variant ml-1">Status do
+                                Pagamento</label>
+                            <div
+                                class="grid grid-cols-2 p-1 bg-surface-container-low rounded-xl border border-outline-variant/10">
+                                <button id="status-pago" data-status="Pago"
+                                    class="status-btn py-2.5 rounded-lg text-sm font-bold bg-white shadow-sm text-tertiary flex items-center justify-center gap-2"
+                                    type="button">
+                                    <span class="material-symbols-outlined text-[20px]"
+                                        style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                                    Pago
+                                </button>
+                                <button id="status-pendente" data-status="Pendente"
+                                    class="status-btn py-2.5 rounded-lg text-sm font-semibold text-secondary hover:bg-surface-container-high transition-colors flex items-center justify-center gap-2"
+                                    type="button">
+                                    <span class="material-symbols-outlined text-[20px]">pending</span>
+                                    Pendente
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Repetição (Novo Recurso) -->
+                        <div class="md:col-span-2 space-y-4">
+                            <label class="flex items-center gap-3 cursor-pointer group">
+                                <div class="relative">
+                                    <input type="checkbox" id="expense-recurring" class="peer sr-only">
+                                    <div
+                                        class="w-11 h-6 bg-slate-200 rounded-full peer-checked:bg-primary transition-all">
+                                    </div>
+                                    <div
+                                        class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-all peer-checked:translate-x-5">
+                                    </div>
+                                </div>
+                                <span class="text-sm font-bold text-on-surface">Repetir esta despesa?</span>
+                            </label>
+
+                            <div id="recurrence-options"
+                                class="hidden grid grid-cols-1 md:grid-cols-2 gap-6 p-6 bg-orange-50/30 border border-orange-100/50 rounded-2xl">
+                                <div class="space-y-2">
+                                    <label class="text-xs font-bold text-primary uppercase ml-1">Frequência</label>
+                                    <select id="expense-frequency"
+                                        class="w-full px-4 py-2.5 bg-white border border-orange-100 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm">
+                                        <option value="monthly">Mensal (Todo mês)</option>
+                                        <option value="weekly">Semanal</option>
+                                    </select>
+                                </div>
+                                <div class="space-y-2">
+                                    <label class="text-xs font-bold text-primary uppercase ml-1">Parcelas /
+                                        Duração</label>
+                                    <select id="expense-installments"
+                                        class="w-full px-4 py-2.5 bg-white border border-orange-100 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm">
+                                        <option value="1">1 vez (Avulso)</option>
+                                        <option value="2">2 parcelas</option>
+                                        <option value="3">3 parcelas</option>
+                                        <option value="6">6 parcelas</option>
+                                        <option value="12">12 meses (1 ano)</option>
+                                        <option value="24">24 meses (2 anos)</option>
+                                        <option value="fixed">Conta Fixa (Contínuo)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Observações -->
+                        <div class="md:col-span-2 space-y-2">
+                            <label class="text-sm font-semibold text-on-surface-variant ml-1">Observações
+                                (Opcional)</label>
+                            <textarea id="expense-notes"
+                                class="w-full px-4 py-3 bg-surface-container-lowest border border-outline-variant/15 rounded-xl focus:border-primary-container focus:ring-4 focus:ring-primary-container/10 transition-all outline-none resize-none"
+                                placeholder="Detalhes adicionais..." rows="3"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- Footer Actions -->
+            <div
+                class="px-8 py-6 bg-surface-container-low/50 flex items-center justify-end gap-4 border-t border-outline-variant/10">
+                <a href="gestao-despesa-financeiro.html"
+                    class="px-6 py-3 text-sm font-bold text-secondary hover:text-on-surface transition-colors">
+                    Cancelar
+                </a>
+                <button id="btn-save-expense"
+                    class="px-8 py-3 bg-gradient-to-r from-primary to-primary-container text-on-primary rounded-xl text-sm font-bold shadow-lg shadow-primary/20 flex items-center gap-2 hover:scale-[1.02] active:scale-95 transition-all">
+                    <span class="material-symbols-outlined text-[20px]">save</span>
+                    Salvar Despesa
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const recurringCheck = document.getElementById('expense-recurring');
+            const recurrenceOptions = document.getElementById('recurrence-options');
+            const saveBtn = document.getElementById('btn-save-expense');
+            const statusBtns = document.querySelectorAll('.status-btn');
+            let selectedStatus = 'Pago';
+
+            // Toggle status buttons
+            statusBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    statusBtns.forEach(b => {
+                        b.className = 'status-btn py-2.5 rounded-lg text-sm font-semibold text-secondary hover:bg-surface-container-high transition-colors flex items-center justify-center gap-2';
+                    });
+                    btn.className = 'status-btn py-2.5 rounded-lg text-sm font-bold bg-white shadow-sm text-tertiary flex items-center justify-center gap-2';
+                    selectedStatus = btn.getAttribute('data-status');
+                });
+            });
+
+            // Toggle recurring options
+            recurringCheck.addEventListener('change', () => {
+                recurrenceOptions.classList.toggle('hidden', !recurringCheck.checked);
+            });
+
+            // Save logic
+            saveBtn.addEventListener('click', async () => {
+                try {
+                    const amountRaw = document.getElementById('expense-amount').value.replace('R$', '').replace(/\./g, '').replace(',', '.').trim();
+                    const amount = parseFloat(amountRaw);
+                    const description = document.getElementById('expense-description').value.trim();
+                    const category = document.getElementById('expense-category').value;
+                    const paymentMethod = document.getElementById('expense-payment-method').value;
+                    const date = document.getElementById('expense-date').value;
+                    const notes = document.getElementById('expense-notes').value.trim();
+
+                    if (!amount || isNaN(amount) || !description || !date) {
+                        alert('Por favor, preencha valor, descrição e data corretamente.');
+                        return;
+                    }
+
+                    saveBtn.disabled = true;
+                    saveBtn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[20px]">sync</span> Salvando...';
+
+                    const { data: { user } } = await AutoFlow.Auth.getUser();
+                    if (!user) throw new Error('Sessão expirada. Por favor, faça login novamente.');
+
+                    const transactionData = {
+                        workshop_id: user.id,
+                        description,
+                        amount: Math.abs(amount), // We ensure positive here, type='Despesa' handles logic
+                        type: 'Despesa',
+                        category: category || 'Outros',
+                        payment_method: paymentMethod || 'Dinheiro',
+                        status: selectedStatus,
+                        due_date: date,
+                        created_at: new Date().toISOString()
+                    };
+
+                    console.log('[DEBUG] Enviando para o banco:', transactionData);
+
+                    // Recurrence Logic
+                    if (recurringCheck.checked) {
+                        const freq = document.getElementById('expense-frequency').value;
+                        const instVal = document.getElementById('expense-installments').value;
+                        const count = instVal === 'fixed' ? 12 : parseInt(instVal);
+
+                        let baseDate = new Date(date + 'T12:00:00');
+
+                        for (let i = 0; i < count; i++) {
+                            const newDate = new Date(baseDate);
+                            if (i > 0) {
+                                if (freq === 'monthly') newDate.setMonth(newDate.getMonth() + i);
+                                else if (freq === 'weekly') newDate.setDate(newDate.getDate() + (i * 7));
+                            }
+
+                            const tx = {
+                                ...transactionData,
+                                status: (i === 0) ? selectedStatus : 'Pendente',
+                                due_date: newDate.toISOString().split('T')[0],
+                                description: count > 1 ? `${description} (${i + 1}/${count})` : description
+                            };
+
+                            const { error: insErr } = await AutoFlow.DB.insert('financial_transactions', tx);
+                            if (insErr) throw insErr;
+                        }
+                    } else {
+                        const { error: insErr } = await AutoFlow.DB.insert('financial_transactions', transactionData);
+                        if (insErr) throw insErr;
+                    }
+
+                    alert('Despesa registrada com sucesso!');
+                    window.location.href = 'gestao-despesa-financeiro.html';
+
+                } catch (err) {
+                    console.error('[DEBUG] Falha no salvamento:', err);
+                    alert('Erro ao gravar no banco: ' + (err.message || 'Desconhecido'));
+                    saveBtn.disabled = false;
+                    saveBtn.innerHTML = '<span class="material-symbols-outlined text-[20px]">save</span> Salvar Despesa';
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

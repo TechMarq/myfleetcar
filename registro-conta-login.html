@@ -1,0 +1,297 @@
+﻿<!DOCTYPE html>
+
+<html class="light" lang="pt-BR">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 200, 'GRAD' 0, 'opsz' 24;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error": "#ba1a1a",
+                        "inverse-primary": "#ffb693",
+                        "surface-container-highest": "#dae2fd",
+                        "tertiary-fixed": "#d0e4ff",
+                        "inverse-on-surface": "#eef0ff",
+                        "on-surface-variant": "#5a4136",
+                        "on-secondary": "#ffffff",
+                        "on-background": "#131b2e",
+                        "error-container": "#ffdad6",
+                        "surface": "#faf8ff",
+                        "on-error": "#ffffff",
+                        "secondary-fixed-dim": "#b9c7df",
+                        "on-primary": "#ffffff",
+                        "background": "#faf8ff",
+                        "surface-tint": "#a04100",
+                        "on-secondary-container": "#57657a",
+                        "on-primary-fixed-variant": "#7a3000",
+                        "surface-container": "#eaedff",
+                        "secondary-fixed": "#d5e3fc",
+                        "surface-bright": "#faf8ff",
+                        "on-tertiary-fixed-variant": "#00497b",
+                        "primary-fixed": "#ffdbcc",
+                        "on-secondary-fixed": "#0d1c2e",
+                        "on-primary-container": "#572000",
+                        "on-error-container": "#93000a",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-fixed-variant": "#3a485b",
+                        "tertiary-fixed-dim": "#9ccaff",
+                        "secondary-container": "#d5e3fc",
+                        "outline-variant": "#e2bfb0",
+                        "tertiary": "#0062a1",
+                        "primary-fixed-dim": "#ffb693",
+                        "secondary": "#515f74",
+                        "on-surface": "#131b2e",
+                        "surface-container-low": "#f2f3ff",
+                        "primary-container": "#ff6b00",
+                        "inverse-surface": "#283044",
+                        "tertiary-container": "#059eff",
+                        "on-tertiary-fixed": "#001d35",
+                        "on-tertiary": "#ffffff",
+                        "primary": "#a04100",
+                        "surface-dim": "#d2d9f4",
+                        "on-tertiary-container": "#003357",
+                        "outline": "#8e7164",
+                        "surface-variant": "#dae2fd",
+                        "surface-container-high": "#e2e7ff",
+                        "on-primary-fixed": "#351000"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-surface text-on-surface min-h-screen flex flex-col">
+    <!-- TopNavBar (Shared Component) -->
+    <!-- Suppression logic: Displayed here as branding for landing register flow -->
+    <header
+        class="bg-[#faf8ff]/80 backdrop-blur-md dark:bg-slate-950/80 font-inter antialiased text-sm font-medium docked full-width top-0 sticky z-50">
+        <div class="flex justify-between items-center w-full px-8 py-4 max-w-7xl mx-auto">
+            <div class="text-2xl font-black italic tracking-tighter text-[#131b2e] dark:text-slate-50">AutoFlow</div>
+            <nav class="hidden md:flex items-center gap-8">
+                <a class="text-[#57657a] hover:text-[#131b2e] dark:text-slate-400 dark:hover:text-slate-100 hover:opacity-80 transition-opacity"
+                    href="login.html">Entrar</a>
+                <a class="text-[#ff6b00] font-bold border-b-2 border-[#ff6b00] pb-1 hover:opacity-80 transition-opacity"
+                    href="registro-conta-login.html">Cadastrar</a>
+
+                <a class="text-[#57657a] hover:text-[#131b2e] dark:text-slate-400 dark:hover:text-slate-100 hover:opacity-80 transition-opacity"
+                    href="#">Suporte</a>
+            </nav>
+            <div class="flex items-center gap-4">
+                <button class="text-[#ff6b00] font-medium transition-opacity hover:opacity-80">Ajuda</button>
+            </div>
+        </div>
+    </header>
+    <main class="flex-grow flex items-center justify-center p-6 md:p-12 lg:p-24 bg-surface-container-low">
+        <div class="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            <!-- Content Panel: Left Side (Editorial Branding) -->
+            <div class="lg:col-span-5 space-y-8">
+                <div class="space-y-4">
+                    <span
+                        class="inline-block px-4 py-1.5 bg-secondary-container text-on-secondary-container rounded-full text-xs font-bold tracking-widest uppercase">
+                        Gestão de Alta Precisão
+                    </span>
+                    <h1
+                        class="text-4xl md:text-5xl lg:text-6xl font-black text-on-surface leading-tight tracking-tighter">
+                        Otimize seu <span class="text-primary-container">Workflow</span> Automotivo.
+                    </h1>
+                    <p class="text-lg text-secondary leading-relaxed max-w-md">
+                        Junte-se à rede de oficinas que priorizam a excelência técnica e a satisfação do cliente com
+                        ferramentas de diagnóstico inteligente.
+                    </p>
+                </div>
+                <!-- Feature list using Tonal Depth (No borders) -->
+                <div class="space-y-4">
+                    <div class="flex items-center gap-4 p-4 rounded-xl bg-surface-container-lowest shadow-sm">
+                        <div
+                            class="w-12 h-12 rounded-lg bg-tertiary-container flex items-center justify-center text-white">
+                            <span class="material-symbols-outlined">analytics</span>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-on-surface">Analytics em Tempo Real</h3>
+                            <p class="text-xs text-secondary">Dashboard de performance detalhado.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4 p-4 rounded-xl bg-surface-container-lowest shadow-sm">
+                        <div
+                            class="w-12 h-12 rounded-lg bg-primary-container flex items-center justify-center text-white">
+                            <span class="material-symbols-outlined">settings_suggest</span>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-on-surface">Agendamento Inteligente</h3>
+                            <p class="text-xs text-secondary">Reduza o tempo de espera dos clientes.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Registration Card: Right Side -->
+            <div class="lg:col-span-7">
+                <div
+                    class="bg-surface-container-lowest p-8 md:p-12 rounded-xl shadow-2xl shadow-on-surface/5 relative overflow-hidden">
+                    <!-- Subtle decorative background element -->
+                    <div
+                        class="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-primary-container/5 rounded-full blur-3xl">
+                    </div>
+                    <div class="relative">
+                        <header class="mb-10">
+                            <h2 class="text-2xl font-bold text-on-surface mb-2">Cadastre sua Oficina</h2>
+                            <p class="text-secondary text-sm">Preencha os dados abaixo para criar sua conta
+                                profissional.</p>
+                        </header>
+                        <form id="register-form" class="space-y-6">
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <!-- Workshop Name -->
+                                <div class="space-y-2">
+                                    <label class="text-xs font-bold uppercase tracking-widest text-secondary block">Nome
+                                        da Oficina</label>
+                                    <div class="relative">
+                                        <span
+                                            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">garage</span>
+                                        <input
+                                            class="w-full pl-10 pr-4 py-3 bg-surface-container-low border border-outline-variant/15 rounded-xl focus:ring-2 focus:ring-primary-container/20 focus:border-primary-container outline-none transition-all text-sm"
+                                            id="workshop-name" placeholder="Ex: Precision Motors" type="text" />
+
+                                    </div>
+                                </div>
+                                <!-- Owner Name -->
+                                <div class="space-y-2">
+                                    <label class="text-xs font-bold uppercase tracking-widest text-secondary block">Nome
+                                        do Proprietário</label>
+                                    <div class="relative">
+                                        <span
+                                            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">person</span>
+                                        <input
+                                            class="w-full pl-10 pr-4 py-3 bg-surface-container-low border border-outline-variant/15 rounded-xl focus:ring-2 focus:ring-primary-container/20 focus:border-primary-container outline-none transition-all text-sm"
+                                            id="owner-name" placeholder="Seu nome completo" type="text" />
+
+                                    </div>
+                                </div>
+                                <!-- Email -->
+                                <div class="space-y-2">
+                                    <label
+                                        class="text-xs font-bold uppercase tracking-widest text-secondary block">Email
+                                        Profissional</label>
+                                    <div class="relative">
+                                        <span
+                                            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">mail</span>
+                                        <input
+                                            class="w-full pl-10 pr-4 py-3 bg-surface-container-low border border-outline-variant/15 rounded-xl focus:ring-2 focus:ring-primary-container/20 focus:border-primary-container outline-none transition-all text-sm"
+                                            id="email" placeholder="contato@empresa.com" type="email" />
+
+                                    </div>
+                                </div>
+                                <!-- Phone -->
+                                <div class="space-y-2">
+                                    <label
+                                        class="text-xs font-bold uppercase tracking-widest text-secondary block">Telefone</label>
+                                    <div class="relative">
+                                        <span
+                                            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">call</span>
+                                        <input
+                                            class="w-full pl-10 pr-4 py-3 bg-surface-container-low border border-outline-variant/15 rounded-xl focus:ring-2 focus:ring-primary-container/20 focus:border-primary-container outline-none transition-all text-sm"
+                                            id="phone" placeholder="(00) 00000-0000" type="tel" />
+
+                                    </div>
+                                </div>
+                                <!-- Password -->
+                                <div class="space-y-2">
+                                    <label
+                                        class="text-xs font-bold uppercase tracking-widest text-secondary block">Senha</label>
+                                    <div class="relative">
+                                        <span
+                                            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">lock</span>
+                                        <input
+                                            class="w-full pl-10 pr-4 py-3 bg-surface-container-low border border-outline-variant/15 rounded-xl focus:ring-2 focus:ring-primary-container/20 focus:border-primary-container outline-none transition-all text-sm"
+                                            id="password" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" type="password" />
+
+                                    </div>
+                                </div>
+                                <!-- Confirm Password -->
+                                <div class="space-y-2">
+                                    <label
+                                        class="text-xs font-bold uppercase tracking-widest text-secondary block">Confirmar
+                                        Senha</label>
+                                    <div class="relative">
+                                        <span
+                                            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">shield</span>
+                                        <input
+                                            class="w-full pl-10 pr-4 py-3 bg-surface-container-low border border-outline-variant/15 rounded-xl focus:ring-2 focus:ring-primary-container/20 focus:border-primary-container outline-none transition-all text-sm"
+                                            id="confirm-password" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" type="password" />
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pt-4">
+                                <button
+                                    class="w-full bg-gradient-to-r from-primary to-primary-container text-on-primary font-bold py-4 rounded-xl shadow-lg shadow-primary-container/20 active:scale-95 transition-all duration-150 flex items-center justify-center gap-2"
+                                    type="submit">
+                                    <span>Criar conta</span>
+                                    <span class="material-symbols-outlined">arrow_forward</span>
+                                </button>
+                            </div>
+                            <div class="text-center mt-6">
+                                <p class="text-xs text-secondary">
+                                    Ao se cadastrar, você concorda com nossos <a class="text-tertiary font-medium"
+                                        href="#">Termos de Uso</a> e <a class="text-tertiary font-medium"
+                                        href="#">Política de Privacidade</a>.
+                                </p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- Footer (Shared Component) -->
+    <footer
+        class="bg-[#faf8ff] dark:bg-slate-950 font-inter text-xs uppercase tracking-widest full-width py-12 border-t border-[#e2bfb0]/15 flat no-shadows">
+        <div class="flex flex-col md:flex-row justify-between items-center px-12 gap-6 max-w-7xl mx-auto w-full">
+            <div class="font-bold text-[#131b2e] dark:text-slate-200">AutoFlow</div>
+            <div class="flex gap-8">
+                <a class="text-[#57657a] hover:text-[#ff6b00] transition-colors opacity-100 hover:opacity-70"
+                    href="#">Termos</a>
+                <a class="text-[#57657a] hover:text-[#ff6b00] transition-colors opacity-100 hover:opacity-70"
+                    href="#">Privacidade</a>
+                <a class="text-[#57657a] hover:text-[#ff6b00] transition-colors opacity-100 hover:opacity-70"
+                    href="#">Documentação</a>
+            </div>
+            <p class="text-[#57657a] normal-case tracking-normal">© 2024 AutoFlow. Precisão em cada movimento.</p>
+        </div>
+    </footer>
+    <!-- Supabase & Auth Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="navigation.js"></script>
+    <script src="auth.js"></script>
+</body>
+
+</html>
