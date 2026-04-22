@@ -1,11 +1,11 @@
-ï»¿<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html lang="pt-BR">
 
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>AutoFlow - Nova Despesa</title>
+    <title>MyFleetCar - Nova Despesa</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap"
         rel="stylesheet" />
@@ -116,7 +116,7 @@
             <div class="px-8 py-6 flex items-center justify-between">
                 <div class="space-y-1">
                     <h1 class="text-2xl font-extrabold tracking-tight text-on-surface">Nova Despesa</h1>
-                    <p class="text-sm font-medium text-secondary">Preencha os detalhes do novo lanÃ§amento financeiro.
+                    <p class="text-sm font-medium text-secondary">Preencha os detalhes do novo lançamento financeiro.
                     </p>
                 </div>
                 <button class="p-2 hover:bg-surface-container-high rounded-full transition-colors">
@@ -139,16 +139,16 @@
                     </div>
                     <!-- Form Grid -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- DescriÃ§Ã£o -->
+                        <!-- Descrição -->
                         <div class="md:col-span-2 space-y-2">
-                            <label class="text-sm font-semibold text-on-surface-variant ml-1">DescriÃ§Ã£o /
+                            <label class="text-sm font-semibold text-on-surface-variant ml-1">Descrição /
                                 Favorecido</label>
                             <div class="relative">
                                 <span
                                     class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">description</span>
                                 <input id="expense-description"
                                     class="w-full pl-11 pr-4 py-3 bg-surface-container-lowest border border-outline-variant/15 rounded-xl focus:border-primary-container focus:ring-4 focus:ring-primary-container/10 transition-all outline-none"
-                                    placeholder="Ex: Aluguel do GalpÃ£o" type="text" />
+                                    placeholder="Ex: Aluguel do Galpão" type="text" />
                             </div>
                         </div>
                         <!-- Categoria -->
@@ -161,9 +161,9 @@
                                     class="w-full pl-11 pr-4 py-3 bg-surface-container-lowest border border-outline-variant/15 rounded-xl appearance-none focus:border-primary-container focus:ring-4 focus:ring-primary-container/10 transition-all outline-none">
                                     <option disabled="" selected="" value="">Selecionar...</option>
                                     <option value="Fixo">Fixo</option>
-                                    <option value="VariÃ¡vel">VariÃ¡vel</option>
-                                    <option value="CombustÃ­vel">CombustÃ­vel</option>
-                                    <option value="PeÃ§as">PeÃ§as</option>
+                                    <option value="Variável">Variável</option>
+                                    <option value="Combustível">Combustível</option>
+                                    <option value="Peças">Peças</option>
                                     <option value="Outros">Outros</option>
                                 </select>
                             </div>
@@ -178,9 +178,9 @@
                                     class="w-full pl-11 pr-4 py-3 bg-surface-container-lowest border border-outline-variant/15 rounded-xl appearance-none focus:border-primary-container focus:ring-4 focus:ring-primary-container/10 transition-all outline-none">
                                     <option disabled="" selected="" value="">Selecionar...</option>
                                     <option value="Dinheiro">Dinheiro</option>
-                                    <option value="CartÃ£o">CartÃ£o</option>
+                                    <option value="Cartão">Cartão</option>
                                     <option value="Pix">Pix</option>
-                                    <option value="TransferÃªncia">TransferÃªncia</option>
+                                    <option value="Transferência">Transferência</option>
                                 </select>
                             </div>
                         </div>
@@ -216,7 +216,7 @@
                                 </button>
                             </div>
                         </div>
-                        <!-- RepetiÃ§Ã£o (Novo Recurso) -->
+                        <!-- Repetição (Novo Recurso) -->
                         <div class="md:col-span-2 space-y-4">
                             <label class="flex items-center gap-3 cursor-pointer group">
                                 <div class="relative">
@@ -234,16 +234,16 @@
                             <div id="recurrence-options"
                                 class="hidden grid grid-cols-1 md:grid-cols-2 gap-6 p-6 bg-orange-50/30 border border-orange-100/50 rounded-2xl">
                                 <div class="space-y-2">
-                                    <label class="text-xs font-bold text-primary uppercase ml-1">FrequÃªncia</label>
+                                    <label class="text-xs font-bold text-primary uppercase ml-1">Frequência</label>
                                     <select id="expense-frequency"
                                         class="w-full px-4 py-2.5 bg-white border border-orange-100 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm">
-                                        <option value="monthly">Mensal (Todo mÃªs)</option>
+                                        <option value="monthly">Mensal (Todo mês)</option>
                                         <option value="weekly">Semanal</option>
                                     </select>
                                 </div>
                                 <div class="space-y-2">
                                     <label class="text-xs font-bold text-primary uppercase ml-1">Parcelas /
-                                        DuraÃ§Ã£o</label>
+                                        Duração</label>
                                     <select id="expense-installments"
                                         class="w-full px-4 py-2.5 bg-white border border-orange-100 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm">
                                         <option value="1">1 vez (Avulso)</option>
@@ -252,14 +252,14 @@
                                         <option value="6">6 parcelas</option>
                                         <option value="12">12 meses (1 ano)</option>
                                         <option value="24">24 meses (2 anos)</option>
-                                        <option value="fixed">Conta Fixa (ContÃ­nuo)</option>
+                                        <option value="fixed">Conta Fixa (Contínuo)</option>
                                     </select>
                                 </div>
                             </div>
                         </div>
-                        <!-- ObservaÃ§Ãµes -->
+                        <!-- Observações -->
                         <div class="md:col-span-2 space-y-2">
-                            <label class="text-sm font-semibold text-on-surface-variant ml-1">ObservaÃ§Ãµes
+                            <label class="text-sm font-semibold text-on-surface-variant ml-1">Observações
                                 (Opcional)</label>
                             <textarea id="expense-notes"
                                 class="w-full px-4 py-3 bg-surface-container-lowest border border-outline-variant/15 rounded-xl focus:border-primary-container focus:ring-4 focus:ring-primary-container/10 transition-all outline-none resize-none"
@@ -323,15 +323,15 @@
                     const notes = document.getElementById('expense-notes').value.trim();
 
                     if (!amount || isNaN(amount) || !description || !date) {
-                        alert('Por favor, preencha valor, descriÃ§Ã£o e data corretamente.');
+                        alert('Por favor, preencha valor, descrição e data corretamente.');
                         return;
                     }
 
                     saveBtn.disabled = true;
                     saveBtn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[20px]">sync</span> Salvando...';
 
-                    const { data: { user } } = await AutoFlow.Auth.getUser();
-                    if (!user) throw new Error('SessÃ£o expirada. Por favor, faÃ§a login novamente.');
+                    const { data: { user } } = await MyFleetCar.Auth.getUser();
+                    if (!user) throw new Error('Sessão expirada. Por favor, faça login novamente.');
 
                     const transactionData = {
                         workshop_id: user.id,
@@ -369,11 +369,11 @@
                                 description: count > 1 ? `${description} (${i + 1}/${count})` : description
                             };
 
-                            const { error: insErr } = await AutoFlow.DB.insert('financial_transactions', tx);
+                            const { error: insErr } = await MyFleetCar.DB.insert('financial_transactions', tx);
                             if (insErr) throw insErr;
                         }
                     } else {
-                        const { error: insErr } = await AutoFlow.DB.insert('financial_transactions', transactionData);
+                        const { error: insErr } = await MyFleetCar.DB.insert('financial_transactions', transactionData);
                         if (insErr) throw insErr;
                     }
 

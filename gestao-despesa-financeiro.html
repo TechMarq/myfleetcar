@@ -1,16 +1,17 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html class="light" lang="pt-BR">
 
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>AutoFlow - Gestão de Despesas</title>
+    <title>MyFleetCar - Gestão de Despesas</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap"
         rel="stylesheet">
     <link
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
         rel="stylesheet">
+    <link rel="icon" type="image/png" href="img/favicon-myfleetcar.png" />
 
     <script id="tailwind-config">
         tailwind.config = {
@@ -1743,7 +1744,7 @@
     <aside
         class="h-screen w-64 fixed left-0 top-0 -translate-x-full lg:translate-x-0 transition-transform duration-300 z-[100] sidebar-mobile bg-slate-50 dark:bg-slate-900 flex flex-col py-6 space-y-2 z-50 overflow-y-auto border-r border-orange-100/15">
         <div class="px-6 mb-8">
-            <h1 class="text-xl font-bold text-orange-600 workshop-name-display">AutoFlow</h1>
+            <img src="img/mainlogohorizontalfull-myfleetcar.png" alt="MyFleetCar Logo" class="h-10 w-auto mb-2">
             <p class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Mechanical Excellence</p>
         </div>
 
@@ -1805,18 +1806,19 @@
     <!-- TopAppBar -->
     <header
         class="fixed top-0 right-0 w-full lg:w-[calc(100%-16rem)] z-40 z-40 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl border-b border-orange-100/15 dark:border-slate-800/50 shadow-sm">
-        <div class="flex justify-between items-center px-8 h-16 w-full">
+        <div class="flex justify-between items-center px-4 md:px-8 h-16 w-full">
             <div class="flex items-center text-primary">
-                <h2 class="text-lg font-bold text-slate-900 dark:text-slate-50 mr-8 workshop-name-display">Faturamento
-                </h2>
+                <h2
+                    class="text-lg font-bold text-slate-900 dark:text-slate-50 mr-4 md:mr-8 workshop-name-display truncate max-w-[120px] md:max-w-none">
+                    Faturamento</h2>
             </div>
-            <div class="flex items-center gap-4">
-                <div class="relative w-64 md:block hidden">
+            <div class="flex items-center gap-2 md:gap-4">
+                <div class="relative w-40 md:w-64 hidden sm:block">
                     <span
                         class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">search</span>
                     <input id="expense-search"
                         class="w-full pl-10 pr-4 py-2 bg-slate-100 dark:bg-slate-800 border-none rounded-full text-xs"
-                        placeholder="Buscar despesas..." type="text" oninput="applyExpenseFilters()">
+                        placeholder="Buscar..." type="text" oninput="applyExpenseFilters()">
                 </div>
                 <button class="text-slate-500 hover:text-orange-500 transition-all active:scale-95 duration-200">
                     <span class="material-symbols-outlined">notifications</span>
@@ -1825,32 +1827,34 @@
         </div>
 
         <!-- Financial Module Sub-navigation -->
-        <nav class="flex px-8 border-t border-orange-100/5">
+        <nav class="flex px-4 md:px-8 border-t border-orange-100/5 overflow-x-auto no-scrollbar whitespace-nowrap">
             <a href="painel-financeiro.html"
-                class="px-4 py-3 text-xs font-medium text-slate-500 hover:text-primary transition-colors">Resumo
+                class="px-4 py-3 text-[10px] md:text-xs font-medium text-slate-500 hover:text-primary transition-colors">Resumo
                 Dashboard</a>
             <a href="gestao-receita-financeiro.html"
-                class="px-4 py-3 text-xs font-medium text-slate-500 hover:text-primary transition-colors">Gestão de
-                Receitas</a>
+                class="px-4 py-3 text-[10px] md:text-xs font-medium text-slate-500 hover:text-primary transition-colors">Gestão
+                de Receitas</a>
             <a href="gestao-despesa-financeiro.html"
-                class="px-4 py-3 text-xs font-bold border-b-2 border-primary text-primary">Gestão de Despesas</a>
-            <a href="fluxo-caixa-financeiro.html"
-                class="px-4 py-3 text-xs font-medium text-slate-500 hover:text-primary transition-colors">Fluxo de
-                Caixa</a>
+                class="px-4 py-3 text-[10px] md:text-xs font-bold border-b-2 border-primary text-primary">Gestão de
+                Despesas</a>
+            <a href="javascript:void(0)"
+                class="px-4 py-3 text-[10px] md:text-xs font-medium text-slate-300 cursor-not-allowed">Fluxo de Caixa</a>
             <a href="gestao-comissoes-financeiro.html"
-                class="px-4 py-3 text-xs font-medium text-slate-500 hover:text-primary transition-colors">Comissões</a>
+                class="px-4 py-3 text-[10px] md:text-xs font-medium text-slate-500 hover:text-primary transition-colors">Comissões</a>
         </nav>
     </header>
     <!-- Main Content -->
-    <main class="lg:ml-64 mt-28 p-8 min-h-screen">
+    <main class="lg:ml-64 mt-28 p-4 md:p-8 min-h-screen pb-32">
         <!-- Dashboard Summary Bento Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8">
             <div
-                class="md:col-span-2 bg-surface-container-lowest p-6 rounded-xl shadow-sm border border-outline-variant/10">
+                class="col-span-2 bg-surface-container-lowest p-4 md:p-6 rounded-xl shadow-sm border border-outline-variant/10">
                 <div class="flex justify-between items-start mb-4">
                     <div>
-                        <p class="text-xs font-bold text-secondary uppercase tracking-widest">Saída Total do Mês</p>
-                        <h3 class="text-4xl font-black text-on-surface mt-1">R$ 0,00</h3>
+                        <p class="text-[10px] md:text-xs font-bold text-secondary uppercase tracking-widest">Saída Total
+                        </p>
+                        <h3 id="expense-summary-paid" class="text-xl md:text-4xl font-black text-on-surface mt-1">R$
+                            0,00</h3>
                     </div>
                     <div class="p-3 bg-red-100 text-red-600 rounded-full">
                         <span class="material-symbols-outlined">trending_down</span>
@@ -1861,16 +1865,18 @@
                     <span class="text-xs text-slate-400 font-medium tracking-tight">em relação ao mês anterior</span>
                 </div>
             </div>
-            <div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm border border-outline-variant/10">
-                <p class="text-xs font-bold text-secondary uppercase tracking-widest">A Pagar</p>
-                <h3 class="text-3xl font-black text-orange-600 mt-1">R$ 0,00</h3>
-                <p class="text-xs text-slate-400 mt-2 font-medium">0 faturas pendentes</p>
+            <div class="bg-surface-container-lowest p-4 md:p-6 rounded-xl shadow-sm border border-outline-variant/10">
+                <p class="text-[10px] md:text-xs font-bold text-secondary uppercase tracking-widest">A Pagar</p>
+                <h3 id="expense-summary-pending" class="text-lg md:text-3xl font-black text-orange-600 mt-1">R$ 0,00
+                </h3>
+                <p class="text-[10px] text-slate-400 mt-2 font-medium">0 pendentes</p>
             </div>
-            <div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm border border-outline-variant/10">
-                <p class="text-xs font-bold text-secondary uppercase tracking-widest">Dívidas Vencidas</p>
-                <h3 class="text-3xl font-black text-red-600 mt-1">R$ 0,00</h3>
+            <div class="bg-surface-container-lowest p-4 md:p-6 rounded-xl shadow-sm border border-outline-variant/10">
+                <p class="text-[10px] md:text-xs font-bold text-secondary uppercase tracking-widest">Dívidas Vencidas
+                </p>
+                <h3 id="expense-summary-overdue" class="text-lg md:text-3xl font-black text-red-600 mt-1">R$ 0,00</h3>
                 <div class="w-full bg-slate-100 h-1 rounded-full mt-4">
-                    <div class="bg-red-500 h-1 rounded-full w-0"></div>
+                    <div id="expense-progress-overdue" class="bg-red-500 h-1 rounded-full w-0"></div>
                 </div>
             </div>
         </div>
@@ -1879,33 +1885,43 @@
         <div class="bg-surface-container-low rounded-2xl p-1">
             <div class="bg-surface-container-lowest rounded-xl shadow-sm">
                 <!-- Table Controls -->
-                <div class="p-6 flex flex-col md:flex-row justify-between items-center gap-4">
-                    <div class="flex bg-surface-container-low p-1 rounded-full w-full md:w-auto overflow-x-auto">
+                <div class="p-4 md:p-6 flex flex-col md:flex-row justify-between items-stretch md:items-center gap-4">
+                    <div
+                        class="flex bg-surface-container-low p-1 rounded-full overflow-x-auto no-scrollbar whitespace-nowrap">
                         <button onclick="setExpenseFilter('all', this)"
-                            class="expense-filter-btn px-6 py-2 rounded-full text-sm font-bold bg-white shadow-sm text-on-surface transition-all whitespace-nowrap">Todas</button>
+                            class="expense-filter-btn px-4 md:px-6 py-1.5 md:py-2 rounded-full text-[10px] md:text-sm font-bold bg-white shadow-sm text-on-surface transition-all whitespace-nowrap">Todas</button>
                         <button onclick="setExpenseFilter('Pago', this)"
-                            class="expense-filter-btn px-6 py-2 rounded-full text-sm font-medium text-slate-500 hover:text-on-surface transition-all whitespace-nowrap">Pagas</button>
+                            class="expense-filter-btn px-4 md:px-6 py-1.5 md:py-2 rounded-full text-[10px] md:text-sm font-medium text-slate-500 hover:text-on-surface transition-all whitespace-nowrap">Pagas</button>
                         <button onclick="setExpenseFilter('Pendente', this)"
-                            class="expense-filter-btn px-6 py-2 rounded-full text-sm font-medium text-slate-500 hover:text-on-surface transition-all whitespace-nowrap">Pendentes</button>
+                            class="expense-filter-btn px-4 md:px-6 py-1.5 md:py-2 rounded-full text-[10px] md:text-sm font-medium text-slate-500 hover:text-on-surface transition-all whitespace-nowrap">Pendentes</button>
                         <button onclick="setExpenseFilter('Atrasado', this)"
-                            class="expense-filter-btn px-6 py-2 rounded-full text-sm font-medium text-slate-500 hover:text-on-surface transition-all whitespace-nowrap">Atrasadas</button>
+                            class="expense-filter-btn px-4 md:px-6 py-1.5 md:py-2 rounded-full text-[10px] md:text-sm font-medium text-slate-500 hover:text-on-surface transition-all whitespace-nowrap">Atrasadas</button>
                     </div>
-                    <div class="flex items-center gap-3">
-                        <div class="flex items-center gap-2">
-                            <div class="flex flex-col">
-                                <label class="text-[8px] font-black text-slate-400 uppercase ml-1">De</label>
+                    <div class="flex flex-col gap-3">
+                        <div class="grid grid-cols-2 gap-2">
+                            <div class="relative">
+                                <span
+                                    class="absolute left-2 top-1 text-[8px] font-black text-slate-400 uppercase leading-none">De</span>
                                 <input type="date" id="expense-date-start" onchange="applyExpenseFilters()"
-                                    class="text-[10px] font-bold text-slate-600 border border-slate-100 bg-slate-50 rounded-lg px-2 py-1.5 focus:ring-2 focus:ring-primary/20 outline-none">
+                                    class="w-full text-[10px] font-bold text-slate-600 border border-slate-100 bg-slate-50 rounded-lg pl-2 pr-1 pt-3 pb-1 focus:ring-2 focus:ring-primary/20 outline-none">
                             </div>
-                            <div class="flex flex-col">
-                                <label class="text-[8px] font-black text-slate-400 uppercase ml-1">Até</label>
+                            <div class="relative">
+                                <span
+                                    class="absolute left-2 top-1 text-[8px] font-black text-slate-400 uppercase leading-none">Até</span>
                                 <input type="date" id="expense-date-end" onchange="applyExpenseFilters()"
-                                    class="text-[10px] font-bold text-slate-600 border border-slate-100 bg-slate-50 rounded-lg px-2 py-1.5 focus:ring-2 focus:ring-primary/20 outline-none">
+                                    class="w-full text-[10px] font-bold text-slate-600 border border-slate-100 bg-slate-50 rounded-lg pl-2 pr-1 pt-3 pb-1 focus:ring-2 focus:ring-primary/20 outline-none">
                             </div>
                         </div>
-                        <div onclick="Financial.initExpensePage()"
-                            class="flex items-center gap-2 text-[10px] font-black text-secondary uppercase px-4 py-2 bg-slate-100 rounded-lg hover:bg-slate-200 transition-all cursor-pointer shadow-sm">
-                            <span class="material-symbols-outlined text-sm">refresh</span>
+                        <div class="flex items-center gap-2">
+                            <div onclick="Financial.initExpensePage()"
+                                class="flex items-center justify-center w-10 h-10 bg-slate-100 rounded-lg hover:bg-slate-200 transition-all cursor-pointer shadow-sm">
+                                <span class="material-symbols-outlined text-sm">refresh</span>
+                            </div>
+                            <div
+                                class="flex-1 flex items-center justify-center gap-2 text-[10px] font-bold text-secondary uppercase h-10 border border-outline-variant/15 rounded-lg hover:bg-surface-container-low transition-all cursor-pointer">
+                                <span class="material-symbols-outlined text-sm">download</span>
+                                <span>Exportar</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1915,45 +1931,42 @@
                     <table class="w-full text-left border-collapse">
                         <thead>
                             <tr class="bg-slate-50/50">
-                                <th class="px-8 py-4 text-left">
+                                <th class="hidden md:table-cell px-8 py-4 text-left">
                                     <input type="checkbox" id="select-all-expenses" onclick="toggleSelectAll(this)"
                                         class="rounded border-slate-300 text-primary focus:ring-primary">
                                 </th>
-                                <th class="px-4 py-4 cursor-pointer hover:bg-slate-100 transition-colors"
+                                <th class="px-4 md:px-6 py-4 cursor-pointer hover:bg-slate-100 transition-colors"
                                     onclick="handleExpenseSort('description')">
                                     <div class="flex items-center gap-1">
                                         <span
                                             class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Descrição</span>
-                                        <span class="material-symbols-outlined text-xs text-slate-300">swap_vert</span>
                                     </div>
                                 </th>
-                                <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                                <th
+                                    class="hidden sm:table-cell px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">
                                     Categoria</th>
-                                <th class="px-6 py-4 cursor-pointer hover:bg-slate-100 transition-colors"
+                                <th class="hidden md:table-cell px-6 py-4 cursor-pointer hover:bg-slate-100 transition-colors"
                                     onclick="handleExpenseSort('due_date')">
                                     <div class="flex items-center gap-1">
                                         <span
                                             class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Data</span>
-                                        <span class="material-symbols-outlined text-xs text-slate-300">swap_vert</span>
                                     </div>
                                 </th>
-                                <th class="px-6 py-4 cursor-pointer hover:bg-slate-100 transition-colors"
+                                <th class="hidden lg:table-cell px-6 py-4 cursor-pointer hover:bg-slate-100 transition-colors"
                                     onclick="handleExpenseSort('status')">
                                     <div class="flex items-center gap-1">
                                         <span
                                             class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Status</span>
-                                        <span class="material-symbols-outlined text-xs text-slate-300">swap_vert</span>
                                     </div>
                                 </th>
-                                <th class="px-6 py-4 text-right cursor-pointer hover:bg-slate-100 transition-colors"
+                                <th class="px-4 md:px-6 py-4 text-right cursor-pointer hover:bg-slate-100 transition-colors"
                                     onclick="handleExpenseSort('amount')">
                                     <div class="flex items-center justify-end gap-1">
                                         <span
                                             class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Valor</span>
-                                        <span class="material-symbols-outlined text-xs text-slate-300">swap_vert</span>
                                     </div>
                                 </th>
-                                <th class="px-8 py-4 text-right overflow-hidden"></th>
+                                <th class="px-4 md:px-8 py-4 text-right"></th>
                             </tr>
                         </thead>
                         <tbody id="expenses-list" class="divide-y divide-slate-50">
@@ -1979,33 +1992,11 @@
         </div>
         <!-- Asymmetric Utility Section -->
         <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="md:col-span-2">
-                <div
-                    class="bg-primary p-8 rounded-2xl relative overflow-hidden flex flex-col md:flex-row items-center gap-8 shadow-xl shadow-orange-500/10">
-                    <div class="absolute -right-10 -bottom-10 opacity-10">
-                        <span class="material-symbols-outlined text-[180px]"
-                            style="font-variation-settings: 'FILL' 1;">trending_down</span>
-                    </div>
-                    <div class="relative z-10 text-center md:text-left">
-                        <h3 class="text-white text-xl font-black mb-2">Redução de Custos Inteligente</h3>
-                        <p class="text-orange-100 text-sm max-w-md opacity-90 leading-relaxed">Nossa IA detectou um
-                            aumento de 15% em gastos com energia fora do horário comercial. Considere revisar o
-                            desligamento de equipamentos.</p>
-                        <button
-                            class="mt-6 bg-white text-primary text-xs font-bold px-6 py-3 rounded-full hover:bg-orange-50 transition-all uppercase tracking-wider">Ver
-                            Relatório Completo</button>
-                    </div>
-                    <div class="w-48 h-48 rounded-full overflow-hidden border-4 border-orange-400/30 flex-shrink-0">
-                        <img alt="Energy analysis graph" class="w-full h-full object-cover"
-                            data-alt="Close up of a tablet screen showing glowing energy consumption graphs and diagnostic data in a dark environment"
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCfpP6kw6e2lrqlOLq2MxGFsnbviVGuf2ttAwp0ILARL_7I2lFB6_Jlr19UYGkvlXZnSxHzKR4qWj0BsDsQCgXHbahIo1v9Ichta9HOsc4qz0nZrEr8Fa1E1vmOy1QsiPEt44YeRJBgUO1Zwhz-Lk2OWBR1KB_3VJ117XTOgkx5u37Qio5MHsppFwUnZ9TtGJoWN5RsHRywmxicy8pLj8O8F3QrP-hT3uJWjC6va1V2CCicSY2mpKwAbvcQc-hMygpQ2F17QkqnhJU">
-                    </div>
-                </div>
-            </div>
+
             <div class="bg-surface-container-high p-6 rounded-2xl flex flex-col">
                 <h4 class="text-sm font-black text-on-surface uppercase tracking-widest mb-6">Categorias Populares
                 </h4>
-                <div class="space-y-4 flex-1">
+                <div id="popular-categories-list" class="space-y-4 flex-1">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-2">
                             <div class="w-3 h-3 rounded-full bg-primary"></div>
@@ -2036,8 +2027,7 @@
                     </div>
                 </div>
                 <div class="mt-8 pt-6 border-t border-outline-variant/10">
-                    <p class="text-[10px] text-slate-500 leading-tight">Total de despesas registradas no último
-                        trimestre: <span class="text-on-surface font-bold">R$ 52.401,10</span></p>
+                    <p class="text-[10px] text-slate-500 leading-tight">Total de despesas registradas (últimos 90 dias): <span id="expense-trimestre-total" class="text-on-surface font-bold">R$ 0,00</span></p>
                 </div>
             </div>
         </div>

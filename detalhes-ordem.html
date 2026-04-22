@@ -1,17 +1,18 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html lang="pt-BR">
 
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Detalhes da Ordem de Serviço - MecânicoPro</title>
+    <title>Detalhes da OS | MyFleetCar</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap"
         rel="stylesheet" />
     <link
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-        rel="stylesheet" />
+        rel="stylesheet">
+    <link rel="icon" type="image/png" href="img/favicon-myfleetcar.png" />
 
     <script id="tailwind-config">
         tailwind.config = {
@@ -165,7 +166,7 @@
     <aside
         class="h-screen w-64 fixed left-0 top-0 -translate-x-full lg:translate-x-0 transition-transform duration-300 z-[100] sidebar-mobile bg-slate-50 dark:bg-slate-900 flex flex-col py-6 space-y-2 z-50 overflow-y-auto border-r border-orange-100/15">
         <div class="px-6 mb-8">
-            <h1 class="text-xl font-bold text-orange-600 workshop-name-display">AutoFlow</h1>
+            <img src="img/mainlogohorizontalfull-myfleetcar.png" alt="MyFleetCar Logo" class="h-10 w-auto mb-2">
             <p class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Mechanical Excellence</p>
         </div>
 
@@ -228,42 +229,45 @@
     <main class="flex-1 flex flex-col min-w-0">
         <!-- Predicted TopNavBar (Integrated into layout) -->
     <header
-        class="fixed top-0 right-0 w-full lg:w-[calc(100%-16rem)] z-40 z-40 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl border-b border-orange-100/15 dark:border-slate-800/50 shadow-sm">
-        <div class="flex justify-between items-center px-8 h-16 w-full">
-            <div class="flex items-center text-primary">
-                <h2 class="text-lg font-bold text-slate-900 dark:text-slate-50 mr-8 workshop-name-display">Ordens de Serviço</h2>
+        class="fixed top-0 right-0 w-full lg:w-[calc(100%-16rem)] z-40 bg-white/90 backdrop-blur-xl border-b border-orange-100/15 shadow-sm">
+        <div class="flex justify-between items-center px-4 md:px-8 h-16 w-full">
+            <div class="flex items-center gap-2 md:gap-4">
+                <button onclick="window.location.href='lista-ordem.html'" class="p-2 text-slate-400 hover:text-primary transition-colors lg:hidden">
+                    <span class="material-symbols-outlined">arrow_back</span>
+                </button>
+                <h2 class="text-sm md:text-lg font-bold text-slate-900 truncate max-w-[150px] md:max-w-none">Detalhes da Ordem</h2>
             </div>
-            <div class="flex items-center gap-4">
-                <div class="relative w-64 md:block hidden">
-                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">search</span>
-                    <input class="w-full pl-10 pr-4 py-2 bg-slate-100 dark:bg-slate-800 border-none rounded-full text-xs" placeholder="Buscar OS..." type="text">
-                </div>
-                <button class="text-slate-500 hover:text-orange-500 transition-all active:scale-95 duration-200">
-                    <span class="material-symbols-outlined">notifications</span>
+            <div class="flex items-center gap-2 md:gap-4">
+                <button class="text-slate-500 hover:text-orange-500 transition-all p-2">
+                    <span class="material-symbols-outlined text-[20px] md:text-[24px]">notifications</span>
+                </button>
+                <div class="h-6 w-[1px] bg-slate-200 mx-1"></div>
+                <button onclick="window.print()" class="p-2 text-slate-500 hover:text-primary no-print">
+                    <span class="material-symbols-outlined text-[20px] md:text-[24px]">print</span>
                 </button>
             </div>
         </div>
 
-        <!-- Service Module Sub-navigation -->
-        <nav class="flex px-8 border-t border-orange-100/5">
+        <!-- Service Module Sub-navigation (Scrollable on Mobile) -->
+        <nav class="flex px-4 md:px-8 border-t border-orange-100/5 overflow-x-auto no-scrollbar whitespace-nowrap">
             <a href="lista-ordem.html"
-                class="px-4 py-3 text-xs font-medium text-slate-500 hover:text-primary transition-colors">Lista de Ordens</a>
+                class="px-4 py-2 md:py-3 text-[10px] md:text-xs font-medium text-slate-500 hover:text-primary transition-colors">Lista de Ordens</a>
             <a href="nova-ordem.html"
-                class="px-4 py-3 text-xs font-medium text-slate-500 hover:text-primary transition-colors">Nova Ordem</a>
-            <a href="detalhes-ordem.html"
-                class="px-4 py-3 text-xs font-bold border-b-2 border-primary text-primary">Detalhes da Ordem</a>
+                class="px-4 py-2 md:py-3 text-[10px] md:text-xs font-medium text-slate-500 hover:text-primary transition-colors">Nova Ordem</a>
+            <a href="#"
+                class="px-4 py-2 md:py-3 text-[10px] md:text-xs font-bold border-b-2 border-primary text-primary">Detalhes da Ordem</a>
         </nav>
     </header>
         <!-- Page Content -->
-        <div class="mt-28 p-8 max-w-7xl mx-auto w-full">
+        <div class="mt-28 md:mt-32 p-4 md:p-8 max-w-7xl mx-auto w-full">
             
             <!-- Professional Print Header -->
             <div class="hidden print-only-header items-center justify-between mb-8 border-b-2 border-orange-500 pb-6">
                 <div class="flex items-center gap-4">
                     <div class="w-16 h-16 bg-orange-600 rounded-2xl flex items-center justify-center text-white font-black text-2xl">AF</div>
                     <div>
-                        <h1 class="text-2xl font-black text-slate-900 workshop-name-display text-orange-600">AutoFlow SaaS</h1>
-                        <p class="text-xs text-slate-500 uppercase tracking-widest font-black">Ordem de Serviço Profissional</p>
+                        <img src="img/mainlogohorizontalfull-myfleetcar.png" alt="MyFleetCar Logo" class="h-12 w-auto mb-1">
+                        <p class="text-[10px] text-slate-500 uppercase tracking-widest font-black">Ordem de Serviço Profissional</p>
                     </div>
                 </div>
                 <div class="text-right">
@@ -274,28 +278,28 @@
             </div>
 
             <!-- Service Order Header -->
-            <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 no-print">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 md:gap-6 mb-8 md:mb-12 no-print">
                 <div>
-                    <div class="flex items-center gap-3 mb-2">
-                        <span class="text-sm font-bold text-orange-600 tracking-widest uppercase">Ordem de
+                    <div class="flex items-center gap-2 md:gap-3 mb-1 md:mb-2">
+                        <span class="text-[10px] md:text-sm font-bold text-orange-600 tracking-widest uppercase">Ordem de
                             Serviço</span>
                         <span class="h-1 w-1 bg-slate-300 rounded-full"></span>
-                        <span class="text-sm text-slate-500 font-medium order-date-display">Carregando...</span>
+                        <span class="text-[10px] md:text-sm text-slate-500 font-medium order-date-display">Carregando...</span>
                     </div>
 
-                    <div class="flex items-center gap-4">
-                        <h2 class="text-4xl font-extrabold text-on-surface tracking-tighter order-id-display">#OS-</h2>
+                    <div class="flex items-center gap-3 md:gap-4">
+                        <h2 class="text-2xl md:text-4xl font-extrabold text-on-surface tracking-tighter order-id-display">#OS-</h2>
                         <div id="order-status-badge"
-                            class="px-3 py-1 bg-slate-100 text-slate-600 text-xs font-bold rounded-full border border-slate-200">
+                            class="px-2 py-0.5 md:px-3 md:py-1 bg-slate-100 text-slate-600 text-[10px] font-bold rounded-lg border border-slate-200 uppercase">
                             AGUARDANDO
                         </div>
-                        <button onclick="requestOrderDeletion()" class="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all" title="Excluir Ordem de Serviço">
-                            <span class="material-symbols-outlined text-xl">delete</span>
+                        <button onclick="requestOrderDeletion()" class="p-1.5 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all" title="Excluir Ordem de Serviço">
+                            <span class="material-symbols-outlined text-lg md:text-xl">delete</span>
                         </button>
                     </div>
 
                 </div>
-                <div class="flex flex-wrap items-center gap-3" id="status-actions">
+                <div class="flex flex-wrap items-center gap-2 md:gap-3" id="status-actions">
                     <!-- Buttons will be injected here by JS -->
                     <p class="text-xs text-slate-400 animate-pulse">Carregando ações...</p>
                 </div>
@@ -373,11 +377,12 @@
                                 <thead class="bg-surface-container-low">
                                     <tr>
                                     <tr>
-                                        <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Descrição</th>
-                                        <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">Mecânico</th>
-                                        <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">Qtd</th>
-                                        <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Preço Un.</th>
-                                        <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">Subtotal</th>
+                                    <tr class="text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-100">
+                                        <th class="px-4 md:px-6 py-4">Descrição</th>
+                                        <th class="hidden md:table-cell px-6 py-4 text-center">Mecânico</th>
+                                        <th class="hidden sm:table-cell px-6 py-4 text-center">Qtd</th>
+                                        <th class="hidden sm:table-cell px-6 py-4">Preço Un.</th>
+                                        <th class="px-4 md:px-6 py-4 text-right">Subtotal</th>
                                     </tr>
                                 </thead>
                                 <tbody id="order-items-list">
@@ -436,8 +441,8 @@
                                         <span class="material-symbols-outlined text-xl">chat</span>
                                     </div>
                                     <div class="text-left">
-                                        <p class="text-sm font-bold">Enviar via WhatsApp</p>
-                                        <p class="text-xs text-slate-500">Notificar cliente do status</p>
+                                        <p class="text-sm font-bold">Enviar PDF via WhatsApp</p>
+                                        <p class="text-xs text-slate-500">Enviar link do documento para o cliente</p>
                                     </div>
                                 </div>
                                 <span
@@ -451,7 +456,7 @@
                                         <span class="material-symbols-outlined text-xl">picture_as_pdf</span>
                                     </div>
                                     <div class="text-left">
-                                        <p class="text-sm font-bold">Gerar PDF da OS</p>
+                                        <p class="text-sm font-bold">Baixar PDF da OS</p>
                                         <p class="text-xs text-slate-500">Download do documento oficial</p>
                                     </div>
                                 </div>
@@ -681,6 +686,7 @@ div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="supabase-config.js"></script>
     <script src="navigation.js"></script>
     <script src="service_orders.js"></script>

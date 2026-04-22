@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="utf-8" />
@@ -29,7 +29,7 @@
                 </div>
                 <div>
                     <h1 id="print-workshop-name" class="text-xl font-black text-slate-900 leading-none">Minha Oficina</h1>
-                    <p class="text-[8px] text-slate-400 uppercase tracking-widest mt-1 font-bold">Processado via AutoFlow SaaS</p>
+                    <p class="text-[8px] text-slate-400 uppercase tracking-widest mt-1 font-bold">Processado via MyFleetCar SaaS</p>
                 </div>
             </div>
             <div class="text-right">
@@ -120,19 +120,51 @@
 
         <div class="no-print fixed bottom-8 right-8 flex gap-3">
              <button onclick="window.close()" class="bg-slate-100 text-slate-500 px-6 py-2 rounded-lg font-bold">Fechar</button>
+             <button onclick="downloadAsPDF()" id="btn-download-pdf" class="bg-blue-600 text-white px-8 py-2 rounded-lg font-bold shadow-lg flex items-center gap-2">
+                <span class="material-symbols-outlined text-sm">download</span> Baixar PDF Oficial
+             </button>
              <button onclick="window.print()" class="bg-orange-600 text-white px-8 py-2 rounded-lg font-bold shadow-lg">Imprimir Documento</button>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="supabase-config.js"></script>
     <script>
+        async function downloadAsPDF() {
+            const element = document.querySelector('.max-w-\\[21cm\\]');
+            const btn = document.getElementById('btn-download-pdf');
+            const originalContent = btn.innerHTML;
+            
+            // UI Feedback
+            btn.innerHTML = '<span class="material-symbols-outlined animate-spin text-sm">sync</span> Gerando...';
+            btn.disabled = true;
+
+            const osNumber = document.querySelector('.order-no-display').textContent.trim().replace(/\//g, '_');
+            const options = {
+                margin: 0,
+                filename: `OS_${osNumber}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 3, useCORS: true, logging: false },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            try {
+                await html2pdf().from(element).set(options).save();
+            } catch (err) {
+                console.error(err);
+                alert('Erro ao gerar PDF');
+            } finally {
+                btn.innerHTML = originalContent;
+                btn.disabled = false;
+            }
+        }
         document.addEventListener('DOMContentLoaded', async () => {
             const urlParams = new URLSearchParams(window.location.search);
             const id = urlParams.get('id');
             if (!id) return;
 
-            const { data: order, error } = await AutoFlow.DB.select('service_orders', {
+            const { data: order, error } = await MyFleetCar.DB.select('service_orders', {
                 select: '*, customers(*), vehicles(*)',
                 match: { id }
             });
@@ -141,7 +173,7 @@
             const o = order[0];
 
             // Load Workshop Profile for branding
-            const { data: profile } = await AutoFlow.DB.select('profiles', { match: { id: o.workshop_id } });
+            const { data: profile } = await MyFleetCar.DB.select('profiles', { match: { id: o.workshop_id } });
             if (profile && profile[0]) {
                 document.getElementById('print-workshop-name').textContent = profile[0].workshop_name;
                 document.getElementById('workshop-initials').textContent = profile[0].workshop_name.slice(0, 2).toUpperCase();
@@ -160,7 +192,7 @@
             document.getElementById('status-print').textContent = `STATUS: ${o.status.toUpperCase()}`;
 
             // Load History
-            const { data: history } = await AutoFlow.DB.select('service_order_history', { 
+            const { data: history } = await MyFleetCar.DB.select('service_order_history', { 
                 match: { service_order_id: id }, 
                 order: { column: 'created_at', ascending: true } 
             });

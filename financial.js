@@ -1,11 +1,11 @@
 /**
- * AutoFlow Financial Module Logic
+ * MyFleetCar Financial Module Logic
  */
 
 const Financial = {
     async initDashboard() {
         try {
-            const { data: { user } } = await AutoFlow.Auth.getUser();
+            const { data: { user } } = await MyFleetCar.Auth.getUser();
             if (!user) return;
 
             const now = new Date();
@@ -13,39 +13,42 @@ const Financial = {
             const lastDayOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).toISOString().split('T')[0];
 
             // 1. Fetch ALL financial transactions for the workshop
-            // We filter in memory to handle fallback between due_date and created_at
-            const { data: allTransactions } = await AutoFlow.DB.select('financial_transactions', {
+            const { data: allTransactions } = await MyFleetCar.DB.select('financial_transactions', {
                 match: { workshop_id: user.id }
             });
 
-            const transactions = (allTransactions || []).filter(t => {
+            const currentMonthTransactions = (allTransactions || []).filter(t => {
                 const date = t.due_date || t.created_at || '';
                 const d = date.split('T')[0];
                 return d >= firstDayOfMonth && d <= lastDayOfMonth;
             });
 
-            // 2. Fetch specific OS linked to these transactions to calculate commissions
-            const linkedOsIds = [...new Set((transactions || [])
+            // 2. Fetch specific OS linked to ALL transactions (to have customer data for analytics)
+            const linkedOsIds = [...new Set((allTransactions || [])
                 .filter(t => t.service_order_id)
                 .map(t => t.service_order_id))];
 
             let orders = [];
             if (linkedOsIds.length > 0) {
-                const { data: osData } = await AutoFlow.DB.select('service_orders', {
+                const { data: osData } = await MyFleetCar.DB.select('service_orders', {
+                    select: '*, customers(*)',
                     in: { id: linkedOsIds }
                 });
                 orders = osData || [];
             }
 
             // 3. Fetch Staff to calculate commissions
-            const { data: staff } = await AutoFlow.DB.select('staff', {
+            const { data: staff } = await MyFleetCar.DB.select('staff', {
                 match: { workshop_id: user.id }
             });
 
-            this.renderMetrics(orders, transactions || [], staff || []);
+            this.renderMetrics(orders, currentMonthTransactions || [], staff || []);
             this.renderRecentTransactions(user.id);
+            this.renderChart(allTransactions || []);
+            this.renderOperationalInsights(allTransactions || []);
+            this.renderTopCustomers(orders, allTransactions || []);
         } catch (err) {
-            console.error('Financial Init Error:', err);
+            console.error('Financial Dashboard Error:', err);
         }
     },
 
@@ -76,29 +79,31 @@ const Financial = {
         const osPaidCount = transactions.filter(t => t.service_order_id && t.type === 'Receita' && t.status === 'Pago').length;
         const osPendingCount = transactions.filter(t => t.service_order_id && t.type === 'Receita' && t.status === 'Pendente').length;
 
-        // Update DOM
-        const metrics = document.querySelectorAll('h3.text-2xl.font-black');
+        // Update DOM using IDs (robust) or selectors (fallback)
+        const metricBruto = document.getElementById('metric-bruto') || document.querySelectorAll('h3.font-black')[0];
+        const metricPrevisto = document.getElementById('metric-previsto') || document.querySelectorAll('h3.font-black')[1];
+        const metricLiquido = document.getElementById('metric-liquido') || document.querySelectorAll('h3.font-black')[2];
+        const metricComissoes = document.getElementById('metric-comissoes') || document.querySelectorAll('h3.font-black')[3];
+        const metricOs = document.getElementById('metric-os-summary') || document.querySelectorAll('h3.font-black')[4];
+
+        if (metricBruto) metricBruto.textContent = `R$ ${grossRevenue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+        if (metricPrevisto) metricPrevisto.textContent = `R$ ${forecastedRevenue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+        if (metricLiquido) {
+            metricLiquido.textContent = `R$ ${netProfit.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+            metricLiquido.classList.remove('text-green-600', 'text-red-600');
+            metricLiquido.classList.add(netProfit >= 0 ? 'text-green-600' : 'text-red-600');
+        }
+        if (metricComissoes) metricComissoes.textContent = `R$ ${totalCommissions.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+        if (metricOs) metricOs.innerHTML = `<span class="text-green-600">${osPaidCount} Paga</span> / <span class="text-blue-600">${osPendingCount} Pend.</span>`;
+
+        // Labels (Optional update)
         const labels = document.querySelectorAll('.grid p.font-bold.uppercase');
-
-        if (metrics.length >= 5) {
-            // Bruto
-            metrics[0].textContent = `R$ ${grossRevenue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
-            // Previsto
-            metrics[1].textContent = `R$ ${forecastedRevenue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
-            // Líquido
-            metrics[2].textContent = `R$ ${netProfit.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
-            metrics[2].className = `text-2xl font-black ${netProfit >= 0 ? 'text-green-600' : 'text-red-600'}`;
-            // Dívida de Comissões
-            metrics[3].textContent = `R$ ${totalCommissions.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
-            // Resumo
-            metrics[4].innerHTML = `<span class="text-green-600">${osPaidCount} Paga</span> / <span class="text-blue-600">${osPendingCount} Pend.</span>`;
-
-            // Fix labels
-            if (labels[0]) labels[0].textContent = 'Mensal Bruto';
-            if (labels[1]) labels[1].textContent = 'Mensal Previsto';
-            if (labels[2]) labels[2].textContent = 'Mensal Líquido';
-            if (labels[3]) labels[3].textContent = 'Comissões (Dívida)';
-            if (labels[4]) labels[4].textContent = 'Resumo OS';
+        if (labels.length >= 5) {
+            labels[0].textContent = 'Mensal Bruto';
+            labels[1].textContent = 'Mensal Previsto';
+            labels[2].textContent = 'Mensal Líquido';
+            labels[3].textContent = 'Comissões (Dívida)';
+            labels[4].textContent = 'Resumo OS';
         }
     },
 
@@ -199,15 +204,15 @@ const Financial = {
 
     async initCommissionsPage() {
         try {
-            const { data: { user } } = await AutoFlow.Auth.getUser();
+            const { data: { user } } = await MyFleetCar.Auth.getUser();
             if (!user) return;
 
             // Fetch data similar to dashboard (all workshop transactions)
-            const { data: allTransactions } = await AutoFlow.DB.select('financial_transactions', {
+            const { data: allTransactions } = await MyFleetCar.DB.select('financial_transactions', {
                 match: { workshop_id: user.id }
             });
 
-            const { data: staff } = await AutoFlow.DB.select('staff', {
+            const { data: staff } = await MyFleetCar.DB.select('staff', {
                 match: { workshop_id: user.id }
             });
 
@@ -218,7 +223,7 @@ const Financial = {
 
             let orders = [];
             if (linkedOsIds.length > 0) {
-                const { data: osData } = await AutoFlow.DB.select('service_orders', {
+                const { data: osData } = await MyFleetCar.DB.select('service_orders', {
                     in: { id: linkedOsIds }
                 });
                 orders = osData || [];
@@ -363,7 +368,7 @@ const Financial = {
         if (!confirm(`Confirmar pagamento de R$ ${amount.toLocaleString('pt-BR', { minimumFractionDigits: 2 })} para ${employeeName}?`)) return;
 
         try {
-            const { data: { user } } = await AutoFlow.Auth.getUser();
+            const { data: { user } } = await MyFleetCar.Auth.getUser();
             if (!user) return;
 
             // Create a 'Despesa' transaction for this commission
@@ -379,7 +384,7 @@ const Financial = {
                 description: `Comissão ${osRef} (${itemName}) - Beneficiário: ${employeeName}`
             };
 
-            const { error } = await AutoFlow.DB.insert('financial_transactions', newExpense);
+            const { error } = await MyFleetCar.DB.insert('financial_transactions', newExpense);
             
             if (error) throw error;
 
@@ -395,7 +400,7 @@ const Financial = {
         if (!confirm('Deseja reverter (excluir) este pagamento e voltar a comissão para pendente?')) return;
         
         try {
-            const { error } = await AutoFlow.DB.delete('financial_transactions', { id: transactionId });
+            const { error } = await MyFleetCar.DB.delete('financial_transactions', { id: transactionId });
             if (error) throw error;
             
             alert('Pagamento revertido com sucesso!');
@@ -412,7 +417,7 @@ const Financial = {
 
         try {
             // Get combined recent items (could also merge OS here if we want a unified view)
-            const { data: transactions } = await AutoFlow.DB.select('financial_transactions', {
+            const { data: transactions } = await MyFleetCar.DB.select('financial_transactions', {
                 match: { workshop_id: workshopId },
                 order: { column: 'created_at', ascending: false },
                 limit: 5
@@ -446,14 +451,14 @@ const Financial = {
 
     async initRevenuePage() {
         try {
-            const { data: { user } } = await AutoFlow.Auth.getUser();
+            const { data: { user } } = await MyFleetCar.Auth.getUser();
             if (!user) return;
 
             const now = new Date();
             const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
 
             // 1. Fetch ALL Transactions for the workshop
-            const { data: allTransactions, error: transError } = await AutoFlow.DB.select('financial_transactions', {
+            const { data: allTransactions, error: transError } = await MyFleetCar.DB.select('financial_transactions', {
                 match: { workshop_id: user.id },
                 order: { column: 'created_at', ascending: false }
             });
@@ -467,7 +472,7 @@ const Financial = {
             const osIds = [...new Set(revenueTransactions.filter(t => t.service_order_id).map(t => t.service_order_id))];
             let orders = [];
             if (osIds.length > 0) {
-                const { data: osData } = await AutoFlow.DB.select('service_orders', {
+                const { data: osData } = await MyFleetCar.DB.select('service_orders', {
                     select: '*, customers(*)',
                     in: { id: osIds }
                 });
@@ -651,13 +656,14 @@ const Financial = {
         const totalPending = currentMonth.filter(t => t.status === 'Pendente').reduce((acc, t) => acc + parseFloat(t.amount || 0), 0);
         const avgTicket = currentMonth.length > 0 ? (totalPaid / currentMonth.length) : 0;
 
-        // Update Bento Summary
-        const mainMetrics = document.querySelectorAll('h3.font-black');
-        if (mainMetrics.length >= 3) {
-            mainMetrics[0].textContent = `R$ ${totalPaid.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
-            mainMetrics[1].textContent = `R$ ${totalPending.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
-            mainMetrics[2].textContent = `R$ ${avgTicket.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
-        }
+        // Update Bento Summary using specific IDs
+        const summaryPaid = document.getElementById('revenue-summary-paid') || document.querySelectorAll('h3.font-black')[0];
+        const summaryPending = document.getElementById('revenue-summary-pending') || document.querySelectorAll('h3.font-black')[1];
+        const summaryAvg = document.getElementById('revenue-summary-avg') || document.querySelectorAll('h3.font-black')[2];
+
+        if (summaryPaid) summaryPaid.textContent = `R$ ${totalPaid.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+        if (summaryPending) summaryPending.textContent = `R$ ${totalPending.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+        if (summaryAvg) summaryAvg.textContent = `R$ ${avgTicket.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
 
         const forecastingDisplay = document.querySelector('.forecasting-display');
         if (forecastingDisplay) {
@@ -670,7 +676,7 @@ const Financial = {
     async initExpensePage() {
         console.log('[DEBUG] Iniciando página de despesas...');
         try {
-            const { data: { user } } = await AutoFlow.Auth.getUser();
+            const { data: { user } } = await MyFleetCar.Auth.getUser();
             if (!user) {
                 console.error('[DEBUG] Usuário não autenticado.');
                 return;
@@ -680,7 +686,7 @@ const Financial = {
             const now = new Date();
             const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
 
-            const { data: allTransactions, error } = await AutoFlow.DB.select('financial_transactions', {
+            const { data: allTransactions, error } = await MyFleetCar.DB.select('financial_transactions', {
                 match: { workshop_id: user.id },
                 order: { column: 'due_date', ascending: false }
             });
@@ -718,6 +724,7 @@ const Financial = {
 
             this.applyExpenseFilters();
             this.renderExpenseSummary(expenses, firstDayOfMonth);
+            this.renderPopularCategories(expenses);
         } catch (err) {
             console.error('[DEBUG] Erro Fatal no initExpensePage:', err);
         }
@@ -863,16 +870,225 @@ const Financial = {
 
         const totalOverdue = transactions.filter(t => t.status !== 'Pago' && new Date(t.due_date || t.created_at) < now).reduce((acc, t) => acc + parseFloat(t.amount || 0), 0);
 
-        const mainMetrics = document.querySelectorAll('h3.font-black');
-        if (mainMetrics.length >= 3) {
-            mainMetrics[0].textContent = `R$ ${totalPaid.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
-            mainMetrics[1].textContent = `R$ ${totalPending.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
-            mainMetrics[2].textContent = `R$ ${totalOverdue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+        // Update Summary using specific IDs
+        const summaryPaid = document.getElementById('expense-summary-paid') || document.querySelectorAll('h3.font-black')[0];
+        const summaryPending = document.getElementById('expense-summary-pending') || document.querySelectorAll('h3.font-black')[1];
+        const summaryOverdue = document.getElementById('expense-summary-overdue') || document.querySelectorAll('h3.font-black')[2];
 
-            // Progress bar for overdue (visual only for now)
-            const progressBar = document.querySelector('.bg-red-500');
-            if (progressBar) progressBar.style.width = totalOverdue > 0 ? '100%' : '0%';
+        if (summaryPaid) summaryPaid.textContent = `R$ ${totalPaid.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+        if (summaryPending) summaryPending.textContent = `R$ ${totalPending.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+        if (summaryOverdue) summaryOverdue.textContent = `R$ ${totalOverdue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+
+        const progressBarOverdue = document.getElementById('expense-progress-overdue');
+        if (progressBarOverdue) progressBarOverdue.style.width = totalOverdue > 0 ? '100%' : '0%';
+    },
+
+    renderChart(transactions) {
+        const chartContainer = document.getElementById('financial-main-chart');
+        const labelContainer = document.getElementById('financial-chart-labels');
+        if (!chartContainer || !labelContainer) return;
+
+        const months = [];
+        const now = new Date();
+        for (let i = 5; i >= 0; i--) {
+            const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+            months.push({
+                year: d.getFullYear(),
+                month: d.getMonth(),
+                label: d.toLocaleDateString('pt-BR', { month: 'short' }).toUpperCase().replace('.', ''),
+                revenue: 0,
+                expense: 0
+            });
         }
+
+        transactions.forEach(t => {
+            const dateStr = t.due_date || t.created_at;
+            if (!dateStr) return;
+            const date = new Date(dateStr);
+            const mIdx = months.findIndex(m => m.year === date.getFullYear() && m.month === date.getMonth());
+            if (mIdx !== -1) {
+                if (t.type === 'Receita' && t.status === 'Pago') months[mIdx].revenue += (t.amount || 0);
+                if (t.type === 'Despesa' && t.status === 'Pago') months[mIdx].expense += (t.amount || 0);
+            }
+        });
+
+        const maxVal = Math.max(...months.map(m => Math.max(m.revenue, m.expense)), 1);
+
+        chartContainer.innerHTML = months.map(m => {
+            const revHeight = (m.revenue / maxVal) * 100;
+            const expHeight = (m.expense / maxVal) * 100;
+            return `
+                <div class="flex-1 h-full flex items-end space-x-1 group relative">
+                    <div class="w-full bg-primary-container rounded-t-sm transition-all duration-500 hover:brightness-110" style="height: ${revHeight}%" title="Receita: R$ ${m.revenue.toLocaleString('pt-BR')}"></div>
+                    <div class="w-full bg-tertiary rounded-t-sm transition-all duration-500 hover:brightness-110" style="height: ${expHeight}%" title="Despesa: R$ ${m.expense.toLocaleString('pt-BR')}"></div>
+                </div>
+            `;
+        }).join('');
+
+        labelContainer.innerHTML = months.map(m => `
+            <span class="text-[10px] font-bold text-slate-400 w-full text-center">${m.label}</span>
+        `).join('');
+    },
+
+    renderOperationalInsights(transactions) {
+        const container = document.getElementById('category-insights-list');
+        if (!container) return;
+
+        const categories = {};
+        let totalRevenue = 0;
+
+        transactions.filter(t => t.type === 'Receita' && t.status === 'Pago').forEach(t => {
+            const cat = t.category || 'Geral';
+            categories[cat] = (categories[cat] || 0) + (t.amount || 0);
+            totalRevenue += (t.amount || 0);
+        });
+
+        const sortedCategories = Object.entries(categories)
+            .sort((a, b) => b[1] - a[1])
+            .filter(([cat, val]) => val > 0);
+
+        if (sortedCategories.length === 0) {
+            container.innerHTML = '<div class="py-4 text-center text-slate-400 text-[10px] italic">Sem dados de faturamento por categoria.</div>';
+            return;
+        }
+
+        container.innerHTML = sortedCategories.slice(0, 5).map(([cat, val]) => {
+            const percent = totalRevenue > 0 ? (val / totalRevenue * 100).toFixed(0) : 0;
+            return `
+                <div>
+                    <div class="flex justify-between text-[10px] font-bold mb-1">
+                        <span>${cat}</span>
+                        <span>${percent}%</span>
+                    </div>
+                    <div class="h-1.5 bg-slate-200 rounded-full">
+                        <div class="h-1.5 bg-tertiary rounded-full" style="width: ${percent}%"></div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    },
+
+    renderTopCustomers(orders, transactions) {
+        const container = document.getElementById('top-customers-list');
+        if (!container) return;
+
+        const customerStats = {};
+
+        // Use all available orders with customer data
+        orders.forEach(o => {
+            if (!o.customers) return;
+            const cid = o.customers.id;
+            if (!customerStats[cid]) {
+                customerStats[cid] = {
+                    name: o.customers.full_name,
+                    servicesCount: 0,
+                    totalValue: 0,
+                    paidOnTime: 0,
+                    totalTransactions: 0
+                };
+            }
+            customerStats[cid].servicesCount++;
+        });
+
+        transactions.filter(t => t.service_order_id && t.type === 'Receita').forEach(t => {
+            const order = orders.find(o => o.id === t.service_order_id);
+            if (!order || !order.customers) return;
+            const cid = order.customers.id;
+            
+            customerStats[cid].totalTransactions++;
+            if (t.status === 'Pago') {
+                customerStats[cid].totalValue += (t.amount || 0);
+                customerStats[cid].paidOnTime++;
+            }
+        });
+
+        const sortedCustomers = Object.values(customerStats)
+            .map(c => {
+                const paidRatio = c.totalTransactions > 0 ? c.paidOnTime / c.totalTransactions : 0;
+                // Mixed score: services weight 10, payment punctuality weight 50, value weight per 1k
+                c.score = (c.servicesCount * 10) + (paidRatio * 50) + (c.totalValue / 1000);
+                return c;
+            })
+            .sort((a, b) => b.score - a.score)
+            .filter(c => c.servicesCount > 0);
+
+        if (sortedCustomers.length === 0) {
+            container.innerHTML = '<div class="py-4 text-center text-slate-400 text-[10px] italic">Nenhum cliente com dados suficientes.</div>';
+            return;
+        }
+
+        container.innerHTML = sortedCustomers.slice(0, 3).map(c => `
+            <div class="flex items-center justify-between group">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 font-bold text-[10px]">
+                        ${c.name.charAt(0)}
+                    </div>
+                    <div>
+                        <p class="text-xs font-bold text-on-surface">${c.name}</p>
+                        <p class="text-[9px] text-slate-400 font-bold uppercase">${c.servicesCount} OS • R$ ${c.totalValue.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</p>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <span class="px-2 py-1 bg-green-50 text-green-700 rounded text-[9px] font-black uppercase tracking-tighter">
+                        ${( (c.paidOnTime / (c.totalTransactions || 1)) * 100 ).toFixed(0)}% Pontual
+                    </span>
+                </div>
+            </div>
+        `).join('');
+    },
+
+    renderPopularCategories(expenses) {
+        const container = document.getElementById('popular-categories-list');
+        const trimesterTotal = document.getElementById('expense-trimestre-total');
+        if (!container) return;
+
+        const now = new Date();
+        const ninetyDaysAgo = new Date();
+        ninetyDaysAgo.setDate(now.getDate() - 90);
+
+        const recentExpenses = expenses.filter(t => {
+            const date = new Date(t.due_date || t.created_at);
+            return date >= ninetyDaysAgo;
+        });
+
+        const categories = {};
+        let totalAmount = 0;
+
+        recentExpenses.forEach(t => {
+            const cat = t.category || 'Geral';
+            const amount = Math.abs(t.amount || 0);
+            categories[cat] = (categories[cat] || 0) + amount;
+            totalAmount += amount;
+        });
+
+        if (trimesterTotal) {
+            trimesterTotal.textContent = `R$ ${totalAmount.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+        }
+
+        const sortedCategories = Object.entries(categories)
+            .sort((a, b) => b[1] - a[1])
+            .filter(([cat, val]) => val > 0);
+
+        if (sortedCategories.length === 0) {
+            container.innerHTML = '<div class="py-4 text-center text-slate-400 text-[10px] italic">Sem dados de categorias populares.</div>';
+            return;
+        }
+
+        const colors = ['bg-primary', 'bg-tertiary', 'bg-secondary', 'bg-slate-300'];
+
+        container.innerHTML = sortedCategories.slice(0, 4).map(([cat, val], idx) => {
+            const percent = totalAmount > 0 ? (val / totalAmount * 100).toFixed(0) : 0;
+            const color = colors[idx] || 'bg-slate-200';
+            return `
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <div class="w-3 h-3 rounded-full ${color}"></div>
+                        <span class="text-xs font-bold text-on-surface-variant">${cat}</span>
+                    </div>
+                    <span class="text-xs font-black">${percent}%</span>
+                </div>
+            `;
+        }).join('');
     }
 };
 
@@ -904,8 +1120,8 @@ window.toggleCommissionSelection = (cb) => {
     } else {
         window.selectedCommissions.delete(key);
     }
-    if(window.AutoFlow && window.AutoFlow.Financial) {
-        window.AutoFlow.Financial.updateCommissionBulkBar();
+    if(window.MyFleetCar && window.MyFleetCar.Financial) {
+        window.MyFleetCar.Financial.updateCommissionBulkBar();
     } else if(Financial) {
         Financial.updateCommissionBulkBar();
     }
@@ -914,8 +1130,8 @@ window.toggleCommissionSelection = (cb) => {
 window.clearCommissionSelection = () => {
     window.selectedCommissions.clear();
     document.querySelectorAll('.commission-checkbox, input[type="checkbox"]').forEach(cb => cb.checked = false);
-    if(window.AutoFlow && window.AutoFlow.Financial) {
-        window.AutoFlow.Financial.updateCommissionBulkBar();
+    if(window.MyFleetCar && window.MyFleetCar.Financial) {
+        window.MyFleetCar.Financial.updateCommissionBulkBar();
     } else if(Financial) {
         Financial.updateCommissionBulkBar();
     }
@@ -928,8 +1144,8 @@ window.bulkPayCommissions = async () => {
     const totalAmount = items.reduce((sum, item) => sum + item.amount, 0);
     if (!confirm(`Confirmar o pagamento de ${items.length} comissões no total de R$ ${totalAmount.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}?`)) return;
 
-    // Use absolute AutoFlow context reference
-    const af = window.AutoFlow || AutoFlow;
+    // Use absolute MyFleetCar context reference
+    const af = window.MyFleetCar || MyFleetCar;
 
     try {
         const { data: { user } } = await af.Auth.getUser();
@@ -990,7 +1206,7 @@ window.setRevenueFilter = (filterValue, btn) => {
 window.toggleTransactionStatus = async (transId, currentStatus) => {
     const newStatus = currentStatus === 'Pago' ? 'Pendente' : 'Pago';
     try {
-        const { error } = await AutoFlow.DB.update('financial_transactions', { status: newStatus }, { id: transId });
+        const { error } = await MyFleetCar.DB.update('financial_transactions', { status: newStatus }, { id: transId });
         if (error) throw error;
         window.location.reload();
     } catch (err) { alert('Erro: ' + err.message); }
@@ -999,7 +1215,7 @@ window.toggleTransactionStatus = async (transId, currentStatus) => {
 window.reopenOSFromFinance = async (osId) => {
     if (!confirm('Deseja realmente reabrir esta Ordem de Serviço? Ela voltará para o status "Em Aberto".')) return;
     try {
-        const { error } = await AutoFlow.DB.update('service_orders', { status: 'Em Aberto', finished_at: null }, { id: osId });
+        const { error } = await MyFleetCar.DB.update('service_orders', { status: 'Em Aberto', finished_at: null }, { id: osId });
         if (error) throw error;
         alert('OS reaberta com sucesso! Você pode encontrá-la no painel principal.');
         window.location.reload();
@@ -1065,7 +1281,7 @@ window.bulkMarkAsPaid = async () => {
     if (ids.length === 0) return;
     try {
         for (const id of ids) {
-            await AutoFlow.DB.update('financial_transactions', { status: 'Pago' }, { id });
+            await MyFleetCar.DB.update('financial_transactions', { status: 'Pago' }, { id });
         }
         alert(`${ids.length} despesas marcadas como pagas.`);
         window.location.reload();
@@ -1077,7 +1293,7 @@ window.bulkDelete = async () => {
     if (!confirm(`Deseja excluir permanentemente ${ids.length} itens?`)) return;
     try {
         for (const id of ids) {
-            await AutoFlow.DB.delete('financial_transactions', { id });
+            await MyFleetCar.DB.delete('financial_transactions', { id });
         }
         window.location.reload();
     } catch (err) { alert('Erro: ' + err.message); }
@@ -1086,7 +1302,7 @@ window.bulkDelete = async () => {
 window.toggleExpenseStatus = async (transId, currentStatus) => {
     const newStatus = currentStatus === 'Pago' ? 'Pendente' : 'Pago';
     try {
-        const { error } = await AutoFlow.DB.update('financial_transactions', { status: newStatus }, { id: transId });
+        const { error } = await MyFleetCar.DB.update('financial_transactions', { status: newStatus }, { id: transId });
         if (error) throw error;
 
         const trans = window.expenseState.transactions.find(t => t.id === transId);
@@ -1100,7 +1316,7 @@ window.toggleExpenseStatus = async (transId, currentStatus) => {
 window.deleteExpense = async (id) => {
     if (!confirm('Deseja excluir permanentemente este lançamento?')) return;
     try {
-        const { error } = await AutoFlow.DB.delete('financial_transactions', { id });
+        const { error } = await MyFleetCar.DB.delete('financial_transactions', { id });
         if (error) throw error;
         window.location.reload();
     } catch (err) { alert('Erro: ' + err.message); }
@@ -1140,29 +1356,29 @@ window.confirmSmartDelete = async (type) => {
 
     try {
         if (type === 'single') {
-            await AutoFlow.DB.delete('financial_transactions', { id });
+            await MyFleetCar.DB.delete('financial_transactions', { id });
         } else if (type === 'future') {
             const siblings = window.expenseState.transactions.filter(item =>
                 item.description.startsWith(baseDesc) &&
                 item.created_at === t.created_at &&
                 item.due_date >= t.due_date
             );
-            for (const s of siblings) await AutoFlow.DB.delete('financial_transactions', { id: s.id });
+            for (const s of siblings) await MyFleetCar.DB.delete('financial_transactions', { id: s.id });
         } else if (type === 'all') {
             const siblings = window.expenseState.transactions.filter(item =>
                 item.description.startsWith(baseDesc) &&
                 item.created_at === t.created_at
             );
-            for (const s of siblings) await AutoFlow.DB.delete('financial_transactions', { id: s.id });
+            for (const s of siblings) await MyFleetCar.DB.delete('financial_transactions', { id: s.id });
         }
 
         window.location.reload();
     } catch (err) { alert('Erro: ' + err.message); }
 };
 
-// Export to global AutoFlow namespace
-if (window.AutoFlow) {
-    window.AutoFlow.Financial = Financial;
+// Export to global MyFleetCar namespace
+if (window.MyFleetCar) {
+    window.MyFleetCar.Financial = Financial;
 }
 
 // Route Initialization

@@ -1,10 +1,10 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html class="light" lang="pt-BR">
 
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>AutoFlow - Gestão de Comissões</title>
+    <title>MyFleetCar - Gestão de Comissões</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap"
         rel="stylesheet">
@@ -99,7 +99,7 @@
     <aside
         class="h-screen w-64 fixed left-0 top-0 -translate-x-full lg:translate-x-0 transition-transform duration-300 z-[100] sidebar-mobile bg-slate-50 flex flex-col py-6 space-y-2 z-50 overflow-y-auto border-r border-orange-100/15">
         <div class="px-6 mb-8">
-            <h1 class="text-xl font-bold text-orange-600 workshop-name-display">AutoFlow</h1>
+            <h1 class="text-xl font-bold text-orange-600 workshop-name-display">MyFleetCar</h1>
             <p class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Mechanical Excellence</p>
         </div>
 
@@ -158,12 +158,12 @@
         </div>
     </aside>
 
-    <header class="ml-64 bg-surface border-b border-orange-100/10 sticky top-0 z-40 backdrop-blur-md bg-white/80">
-        <div class="px-8 py-6 flex justify-between items-center">
-            <div class="flex items-center gap-4">
-                <h1 class="text-2xl font-black text-on-surface tracking-tight">Gestão de Comissões</h1>
-                <span class="material-symbols-outlined text-slate-200">chevron_right</span>
-                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Financeiro</p>
+    <header class="fixed top-0 right-0 w-full lg:w-[calc(100%-16rem)] z-40 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl border-b border-orange-100/15 dark:border-slate-800/50 shadow-sm">
+        <div class="px-4 md:px-8 py-4 md:py-6 flex justify-between items-center h-16">
+            <div class="flex items-center gap-2 md:gap-4 overflow-hidden">
+                <h1 class="text-base md:text-2xl font-black text-on-surface tracking-tight truncate">Comissões</h1>
+                <span class="material-symbols-outlined text-slate-200 hidden md:block">chevron_right</span>
+                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest hidden md:block">Financeiro</p>
             </div>
             <div class="flex items-center gap-4">
                 <button onclick="Financial.initCommissionsPage()" class="p-2 text-slate-400 hover:text-primary transition-colors flex items-center gap-2 text-xs font-bold">
@@ -174,29 +174,29 @@
         </div>
 
         <!-- Financial Module Sub-navigation -->
-        <nav class="flex px-8 border-t border-orange-100/5">
+        <nav class="flex px-4 md:px-8 border-t border-orange-100/5 overflow-x-auto no-scrollbar whitespace-nowrap">
             <a href="painel-financeiro.html"
-                class="px-4 py-3 text-xs font-medium text-slate-500 hover:text-primary transition-colors">Resumo Dashboard</a>
+                class="px-4 py-3 text-[10px] md:text-xs font-medium text-slate-500 hover:text-primary transition-colors">Resumo Dashboard</a>
             <a href="gestao-receita-financeiro.html"
-                class="px-4 py-3 text-xs font-medium text-slate-500 hover:text-primary transition-colors">Gestão de Receitas</a>
+                class="px-4 py-3 text-[10px] md:text-xs font-medium text-slate-500 hover:text-primary transition-colors">Gestão de Receitas</a>
             <a href="gestao-despesa-financeiro.html"
-                class="px-4 py-3 text-xs font-medium text-slate-500 hover:text-primary transition-colors">Gestão de Despesas</a>
+                class="px-4 py-3 text-[10px] md:text-xs font-medium text-slate-500 hover:text-primary transition-colors">Gestão de Despesas</a>
             <a href="gestao-comissoes-financeiro.html"
-                class="px-4 py-3 text-xs font-bold border-b-2 border-primary text-primary">Comissões</a>
-            <a href="fluxo-caixa-financeiro.html"
-                class="px-4 py-3 text-xs font-medium text-slate-500 hover:text-primary transition-colors">Fluxo de Caixa</a>
+                class="px-4 py-3 text-[10px] md:text-xs font-bold border-b-2 border-primary text-primary">Comissões</a>
+            <a href="javascript:void(0)"
+                class="px-4 py-3 text-[10px] md:text-xs font-medium text-slate-300 cursor-not-allowed">Fluxo de Caixa</a>
         </nav>
     </header>
 
-    <main class="lg:ml-64 p-8">
+    <main class="lg:ml-64 mt-28 p-4 md:p-8 pb-32">
         <!-- Page Description -->
-        <div class="mb-10 p-6 bg-primary/5 border border-primary/10 rounded-2xl flex items-center gap-6">
-            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-primary-container text-white flex items-center justify-center shadow-lg shadow-primary/20">
-                <span class="material-symbols-outlined">payments</span>
+        <div class="mb-8 p-4 md:p-6 bg-primary/5 border border-primary/10 rounded-2xl flex items-center gap-4 md:gap-6">
+            <div class="w-10 h-10 md:w-12 md:h-12 flex-shrink-0 rounded-xl bg-gradient-to-br from-primary to-primary-container text-white flex items-center justify-center shadow-lg shadow-primary/20">
+                <span class="material-symbols-outlined text-xl md:text-2xl">payments</span>
             </div>
             <div>
-                <h2 class="text-sm font-black text-on-surface uppercase tracking-tight">Pagamento de Comissários</h2>
-                <p class="text-xs text-slate-500 mt-0.5">As comissões aparecem aqui somente após a **OS estar Concluída** e o **Pagamento do Cliente ser registrado** como "Pago" no financeiro.</p>
+                <h2 class="text-xs md:text-sm font-black text-on-surface uppercase tracking-tight">Pagamento de Comissários</h2>
+                <p class="text-[10px] md:text-xs text-slate-500 mt-0.5">As comissões aparecem após a OS estar **Concluída** e o pagamento registrado como **Pago**.</p>
             </div>
         </div>
 

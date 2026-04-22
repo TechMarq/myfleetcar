@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html lang="pt-BR">
 
@@ -102,7 +102,7 @@
     <aside
         class="h-screen w-64 fixed left-0 top-0 -translate-x-full lg:translate-x-0 transition-transform duration-300 z-[100] sidebar-mobile bg-slate-50 dark:bg-slate-900 flex flex-col py-6 space-y-2 z-50 overflow-y-auto border-r border-orange-100/15">
         <div class="px-6 mb-8">
-            <h1 class="text-xl font-bold text-orange-600 workshop-name-display">AutoFlow</h1>
+            <h1 class="text-xl font-bold text-orange-600 workshop-name-display">MyFleetCar</h1>
             <p class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Mechanical Excellence</p>
         </div>
 
@@ -162,11 +162,11 @@
         </div>
     </aside>
     <!-- Main Content -->
-    <main class="flex-1 flex flex-col min-w-0 bg-background overflow-y-auto ml-64">
+    <main class="flex-1 flex flex-col min-w-0 bg-background overflow-y-auto lg:ml-64">
         <!-- TopNavBar -->
         <header
             class="fixed top-0 right-0 w-full lg:w-[calc(100%-16rem)] z-40 z-40 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl border-b border-orange-100/15 dark:border-slate-800/50 shadow-sm">
-            <div class="flex justify-between items-center px-8 h-16 w-full">
+            <div class="flex justify-between items-center px-4 md:px-8 h-16 w-full">
                 <div class="flex items-center text-primary">
                     <h2 class="text-lg font-bold text-slate-900 dark:text-slate-50 mr-8 workshop-name-display">Clientes
                     </h2>
@@ -179,7 +179,7 @@
             </div>
 
             <!-- Clients Module Sub-navigation -->
-            <nav class="flex px-8 border-t border-orange-100/5">
+            <nav class="flex px-4 md:px-8 border-t border-orange-100/5">
                 <a href="lista-clientes.html"
                     class="px-4 py-3 text-xs font-medium text-slate-500 hover:text-primary transition-colors">Lista de
                     Clientes</a>
@@ -188,7 +188,7 @@
             </nav>
         </header>
         <!-- Form Content Area -->
-        <div class="max-w-5xl mx-auto w-full px-6 py-10 mt-28">
+        <div class="max-w-5xl mx-auto w-full px-4 md:px-6 py-10 mt-28">
             <form id="client-form" class="flex flex-col gap-10">
                 <!-- Section 1: Dados do Cliente -->
 
@@ -224,7 +224,7 @@
                             </label>
                             <div class="relative">
                                 <span
-                                    class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm">ðŸ‡§ðŸ‡·</span>
+                                    class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm">Whatsapp</span>
                                 <input
                                     class="w-full bg-surface-container-lowest border border-outline-variant/15 rounded-xl pl-12 pr-4 py-3 text-on-surface focus:ring-2 focus:ring-primary-container focus:border-primary-container transition-all outline-none"
                                     id="client-phone" placeholder="(11) 99999-9999" type="text" required />
@@ -239,7 +239,7 @@
 
                         </div>
                         <div class="md:col-span-12 flex flex-col gap-2">
-                            <label class="text-xs font-bold text-on-surface-variant tracking-tight">OBSERVAÃ‡Ã•ES</label>
+                            <label class="text-xs font-bold text-on-surface-variant tracking-tight">OBSERVAÇÕES</label>
                             <textarea
                                 class="w-full bg-surface-container-lowest border border-outline-variant/15 rounded-xl px-4 py-3 text-on-surface focus:ring-2 focus:ring-primary-container focus:border-primary-container transition-all outline-none resize-none"
                                 id="client-address"
@@ -249,38 +249,36 @@
                         </div>
                     </div>
                 </section>
-                <!-- Section 2: Veículos -->
                 <section>
-                    <div class="flex justify-between items-center mb-6">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                         <div class="flex items-center gap-4">
                             <div class="h-8 w-1 bg-tertiary rounded-full"></div>
-                            <h3 class="text-sm font-bold tracking-widest text-on-surface-variant uppercase">2. Veículos
-                            </h3>
-                            <button type="button" id="btn-add-vehicle"
-                                class="flex items-center gap-2 px-4 py-2 bg-secondary-container text-on-secondary-container rounded-xl text-xs font-bold hover:brightness-95 transition-all active:scale-95">
-                                <span class="material-symbols-outlined text-sm">add</span>
-                                ADICIONAR VEÍCULO
-                            </button>
+                            <h3 class="text-sm font-bold tracking-widest text-on-surface-variant uppercase">2. Veículos</h3>
                         </div>
-                        <!-- Dynamic Vehicle Card -->
-                        <div id="vehicle-list-container"
-                            class="bg-surface-container-low p-6 rounded-xl border border-outline-variant/10 flex flex-col gap-6">
-                            <!-- Vehicle Item Placeholder (Will be populated by JS) -->
-                            <div id="client-vehicles-list"
-                                class="border-2 border-dashed border-outline-variant/20 rounded-xl p-12 flex flex-col items-center justify-center gap-3 group hover:border-primary-container/30 transition-colors cursor-pointer">
-                                <div
-                                    class="h-12 w-12 rounded-full bg-surface-container-high flex items-center justify-center text-slate-400 group-hover:text-primary-container group-hover:bg-primary-fixed transition-all">
-                                    <span class="material-symbols-outlined text-2xl">directions_car</span>
-                                </div>
-                                <div class="text-center">
-                                    <span
-                                        class="block text-xs font-bold text-slate-400 group-hover:text-primary-container uppercase tracking-widest">Nenhum
-                                        veículo adicionado</span>
-                                    <span class="text-[10px] text-slate-400">Clique no botão acima ou aqui para vincular
-                                        um veículo</span>
-                                </div>
+                        <button type="button" id="btn-add-vehicle"
+                            class="flex items-center justify-center gap-2 px-6 py-3 bg-secondary-container text-on-secondary-container rounded-xl text-xs font-bold hover:brightness-95 transition-all active:scale-95 w-full sm:w-auto">
+                            <span class="material-symbols-outlined text-sm">add</span>
+                            ADICIONAR VEÍCULO
+                        </button>
+                    </div>
+                    <!-- Dynamic Vehicle Card -->
+                    <div id="vehicle-list-container"
+                        class="bg-surface-container-low p-4 md:p-6 rounded-2xl border border-outline-variant/10 flex flex-col gap-6 w-full">
+                        <!-- Vehicle Item Placeholder (Will be populated by JS) -->
+                        <div id="client-vehicles-list"
+                            class="border-2 border-dashed border-outline-variant/20 rounded-xl p-8 md:p-12 flex flex-col items-center justify-center gap-3 group hover:border-primary-container/30 transition-colors cursor-pointer bg-white/50">
+                            <div
+                                class="h-14 w-14 rounded-full bg-surface-container-high flex items-center justify-center text-slate-400 group-hover:text-primary-container group-hover:bg-primary-fixed transition-all shadow-inner">
+                                <span class="material-symbols-outlined text-3xl">directions_car</span>
+                            </div>
+                            <div class="text-center">
+                                <span
+                                    class="block text-xs font-bold text-slate-500 group-hover:text-primary-container uppercase tracking-widest mb-1">Nenhum veículo adicionado</span>
+                                <span class="text-[10px] text-slate-400 block max-w-[200px] mx-auto">Clique no botão acima ou aqui para vincular um veículo ao cadastro</span>
                             </div>
                         </div>
+                    </div>
+                </section>
                 </section>
                 <!-- Footer Actions -->
                 <footer class="flex items-center justify-end gap-4 pt-6 border-t border-slate-200/50">

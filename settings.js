@@ -1,5 +1,5 @@
 /**
- * Settings Management Logic for AutoFlow SaaS
+ * Settings Management Logic for MyFleetCar SaaS
  * Handles Workshop Profile and Preferences
  */
 
@@ -17,10 +17,10 @@ document.addEventListener('DOMContentLoaded', () => {
  */
 async function loadWorkshopProfile() {
     try {
-        const { data: { user } } = await AutoFlow.Auth.getUser();
+        const { data: { user } } = await MyFleetCar.Auth.getUser();
         if (!user) return;
 
-        const { data: profile, error } = await AutoFlow.DB.select('profiles', {
+        const { data: profile, error } = await MyFleetCar.DB.select('profiles', {
             match: { id: user.id }
         });
 
@@ -61,7 +61,7 @@ async function loadWorkshopProfile() {
 async function handleSaveSettings(e) {
     e.preventDefault();
 
-    const { data: { user } } = await AutoFlow.Auth.getUser();
+    const { data: { user } } = await MyFleetCar.Auth.getUser();
     if (!user) return;
 
     const btn = e.target.querySelector('button[type="submit"]');
@@ -78,7 +78,7 @@ async function handleSaveSettings(e) {
     };
 
     try {
-        const { error } = await AutoFlow.DB.update('profiles', profileData, { id: user.id });
+        const { error } = await MyFleetCar.DB.update('profiles', profileData, { id: user.id });
         if (error) throw error;
 
         alert('Configurações salvas com sucesso!');

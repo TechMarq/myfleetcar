@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html class="light" lang="pt-BR">
 
 <head>
@@ -10,6 +10,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
         rel="stylesheet">
+    <link rel="icon" type="image/png" href="img/favicon-myfleetcar.png" />
 
     <script id="tailwind-config">
         tailwind.config = {
@@ -1729,7 +1730,7 @@
     <aside
         class="h-screen w-64 fixed left-0 top-0 -translate-x-full lg:translate-x-0 transition-transform duration-300 z-[100] sidebar-mobile bg-slate-50 dark:bg-slate-900 flex flex-col py-6 space-y-2 z-50 overflow-y-auto border-r border-orange-100/15">
         <div class="px-6 mb-8">
-            <h1 class="text-xl font-bold text-orange-600 workshop-name-display">AutoFlow</h1>
+            <img src="img/mainlogohorizontalfull-myfleetcar.png" alt="MyFleetCar Logo" class="h-10 w-auto mb-2">
             <p class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Mechanical Excellence</p>
         </div>
 
@@ -1791,18 +1792,19 @@
     <!-- TopAppBar -->
     <header
         class="fixed top-0 right-0 w-full lg:w-[calc(100%-16rem)] z-40 z-40 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl border-b border-orange-100/15 dark:border-slate-800/50 shadow-sm">
-        <div class="flex justify-between items-center px-8 h-16 w-full">
+        <div class="flex justify-between items-center px-4 md:px-8 h-16 w-full">
             <div class="flex items-center text-primary">
-                <h2 class="text-lg font-bold text-slate-900 dark:text-slate-50 mr-8 workshop-name-display">Faturamento
-                </h2>
+                <h2
+                    class="text-lg font-bold text-slate-900 dark:text-slate-50 mr-4 md:mr-8 workshop-name-display truncate max-w-[120px] md:max-w-none">
+                    Faturamento</h2>
             </div>
-            <div class="flex items-center gap-4">
-                <div class="relative w-64 md:block hidden">
+            <div class="flex items-center gap-2 md:gap-4">
+                <div class="relative w-40 md:w-64 hidden sm:block">
                     <span
                         class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">search</span>
                     <input id="revenue-search"
                         class="w-full pl-10 pr-4 py-2 bg-slate-100 dark:bg-slate-800 border-none rounded-full text-xs"
-                        placeholder="Buscar faturas (OS ou cliente)..." type="text" oninput="applyRevenueFilters()">
+                        placeholder="Buscar..." type="text" oninput="applyRevenueFilters()">
                 </div>
                 <button class="text-slate-500 hover:text-orange-500 transition-all active:scale-95 duration-200">
                     <span class="material-symbols-outlined">notifications</span>
@@ -1811,32 +1813,34 @@
         </div>
 
         <!-- Financial Module Sub-navigation -->
-        <nav class="flex px-8 border-t border-orange-100/5">
+        <nav class="flex px-4 md:px-8 border-t border-orange-100/5 overflow-x-auto no-scrollbar whitespace-nowrap">
             <a href="painel-financeiro.html"
-                class="px-4 py-3 text-xs font-medium text-slate-500 hover:text-primary transition-colors">Resumo
+                class="px-4 py-3 text-[10px] md:text-xs font-medium text-slate-500 hover:text-primary transition-colors">Resumo
                 Dashboard</a>
             <a href="gestao-receita-financeiro.html"
-                class="px-4 py-3 text-xs font-bold border-b-2 border-primary text-primary">Gestão de Receitas</a>
+                class="px-4 py-3 text-[10px] md:text-xs font-bold border-b-2 border-primary text-primary">Gestão de
+                Receitas</a>
             <a href="gestao-despesa-financeiro.html"
-                class="px-4 py-3 text-xs font-medium text-slate-500 hover:text-primary transition-colors">Gestão de
-                Despesas</a>
-            <a href="fluxo-caixa-financeiro.html"
-                class="px-4 py-3 text-xs font-medium text-slate-500 hover:text-primary transition-colors">Fluxo de
-                Caixa</a>
+                class="px-4 py-3 text-[10px] md:text-xs font-medium text-slate-500 hover:text-primary transition-colors">Gestão
+                de Despesas</a>
+            <a href="javascript:void(0)"
+                class="px-4 py-3 text-[10px] md:text-xs font-medium text-slate-300 cursor-not-allowed">Fluxo de Caixa</a>
             <a href="gestao-comissoes-financeiro.html"
-                class="px-4 py-3 text-xs font-medium text-slate-500 hover:text-primary transition-colors">Comissões</a>
+                class="px-4 py-3 text-[10px] md:text-xs font-medium text-slate-500 hover:text-primary transition-colors">Comissões</a>
         </nav>
     </header>
     <!-- Main Content Canvas -->
-    <main class="lg:ml-64 mt-28 p-8 min-h-screen">
+    <main class="lg:ml-64 mt-28 p-4 md:p-8 min-h-screen pb-32">
         <!-- Dashboard Summary Bento Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8">
             <div
-                class="md:col-span-2 bg-surface-container-lowest p-6 rounded-xl shadow-sm border border-outline-variant/10">
+                class="col-span-2 bg-surface-container-lowest p-4 md:p-6 rounded-xl shadow-sm border border-outline-variant/10">
                 <div class="flex justify-between items-start mb-4">
                     <div>
-                        <p class="text-xs font-bold text-secondary uppercase tracking-widest">Receita Total do Mês</p>
-                        <h3 class="text-4xl font-black text-on-surface mt-1">R$ 0,00</h3>
+                        <p class="text-[10px] md:text-xs font-bold text-secondary uppercase tracking-widest">Receita
+                            Total</p>
+                        <h3 id="revenue-summary-paid" class="text-xl md:text-4xl font-black text-on-surface mt-1">R$
+                            0,00</h3>
                     </div>
                     <div class="p-3 bg-tertiary-container/10 rounded-full text-tertiary">
                         <span class="material-symbols-outlined">trending_up</span>
@@ -1847,14 +1851,14 @@
                     <span class="text-xs text-slate-400 font-medium tracking-tight">em relação ao mês anterior</span>
                 </div>
             </div>
-            <div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm border border-outline-variant/10">
-                <p class="text-xs font-bold text-secondary uppercase tracking-widest">A Receber</p>
-                <h3 class="text-3xl font-black text-primary mt-1">R$ 0,00</h3>
-                <p class="text-xs text-slate-400 mt-2 font-medium">0 faturas pendentes</p>
+            <div class="bg-surface-container-lowest p-4 md:p-6 rounded-xl shadow-sm border border-outline-variant/10">
+                <p class="text-[10px] md:text-xs font-bold text-secondary uppercase tracking-widest">A Receber</p>
+                <h3 id="revenue-summary-pending" class="text-lg md:text-3xl font-black text-primary mt-1">R$ 0,00</h3>
+                <p class="text-[10px] text-slate-400 mt-2 font-medium">0 pendentes</p>
             </div>
-            <div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm border border-outline-variant/10">
-                <p class="text-xs font-bold text-secondary uppercase tracking-widest">Ticket Médio</p>
-                <h3 class="text-3xl font-black text-on-surface mt-1">R$ 0,00</h3>
+            <div class="bg-surface-container-lowest p-4 md:p-6 rounded-xl shadow-sm border border-outline-variant/10">
+                <p class="text-[10px] md:text-xs font-bold text-secondary uppercase tracking-widest">Ticket Médio</p>
+                <h3 id="revenue-summary-avg" class="text-lg md:text-3xl font-black text-on-surface mt-1">R$ 0,00</h3>
                 <div class="w-full bg-slate-100 h-1 rounded-full mt-4">
                     <div class="bg-tertiary h-1 rounded-full w-0"></div>
                 </div>
@@ -1864,39 +1868,44 @@
         <div class="bg-surface-container-low rounded-2xl p-1">
             <div class="bg-surface-container-lowest rounded-xl shadow-sm">
                 <!-- Table Controls -->
-                <div class="p-6 flex flex-col md:flex-row justify-between items-center gap-4">
-                    <div class="flex bg-surface-container-low p-1 rounded-full w-full md:w-auto overflow-x-auto">
-                        <button onclick="setRevenueFilter('all', this)"
-                            class="revenue-filter-btn px-6 py-2 rounded-full text-sm font-bold bg-white shadow-sm text-on-surface transition-all whitespace-nowrap">Todas</button>
-                        <button onclick="setRevenueFilter('Pago', this)"
-                            class="revenue-filter-btn px-6 py-2 rounded-full text-sm font-medium text-slate-500 hover:text-on-surface transition-all whitespace-nowrap">Pagas</button>
-                        <button onclick="setRevenueFilter('Pendente', this)"
-                            class="revenue-filter-btn px-6 py-2 rounded-full text-sm font-medium text-slate-500 hover:text-on-surface transition-all whitespace-nowrap">Pendentes</button>
-                        <button onclick="setRevenueFilter('Atrasado', this)"
-                            class="revenue-filter-btn px-6 py-2 rounded-full text-sm font-medium text-slate-500 hover:text-on-surface transition-all whitespace-nowrap">Atrasadas</button>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <div class="flex items-center gap-2">
-                            <div class="flex flex-col">
-                                <label class="text-[8px] font-black text-slate-400 uppercase ml-1">De</label>
-                                <input type="date" id="revenue-date-start" onchange="applyRevenueFilters()"
-                                    class="text-[10px] font-bold text-slate-600 border border-slate-100 bg-slate-50 rounded-lg px-2 py-1.5 focus:ring-2 focus:ring-primary/20 outline-none">
-                            </div>
-                            <div class="flex flex-col">
-                                <label class="text-[8px] font-black text-slate-400 uppercase ml-1">Até</label>
-                                <input type="date" id="revenue-date-end" onchange="applyRevenueFilters()"
-                                    class="text-[10px] font-bold text-slate-600 border border-slate-100 bg-slate-50 rounded-lg px-2 py-1.5 focus:ring-2 focus:ring-primary/20 outline-none">
-                            </div>
-                        </div>
-                        <div onclick="Financial.initRevenuePage()"
-                            class="flex items-center gap-2 text-[10px] font-black text-secondary uppercase px-4 py-2 bg-slate-100 rounded-lg hover:bg-slate-200 transition-all cursor-pointer shadow-sm">
-                            <span class="material-symbols-outlined text-sm">refresh</span>
-                        </div>
-                    </div>
+                <div class="p-4 md:p-6 flex flex-col md:flex-row justify-between items-stretch md:items-center gap-4">
                     <div
-                        class="flex items-center gap-2 text-xs font-bold text-secondary uppercase px-3 py-2 border border-outline-variant/15 rounded-lg hover:bg-surface-container-low transition-all cursor-pointer">
-                        <span class="material-symbols-outlined text-sm">download</span>
-                        Exportar CSV
+                        class="flex bg-surface-container-low p-1 rounded-full overflow-x-auto no-scrollbar whitespace-nowrap">
+                        <button onclick="setRevenueFilter('all', this)"
+                            class="revenue-filter-btn px-4 md:px-6 py-1.5 md:py-2 rounded-full text-[10px] md:text-sm font-bold bg-white shadow-sm text-on-surface transition-all whitespace-nowrap">Todas</button>
+                        <button onclick="setRevenueFilter('Pago', this)"
+                            class="revenue-filter-btn px-4 md:px-6 py-1.5 md:py-2 rounded-full text-[10px] md:text-sm font-medium text-slate-500 hover:text-on-surface transition-all whitespace-nowrap">Pagas</button>
+                        <button onclick="setRevenueFilter('Pendente', this)"
+                            class="revenue-filter-btn px-4 md:px-6 py-1.5 md:py-2 rounded-full text-[10px] md:text-sm font-medium text-slate-500 hover:text-on-surface transition-all whitespace-nowrap">Pendentes</button>
+                        <button onclick="setRevenueFilter('Atrasado', this)"
+                            class="revenue-filter-btn px-4 md:px-6 py-1.5 md:py-2 rounded-full text-[10px] md:text-sm font-medium text-slate-500 hover:text-on-surface transition-all whitespace-nowrap">Atrasadas</button>
+                    </div>
+                    <div class="flex flex-col gap-3">
+                        <div class="grid grid-cols-2 gap-2">
+                            <div class="relative">
+                                <span
+                                    class="absolute left-2 top-1 text-[8px] font-black text-slate-400 uppercase leading-none">De</span>
+                                <input type="date" id="revenue-date-start" onchange="applyRevenueFilters()"
+                                    class="w-full text-[10px] font-bold text-slate-600 border border-slate-100 bg-slate-50 rounded-lg pl-2 pr-1 pt-3 pb-1 focus:ring-2 focus:ring-primary/20 outline-none">
+                            </div>
+                            <div class="relative">
+                                <span
+                                    class="absolute left-2 top-1 text-[8px] font-black text-slate-400 uppercase leading-none">Até</span>
+                                <input type="date" id="revenue-date-end" onchange="applyRevenueFilters()"
+                                    class="w-full text-[10px] font-bold text-slate-600 border border-slate-100 bg-slate-50 rounded-lg pl-2 pr-1 pt-3 pb-1 focus:ring-2 focus:ring-primary/20 outline-none">
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <div onclick="Financial.initRevenuePage()"
+                                class="flex items-center justify-center w-10 h-10 bg-slate-100 rounded-lg hover:bg-slate-200 transition-all cursor-pointer shadow-sm">
+                                <span class="material-symbols-outlined text-sm">refresh</span>
+                            </div>
+                            <div
+                                class="flex-1 flex items-center justify-center gap-2 text-[10px] font-bold text-secondary uppercase h-10 border border-outline-variant/15 rounded-lg hover:bg-surface-container-low transition-all cursor-pointer">
+                                <span class="material-symbols-outlined text-sm">download</span>
+                                <span>Exportar</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1905,41 +1914,38 @@
                 <table class="w-full text-left">
                     <thead>
                         <tr class="bg-surface-container-low/50">
-                            <th class="px-8 py-4 cursor-pointer hover:bg-slate-50 transition-colors"
+                            <th class="px-4 md:px-8 py-4 cursor-pointer hover:bg-slate-50 transition-colors"
                                 onclick="handleRevenueSort('description')">
                                 <div class="flex items-center gap-1">
                                     <span
                                         class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Descrição</span>
-                                    <span class="material-symbols-outlined text-xs text-slate-300">swap_vert</span>
                                 </div>
                             </th>
-                            <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                            <th
+                                class="px-4 md:px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">
                                 Cliente</th>
-                            <th class="px-6 py-4 cursor-pointer hover:bg-slate-50 transition-colors"
+                            <th class="hidden md:table-cell px-6 py-4 cursor-pointer hover:bg-slate-50 transition-colors"
                                 onclick="handleRevenueSort('due_date')">
                                 <div class="flex items-center gap-1">
                                     <span
                                         class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Data</span>
-                                    <span class="material-symbols-outlined text-xs text-slate-300">swap_vert</span>
                                 </div>
                             </th>
-                            <th class="px-6 py-4 cursor-pointer hover:bg-slate-50 transition-colors"
+                            <th class="hidden lg:table-cell px-6 py-4 cursor-pointer hover:bg-slate-50 transition-colors"
                                 onclick="handleRevenueSort('status')">
                                 <div class="flex items-center gap-1">
                                     <span
                                         class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Status</span>
-                                    <span class="material-symbols-outlined text-xs text-slate-300">swap_vert</span>
                                 </div>
                             </th>
-                            <th class="px-6 py-4 text-right cursor-pointer hover:bg-slate-50 transition-colors"
+                            <th class="px-4 md:px-6 py-4 text-right cursor-pointer hover:bg-slate-50 transition-colors"
                                 onclick="handleRevenueSort('amount')">
                                 <div class="flex items-center justify-end gap-1">
                                     <span
                                         class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Valor</span>
-                                    <span class="material-symbols-outlined text-xs text-slate-300">swap_vert</span>
                                 </div>
                             </th>
-                            <th class="px-8 py-4"></th>
+                            <th class="px-4 md:px-8 py-4"></th>
                         </tr>
                     </thead>
                     <tbody id="revenue-list">
@@ -1989,27 +1995,7 @@
                 <span
                     class="material-symbols-outlined absolute -right-4 -bottom-4 text-[120px] opacity-10 rotate-12 group-hover:rotate-0 transition-transform duration-700">insights</span>
             </div>
-            <div class="w-full md:w-80 flex flex-col gap-4">
-                <div class="bg-surface-container-high p-6 rounded-2xl border border-white/50">
-                    <h5 class="text-xs font-black text-secondary uppercase tracking-widest mb-4">Ações Rápidas</h5>
-                    <div class="space-y-3">
-                        <button
-                            class="w-full flex items-center gap-3 p-3 bg-white rounded-xl shadow-sm hover:scale-[1.02] transition-transform text-left">
-                            <div class="p-2 bg-primary-fixed rounded-lg text-primary">
-                                <span class="material-symbols-outlined text-lg">receipt_long</span>
-                            </div>
-                            <span class="text-sm font-bold text-on-surface">Emitir Nota Fiscal</span>
-                        </button>
-                        <button
-                            class="w-full flex items-center gap-3 p-3 bg-white rounded-xl shadow-sm hover:scale-[1.02] transition-transform text-left">
-                            <div class="p-2 bg-tertiary-fixed rounded-lg text-tertiary">
-                                <span class="material-symbols-outlined text-lg">mail</span>
-                            </div>
-                            <span class="text-sm font-bold text-on-surface">Enviar Lembretes</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
+
         </div>
     </main>
     <!-- FAB for quick entry (Contextual) -->

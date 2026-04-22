@@ -1,5 +1,5 @@
 /**
- * Inventory Management Logic for AutoFlow SaaS
+ * Inventory Management Logic for MyFleetCar SaaS
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -23,7 +23,7 @@ async function loadInventory() {
     if (!listContainer) return;
 
     try {
-        const { data: items, error } = await AutoFlow.DB.select('inventory', {
+        const { data: items, error } = await MyFleetCar.DB.select('inventory', {
             order: { column: 'created_at', ascending: false }
         });
 
@@ -94,7 +94,7 @@ async function handleNewProduct(e) {
     e.preventDefault();
     
     const form = e.target;
-    const { data: { user } } = await AutoFlow.Auth.getUser();
+    const { data: { user } } = await MyFleetCar.Auth.getUser();
     if (!user) {
         alert('Sessão expirada. Faça login novamente.');
         window.location.href = 'login.html';
@@ -117,7 +117,7 @@ async function handleNewProduct(e) {
     btn.textContent = 'Salvando...';
 
     try {
-        const { data, error } = await AutoFlow.DB.insert('inventory', productData);
+        const { data, error } = await MyFleetCar.DB.insert('inventory', productData);
         if (error) throw error;
 
         alert('Produto cadastrado com sucesso!');

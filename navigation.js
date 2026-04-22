@@ -1,4 +1,4 @@
-// Common navigation and UI logic for AutoFlow SaaS
+// Common navigation and UI logic for MyFleetCar SaaS
 // Apply fixes immediately to avoid flickering or missed DOMContentLoaded
 if (typeof applyGlobalResponsiveFixes === 'function') {
     applyGlobalResponsiveFixes();
@@ -6,8 +6,8 @@ if (typeof applyGlobalResponsiveFixes === 'function') {
 
 document.addEventListener('DOMContentLoaded', async () => {
     // 1. Protect the route immediately
-    if (window.AutoFlow && window.AutoFlow.checkAuth) {
-        await window.AutoFlow.checkAuth();
+    if (window.MyFleetCar && window.MyFleetCar.checkAuth) {
+        await window.MyFleetCar.checkAuth();
     }
 
     setupSidebar();
@@ -43,9 +43,9 @@ function setupSidebar() {
  * Updates the sidebar/header user profile info if logged in
  */
 async function updateUserProfile() {
-    if (!window.AutoFlow || !window.AutoFlow.Auth) return;
+    if (!window.MyFleetCar || !window.MyFleetCar.Auth) return;
     
-    const { data: { user } } = await window.AutoFlow.Auth.getUser();
+    const { data: { user } } = await window.MyFleetCar.Auth.getUser();
     if (user) {
         // Update user name in sidebar if element exists (ID based on our templates)
         const nameElements = document.querySelectorAll('.user-name-display');
@@ -62,8 +62,8 @@ async function updateUserProfile() {
         if (logoutBtn) {
             logoutBtn.addEventListener('click', async (e) => {
                 e.preventDefault();
-                if (window.AutoFlow && window.AutoFlow.Auth) {
-                    await window.AutoFlow.Auth.signOut();
+                if (window.MyFleetCar && window.MyFleetCar.Auth) {
+                    await window.MyFleetCar.Auth.signOut();
                 }
             });
         }

@@ -1,5 +1,5 @@
 /**
- * Auth Logic for AutoFlow SaaS
+ * Auth Logic for MyFleetCar SaaS
  * Handles Login and Registration forms
  */
 
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.innerHTML = 'Criando conta...';
 
             try {
-                const { data, error } = await AutoFlow.Auth.signUp(email, password, {
+                const { data, error } = await MyFleetCar.Auth.signUp(email, password, {
                     workshop_name: workshopName,
                     owner_name: ownerName,
                     phone: phone
@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.innerHTML = 'Entrando...';
 
             try {
-                const { data, error } = await AutoFlow.Auth.signIn(email, password);
+                const { data, error } = await MyFleetCar.Auth.signIn(email, password);
 
                 if (error) throw error;
 
@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (logoutBtn) {
         logoutBtn.addEventListener('click', async (e) => {
             e.preventDefault();
-            await AutoFlow.Auth.signOut();
+            await MyFleetCar.Auth.signOut();
         });
     }
     // 4. Handle Password Visibility Toggle

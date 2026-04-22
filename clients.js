@@ -1,5 +1,5 @@
 /**
- * Clients Management Logic for AutoFlow SaaS
+ * Clients Management Logic for MyFleetCar SaaS
  */
 
 let allClients = [];
@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
 async function loadClientData(id) {
     console.log('Loading client data for ID:', id);
     try {
-        const { data: clients, error } = await AutoFlow.DB.select('customers', {
+        const { data: clients, error } = await MyFleetCar.DB.select('customers', {
             match: { id: id },
             select: '*, vehicles(*)'
         });
@@ -93,7 +93,7 @@ async function loadClients() {
 
     try {
         // Fetch clients with their vehicles
-        const { data: clients, error } = await AutoFlow.DB.select('customers', {
+        const { data: clients, error } = await MyFleetCar.DB.select('customers', {
             select: '*, vehicles(*)',
             order: { column: 'created_at', ascending: false }
         });
@@ -135,39 +135,39 @@ function renderClientRows(clients, searchTerm = '') {
         
         return `
             <tr class="hover:bg-slate-50/50 transition-colors group">
-                <td class="px-6 py-4">
+                <td class="px-4 md:px-6 py-4">
                     <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center font-bold">
+                        <div class="w-10 h-10 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center font-bold flex-shrink-0">
                             ${(client.full_name || 'C').charAt(0)}
                         </div>
-                        <div>
-                            <div class="text-sm font-bold text-on-surface">${client.full_name}</div>
-                            <div class="text-[10px] text-slate-500">${client.email || 'Sem e-mail'}</div>
+                        <div class="min-w-0">
+                            <div class="text-xs md:text-sm font-bold text-on-surface truncate">${client.full_name}</div>
+                            <div class="text-[10px] text-slate-500 truncate">${client.email || 'Sem e-mail'}</div>
                         </div>
                     </div>
                 </td>
-                <td class="px-6 py-4 text-sm text-slate-600 font-medium">${client.phone || '-'}</td>
-                <td class="px-6 py-4 text-sm text-slate-600">
+                <td class="hidden lg:table-cell px-6 py-4 text-sm text-slate-600 font-medium">${client.phone || '-'}</td>
+                <td class="px-4 md:px-6 py-4 text-sm text-slate-600">
                     <div class="flex items-center gap-2">
                         <div class="flex flex-col">
-                            <span class="font-black text-on-surface tracking-wider uppercase">${primaryVehicle ? primaryVehicle.license_plate : '-'}</span>
-                            <span class="text-[10px] text-slate-500 font-bold uppercase">${primaryVehicle ? primaryVehicle.brand + ' ' + primaryVehicle.model : 'Nenhum vinculado'}</span>
+                            <span class="font-black text-on-surface tracking-wider uppercase text-[10px] md:text-xs">${primaryVehicle ? primaryVehicle.license_plate : '-'}</span>
+                            <span class="text-[9px] md:text-[10px] text-slate-500 font-bold uppercase truncate max-w-[80px] md:max-w-none">${primaryVehicle ? primaryVehicle.brand + ' ' + primaryVehicle.model : 'Nenhum'}</span>
                         </div>
                         ${extraVehicles > 0 ? `
-                            <div class="bg-slate-100 text-slate-600 text-[10px] font-black px-1.5 py-0.5 rounded-md border border-slate-200" title="Possui mais ${extraVehicles} veículos">
+                            <div class="bg-slate-100 text-slate-600 text-[10px] font-black px-1.5 py-0.5 rounded-md border border-slate-200 flex-shrink-0" title="Possui mais ${extraVehicles} veículos">
                                 + ${extraVehicles}
                             </div>
                         ` : ''}
                     </div>
                 </td>
-                <td class="px-6 py-4 text-sm text-slate-600">-</td>
-                <td class="px-6 py-4">
+                <td class="hidden xl:table-cell px-6 py-4 text-sm text-slate-600">-</td>
+                <td class="hidden md:table-cell px-6 py-4">
                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-green-50 text-green-700 capitalize">Ativo</span>
                 </td>
-                <td class="px-6 py-4 text-right">
-                    <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                <td class="px-4 md:px-6 py-4 text-right">
+                    <div class="flex items-center justify-end gap-2 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
                         <button onclick="viewClientDetail('${client.id}')" class="p-2 text-slate-400 hover:text-tertiary transition-colors" title="Ver Detalhes">
-                            <span class="material-symbols-outlined text-lg">visibility</span>
+                            <span class="material-symbols-outlined text-lg md:text-xl">visibility</span>
                         </button>
                     </div>
                 </td>
@@ -183,7 +183,7 @@ async function handleNewClient(e) {
     
     const form = e.target;
     // Get the workshop_id from current user
-    const { data: { user } } = await AutoFlow.Auth.getUser();
+    const { data: { user } } = await MyFleetCar.Auth.getUser();
     if (!user) {
         alert('Sessão expirada. Faça login novamente.');
         window.location.href = 'login.html';
@@ -192,11 +192,11 @@ async function handleNewClient(e) {
 
     // Ensure profile exists to avoid FK error
     try {
-        const { data: profile } = await AutoFlow.DB.select('profiles', { match: { id: user.id } });
+        const { data: profile } = await MyFleetCar.DB.select('profiles', { match: { id: user.id } });
         if (!profile || profile.length === 0) {
             console.log('Profile missing, creating...');
             // Attempt to create basic profile if trigger failed
-            await AutoFlow.supabase.from('profiles').upsert({ 
+            await MyFleetCar.supabase.from('profiles').upsert({ 
                 id: user.id, 
                 workshop_name: user.user_metadata.workshop_name || 'Minha Oficina',
                 owner_name: user.user_metadata.owner_name || ''
@@ -226,10 +226,10 @@ async function handleNewClient(e) {
         let result;
         if (editId) {
             // Update
-            result = await AutoFlow.DB.update('customers', clientData, { id: editId });
+            result = await MyFleetCar.DB.update('customers', clientData, { id: editId });
         } else {
             // Insert
-            result = await AutoFlow.DB.insert('customers', clientData);
+            result = await MyFleetCar.DB.insert('customers', clientData);
         }
         
         const { data, error } = result;
@@ -254,7 +254,7 @@ async function handleNewClient(e) {
                     workshop_id: user.id
                 };
                 
-                const { data: vData, error: vError } = await AutoFlow.DB.insert('vehicles', vehicleToSave);
+                const { data: vData, error: vError } = await MyFleetCar.DB.insert('vehicles', vehicleToSave);
                 if (vError) {
                     console.error('Error saving vehicle:', vError);
                     throw new Error('Erro ao salvar veículo: ' + vError.message);

@@ -1,5 +1,5 @@
 /**
- * Staff Management Logic for AutoFlow SaaS
+ * Staff Management Logic for MyFleetCar SaaS
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -38,7 +38,7 @@ async function loadStaff() {
     if (!list) return;
 
     try {
-        const { data: staff, error } = await AutoFlow.DB.select('staff', {
+        const { data: staff, error } = await MyFleetCar.DB.select('staff', {
             order: { column: 'name', ascending: true }
         });
 
@@ -66,7 +66,7 @@ async function loadStaff() {
                     </div>
                 </td>
                 <td class="px-6 py-6">
-                    <span class="px-3 py-1 bg-slate-100 text-slate-600 text-[10px] font-bold rounded-full uppercase tracking-widest">
+                    <span class="px-3 py-1 bg-slate-100 text-slate-600 text-[10px] font-bold rounded-full uppercase tracking-widest whitespace-nowrap">
                         ${s.compensation_type}
                     </span>
                 </td>
@@ -74,7 +74,7 @@ async function loadStaff() {
                     ${s.compensation_type === 'Comissão' ? s.commission_percent + '%' : 'R$ ' + s.fixed_salary.toLocaleString('pt-BR', {minimumFractionDigits: 2})}
                 </td>
                 <td class="px-6 py-6 text-right">
-                    <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div class="flex items-center justify-end gap-2 md:opacity-0 group-hover:opacity-100 transition-opacity">
                         <button onclick="editStaff('${s.id}')" class="p-2 text-slate-400 hover:text-orange-500 transition-colors" title="Editar">
                             <span class="material-symbols-outlined text-lg">edit</span>
                         </button>
@@ -129,7 +129,7 @@ window.openStaffModal = function() {
 async function handleAddStaff(e) {
     e.preventDefault();
 
-    const { data: { user } } = await AutoFlow.Auth.getUser();
+    const { data: { user } } = await MyFleetCar.Auth.getUser();
     if (!user) return;
 
     const staffData = {
@@ -145,10 +145,10 @@ async function handleAddStaff(e) {
         let result;
         if (currentEditingId) {
             // Update existing
-            result = await AutoFlow.DB.update('staff', staffData, { id: currentEditingId });
+            result = await MyFleetCar.DB.update('staff', staffData, { id: currentEditingId });
         } else {
             // Insert new
-            result = await AutoFlow.DB.insert('staff', staffData);
+            result = await MyFleetCar.DB.insert('staff', staffData);
         }
 
         if (result.error) throw result.error;
@@ -171,7 +171,7 @@ window.deleteStaff = async function(id) {
     if (!confirm('Deseja realmente excluir este funcionário?')) return;
 
     try {
-        const { error } = await AutoFlow.DB.delete('staff', { id });
+        const { error } = await MyFleetCar.DB.delete('staff', { id });
         if (error) throw error;
         loadStaff();
     } catch (err) {

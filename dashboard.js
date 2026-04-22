@@ -1,10 +1,10 @@
 /**
- * Dashboard Logic for AutoFlow SaaS
+ * Dashboard Logic for MyFleetCar SaaS
  */
 
 const Dashboard = {
     async init() {
-        const { data: { user } } = await window.AutoFlow.Auth.getUser();
+        const { data: { user } } = await window.MyFleetCar.Auth.getUser();
         if (!user) return;
         this.loadMetrics(user.id);
         this.loadRecentServices(user.id);
@@ -20,7 +20,7 @@ const Dashboard = {
 
         try {
             // 1. Receita Mensal
-            const { data: revData } = await window.AutoFlow.DB.select('financial_transactions', {
+            const { data: revData } = await window.MyFleetCar.DB.select('financial_transactions', {
                 match: { workshop_id: workshopId, type: 'Receita', status: 'Pago' },
                 gte: { due_date: firstDayOfMonth.split('T')[0] },
                 lte: { due_date: lastDayOfMonth.split('T')[0] }
@@ -29,44 +29,47 @@ const Dashboard = {
             if (revData) {
                 totalRevenue = revData.reduce((acc, curr) => acc + parseFloat(curr.amount), 0);
             }
-            document.querySelectorAll('.text-xl.font-black')[0].textContent = 'R$ ' + totalRevenue.toLocaleString('pt-BR', {minimumFractionDigits: 2});
-
-            // 2. OS Abertas
-            const { data: osData } = await window.AutoFlow.DB.select('service_orders', {
+            // 2. OS Data
+            const { data: osData } = await window.MyFleetCar.DB.select('service_orders', {
                 match: { workshop_id: workshopId }
             });
             const allOS = osData || [];
-            
             const openOS = allOS.filter(os => !['Concluído', 'Cancelado', 'Excluída', 'Completed', 'Cancelled'].includes(os.status));
-            document.querySelectorAll('.text-xl.font-black')[1].textContent = openOS.length;
-
-            // 3. OS Finalizadas no mês
             const doneOS = allOS.filter(os => 
                 ['Concluído', 'Completed'].includes(os.status) && 
                 new Date(os.created_at) >= new Date(firstDayOfMonth) && 
                 new Date(os.created_at) <= new Date(lastDayOfMonth)
             );
-            document.querySelectorAll('.text-xl.font-black')[2].textContent = doneOS.length;
 
-            // 4. Veículos em Serviço
+            // 3. Activity metrics
             const activeVehicles = new Set(openOS.map(os => os.vehicle_id).filter(id => id));
-            document.querySelectorAll('.text-xl.font-black')[3].textContent = activeVehicles.size;
-
-            // 5. Agendamentos Hoje
-            const { data: apptData } = await window.AutoFlow.DB.select('appointments', {
+            
+            const { data: apptData } = await window.MyFleetCar.DB.select('appointments', {
                 match: { workshop_id: workshopId, appointment_date: todayStr }
             });
             const validAppts = (apptData || []).filter(a => !['Cancelado', 'Finalizado'].includes(a.status));
-            document.querySelectorAll('.text-xl.font-black')[4].textContent = validAppts.length;
 
-            // 6. Alertas (Serviços Atrasados)
             const delayedOS = openOS.filter(os => {
                 if (os.status === 'Atrasado') return true;
                 if (!os.deadline_at && !os.exit_date) return false;
                 const dDate = new Date(os.deadline_at || os.exit_date);
                 return dDate < now && !['Concluído', 'Cancelado'].includes(os.status);
             });
-            document.querySelectorAll('.text-xl.font-black')[5].textContent = delayedOS.length;
+
+            // Update DOM using IDs (robust) or positional selectors (fallback)
+            const metricRevenue = document.getElementById('metric-revenue-month') || document.querySelectorAll('.text-xl.font-black')[0];
+            const metricOpen = document.getElementById('metric-os-open') || document.querySelectorAll('.text-xl.font-black')[1];
+            const metricFinished = document.getElementById('metric-os-finished') || document.querySelectorAll('.text-xl.font-black')[2];
+            const metricVehicles = document.getElementById('metric-active-vehicles') || document.querySelectorAll('.text-xl.font-black')[3];
+            const metricAppointments = document.getElementById('metric-appointments-today') || document.querySelectorAll('.text-xl.font-black')[4];
+            const metricDelayed = document.getElementById('metric-delayed-services') || document.querySelectorAll('.text-xl.font-black')[5];
+
+            if (metricRevenue) metricRevenue.textContent = 'R$ ' + totalRevenue.toLocaleString('pt-BR', {minimumFractionDigits: 2});
+            if (metricOpen) metricOpen.textContent = openOS.length;
+            if (metricFinished) metricFinished.textContent = doneOS.length;
+            if (metricVehicles) metricVehicles.textContent = activeVehicles.size;
+            if (metricAppointments) metricAppointments.textContent = validAppts.length;
+            if (metricDelayed) metricDelayed.textContent = delayedOS.length;
         } catch (err) {
             console.error('Error loading metrics:', err);
         }
@@ -74,7 +77,7 @@ const Dashboard = {
 
     async loadRecentServices(workshopId) {
         try {
-            const { data: osData } = await window.AutoFlow.DB.select('service_orders', {
+            const { data: osData } = await window.MyFleetCar.DB.select('service_orders', {
                 select: '*, customers(full_name), vehicles(brand, model, license_plate)',
                 match: { workshop_id: workshopId },
                 order: { column: 'created_at', ascending: false },
@@ -120,7 +123,7 @@ const Dashboard = {
     async loadAppointments(workshopId) {
         try {
             const todayStr = new Date().toISOString().split('T')[0];
-            const { data: apptData } = await window.AutoFlow.DB.select('appointments', {
+            const { data: apptData } = await window.MyFleetCar.DB.select('appointments', {
                 select: '*, customers(full_name)',
                 match: { workshop_id: workshopId, appointment_date: todayStr },
                 order: { column: 'appointment_time', ascending: true },
@@ -163,7 +166,7 @@ const Dashboard = {
             const lastWeek = new Date();
             lastWeek.setDate(lastWeek.getDate() - 6);
 
-            const { data: revData } = await window.AutoFlow.DB.select('financial_transactions', {
+            const { data: revData } = await window.MyFleetCar.DB.select('financial_transactions', {
                 match: { workshop_id: workshopId, type: 'Receita', status: 'Pago' },
                 gte: { due_date: lastWeek.toISOString().split('T')[0] },
                 lte: { due_date: now.toISOString().split('T')[0] }

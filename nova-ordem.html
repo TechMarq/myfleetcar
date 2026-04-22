@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html lang="pt-BR">
 
@@ -11,6 +11,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
         rel="stylesheet" />
+    <link rel="icon" type="image/png" href="img/favicon-myfleetcar.png" />
 
     <script id="tailwind-config">
         tailwind.config = {
@@ -107,7 +108,7 @@
     <aside
         class="h-screen w-64 fixed left-0 top-0 -translate-x-full lg:translate-x-0 transition-transform duration-300 z-[100] sidebar-mobile bg-slate-50 dark:bg-slate-900 flex flex-col py-6 space-y-2 z-50 overflow-y-auto border-r border-orange-100/15">
         <div class="px-6 mb-8">
-            <h1 class="text-xl font-bold text-orange-600 workshop-name-display">AutoFlow</h1>
+            <img src="img/mainlogohorizontalfull-myfleetcar.png" alt="MyFleetCar Logo" class="h-10 w-auto mb-2">
             <p class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Mechanical Excellence</p>
         </div>
 
@@ -168,63 +169,63 @@
     </aside>
     <!-- TopNavBar from JSON Anchor -->
     <header
-        class="fixed top-0 right-0 w-full lg:w-[calc(100%-16rem)] z-40 z-40 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl border-b border-orange-100/15 dark:border-slate-800/50 shadow-sm">
-        <div class="flex justify-between items-center px-8 h-16 w-full">
-            <div class="flex items-center text-primary">
-                <h2 class="text-lg font-bold text-slate-900 dark:text-slate-50 mr-8 workshop-name-display">Ordens de
-                    Serviço</h2>
+        class="fixed top-0 right-0 w-full lg:w-[calc(100%-16rem)] z-40 bg-white/90 backdrop-blur-xl border-b border-orange-100/15 shadow-sm">
+        <div class="flex justify-between items-center px-4 md:px-8 h-16 w-full">
+            <div class="flex items-center gap-2 md:gap-4">
+                <button onclick="window.location.href='lista-ordem.html'"
+                    class="p-2 text-slate-400 hover:text-primary transition-colors lg:hidden">
+                    <span class="material-symbols-outlined">arrow_back</span>
+                </button>
+                <h2 class="text-sm md:text-lg font-bold text-slate-900 truncate max-w-[150px] md:max-w-none">Nova Ordem
+                    de Serviço</h2>
             </div>
-            <div class="flex items-center gap-4">
-                <div class="relative w-64 md:block hidden">
-                    <span
-                        class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">search</span>
-                    <input
-                        class="w-full pl-10 pr-4 py-2 bg-slate-100 dark:bg-slate-800 border-none rounded-full text-xs"
-                        placeholder="Buscar OS..." type="text">
-                </div>
-                <button class="text-slate-500 hover:text-orange-500 transition-all active:scale-95 duration-200">
-                    <span class="material-symbols-outlined">notifications</span>
+            <div class="flex items-center gap-2 md:gap-4">
+                <button class="text-slate-500 hover:text-orange-500 transition-all p-2">
+                    <span class="material-symbols-outlined text-[20px] md:text-[24px]">notifications</span>
                 </button>
             </div>
         </div>
 
-        <!-- Service Module Sub-navigation -->
-        <nav class="flex px-8 border-t border-orange-100/5">
+        <!-- Service Module Sub-navigation (Scrollable on Mobile) -->
+        <nav class="flex px-4 md:px-8 border-t border-orange-100/5 overflow-x-auto no-scrollbar whitespace-nowrap">
             <a href="lista-ordem.html"
-                class="px-4 py-3 text-xs font-medium text-slate-500 hover:text-primary transition-colors">Lista de
-                Ordens</a>
-            <a href="nova-ordem.html" class="px-4 py-3 text-xs font-bold border-b-2 border-primary text-primary">Nova
+                class="px-4 py-2 md:py-3 text-[10px] md:text-xs font-medium text-slate-500 hover:text-primary transition-colors">Lista
+                de Ordens</a>
+            <a href="nova-ordem.html"
+                class="px-4 py-2 md:py-3 text-[10px] md:text-xs font-bold border-b-2 border-primary text-primary">Nova
                 Ordem</a>
             <a href="detalhes-ordem.html"
-                class="px-4 py-3 text-xs font-medium text-slate-500 hover:text-primary transition-colors">Detalhes da
-                Ordem</a>
+                class="px-4 py-2 md:py-3 text-[10px] md:text-xs font-medium text-slate-500 hover:text-primary transition-colors">Detalhes
+                da Ordem</a>
         </nav>
     </header>
     <main class="lg:ml-64 pt-28 pb-12 px-6 max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
         <!-- Left Side: Form Sections -->
         <form id="order-form" class="lg:col-span-8 space-y-8">
 
-            <header class="mb-8">
-                <h1 class="text-4xl font-extrabold tracking-tight text-on-surface mb-2">Nova Ordem de Serviço</h1>
-                <p class="text-secondary font-medium uppercase tracking-wider text-xs">Abertura de Diagnóstico e Reparo
-                </p>
+            <header class="mb-6 md:mb-8">
+                <h1
+                    class="text-2xl md:text-4xl font-extrabold tracking-tight text-on-surface mb-1 md:mb-2 text-primary font-mono tracking-tighter">
+                    ABERTURA DE OS</h1>
+                <p class="text-slate-500 font-bold uppercase tracking-widest text-[10px] md:text-xs">Diagnóstico e
+                    Reparo em Planejamento</p>
             </header>
             <!-- Section 1: Client & Vehicle Selection -->
-            <section class="bg-surface-container-lowest p-8 rounded-xl shadow-sm ghost-border">
+            <section class="bg-surface-container-lowest p-5 md:p-8 rounded-xl shadow-sm ghost-border">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                     <div class="flex items-center gap-3">
                         <span class="material-symbols-outlined text-primary"
                             style="font-variation-settings: 'FILL' 1;">person_search</span>
-                        <h2 class="text-xl font-bold text-on-surface">Identificação do Cliente</h2>
+                        <h2 class="text-base md:text-xl font-bold text-on-surface">Identificação do Cliente</h2>
                     </div>
                     <a href="cadastro-cliente.html"
-                        class="flex items-center gap-2 px-4 py-2 bg-secondary-container text-on-secondary-container rounded-lg text-xs font-bold hover:brightness-95 transition-all active:scale-95">
+                        class="flex items-center justify-center gap-2 px-4 py-2.5 bg-secondary-container text-on-secondary-container rounded-lg text-xs font-bold hover:brightness-95 transition-all active:scale-95">
                         <span class="material-symbols-outlined text-sm">person_add</span>
                         NOVO CLIENTE
                     </a>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                     <!-- Customer Search -->
                     <div class="space-y-2 relative">
                         <label class="text-sm font-semibold text-secondary px-1">Buscar Cliente</label>
@@ -254,11 +255,11 @@
                 </div>
             </section>
             <!-- Section 2: Entry Details -->
-            <section class="bg-surface-container-lowest p-8 rounded-xl shadow-sm ghost-border">
+            <section class="bg-surface-container-lowest p-5 md:p-8 rounded-xl shadow-sm ghost-border">
                 <div class="flex items-center gap-3 mb-6">
                     <span class="material-symbols-outlined text-primary"
                         style="font-variation-settings: 'FILL' 1;">description</span>
-                    <h2 class="text-xl font-bold">Detalhes de Entrada</h2>
+                    <h2 class="text-base md:text-xl font-bold">Detalhes de Entrada</h2>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                     <div class="space-y-2">
@@ -287,11 +288,11 @@
             </section>
 
             <!-- Section 3: Services (Labor) -->
-            <section class="bg-surface-container-lowest p-8 rounded-xl shadow-sm ghost-border">
+            <section class="bg-surface-container-lowest p-5 md:p-8 rounded-xl shadow-sm ghost-border">
                 <div class="flex items-center gap-3 mb-6">
                     <span class="material-symbols-outlined text-primary"
                         style="font-variation-settings: 'FILL' 1;">build</span>
-                    <h2 class="text-xl font-bold">Mão de Obra e Serviços</h2>
+                    <h2 class="text-base md:text-xl font-bold">Mão de Obra e Serviços</h2>
                 </div>
 
                 <!-- Quick Selection -->
@@ -299,9 +300,9 @@
                     <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3 block">Serviços
                         Comuns</label>
                     <div class="flex flex-wrap gap-2">
-                        <button type="button" onclick="addQuickService('Troca de Ã“leo e Filtro', 30)"
+                        <button type="button" onclick="addQuickService('Troca de Óleo e Filtro', 30)"
                             class="px-4 py-2 rounded-full border border-slate-200 text-xs font-bold text-slate-600 hover:bg-orange-50 hover:border-orange-200 transition-all active:scale-95">+
-                            Troca de Ã“leo</button>
+                            Troca de Óleo e Filtro</button>
                         <button type="button" onclick="addQuickService('Troca Pastilha Freio', 40)"
                             class="px-4 py-2 rounded-full border border-slate-200 text-xs font-bold text-slate-600 hover:bg-orange-50 hover:border-orange-200 transition-all active:scale-95">+
                             Troca Pastilha Freio</button>
@@ -330,35 +331,34 @@
                             class="px-4 py-2 rounded-full border border-slate-200 text-xs font-bold text-slate-600 hover:bg-orange-50 hover:border-orange-200 transition-all active:scale-95">+
                             Troca Correia Alternador</button>
                     </div>
-                </div>
-
-                <!-- Manual Entry -->
-                <div class="bg-surface-container-low/50 p-4 rounded-xl mb-6">
-                    <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
-                        <div class="md:col-span-7">
+                    <!-- Manual Entry -->
+                    <div class="bg-surface-container-low/50 p-4 rounded-xl mb-6">
+                        <div class="flex flex-col gap-3">
                             <input id="manual-service-name"
-                                class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-primary-container outline-none"
+                                class="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg text-xs md:text-sm focus:ring-2 focus:ring-primary-container outline-none font-medium"
                                 placeholder="Nome do serviço personalizado...">
-                        </div>
-                        <div class="md:col-span-2">
-                            <input id="manual-service-qty" type="number" value="1" min="1"
-                                class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-primary-container outline-none"
-                                placeholder="Qtd">
-                        </div>
-                        <div class="md:col-span-2">
-                            <div class="relative">
-                                <span
-                                    class="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-outline">R$</span>
-                                <input id="manual-service-price" type="number"
-                                    class="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-primary-container outline-none"
-                                    placeholder="0,00">
+                            <div class="grid grid-cols-12 gap-3">
+                                <div class="col-span-4">
+                                    <input id="manual-service-qty" type="number" value="1" min="1"
+                                        class="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg text-xs md:text-sm focus:ring-2 focus:ring-primary-container outline-none font-bold"
+                                        placeholder="Qtd">
+                                </div>
+                                <div class="col-span-6">
+                                    <div class="relative">
+                                        <span
+                                            class="absolute left-3 top-1/2 -translate-y-1/2 text-[10px] font-bold text-outline">R$</span>
+                                        <input id="manual-service-price" type="number"
+                                            class="w-full pl-8 pr-4 py-3 bg-white border border-slate-200 rounded-lg text-xs md:text-sm focus:ring-2 focus:ring-primary-container outline-none font-bold"
+                                            placeholder="0,00">
+                                    </div>
+                                </div>
+                                <div class="col-span-2">
+                                    <button type="button" onclick="addManualService()"
+                                        class="h-full w-full bg-primary text-white rounded-lg flex items-center justify-center hover:brightness-110 active:scale-95 transition-all shadow-md shadow-orange-500/20">
+                                        <span class="material-symbols-outlined">add</span>
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                        <div class="md:col-span-1">
-                            <button type="button" onclick="addManualService()"
-                                class="h-full w-full bg-primary text-white rounded-lg flex items-center justify-center hover:brightness-110 active:scale-95 transition-all">
-                                <span class="material-symbols-outlined">add</span>
-                            </button>
                         </div>
                     </div>
                 </div>
@@ -371,24 +371,24 @@
                 </div>
             </section>
             <!-- Section 4: Parts & Products -->
-            <section class="bg-surface-container-lowest p-8 rounded-xl shadow-sm ghost-border">
-                <div class="flex justify-between items-center mb-6">
+            <section class="bg-surface-container-lowest p-5 md:p-8 rounded-xl shadow-sm ghost-border">
+                <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-6">
                     <div class="flex items-center gap-3">
                         <span class="material-symbols-outlined text-primary"
                             style="font-variation-settings: 'FILL' 1;">precision_manufacturing</span>
-                        <h2 class="text-xl font-bold">Peças e Insumos</h2>
+                        <h2 class="text-base md:text-xl font-bold">Peças e Insumos</h2>
                     </div>
-                    <button
-                        class="flex items-center gap-2 text-sm font-bold text-tertiary bg-tertiary-fixed/30 px-4 py-2 rounded-lg hover:bg-tertiary-fixed/50 transition-all active:scale-95">
+                    <button type="button"
+                        class="flex items-center justify-center gap-2 text-[10px] md:text-sm font-bold text-tertiary bg-tertiary-fixed/30 px-4 py-2.5 rounded-lg hover:bg-tertiary-fixed/50 transition-all active:scale-95">
                         <span class="material-symbols-outlined text-sm">add_shopping_cart</span>
-                        Buscar no Estoque
+                        BUSCAR NO ESTOQUE
                     </button>
                 </div>
-                <div class="overflow-hidden">
-                    <table class="w-full text-left">
+                <div class="overflow-x-auto no-scrollbar -mx-2">
+                    <table class="w-full text-left min-w-[500px]">
                         <thead>
                             <tr
-                                class="text-secondary text-xs font-bold uppercase tracking-widest border-b border-surface-container">
+                                class="text-secondary text-[10px] md:text-xs font-bold uppercase tracking-widest border-b border-surface-container">
                                 <th class="pb-4 px-2">Item / Part Number</th>
                                 <th class="pb-4 px-2 text-center">Quant.</th>
                                 <th class="pb-4 px-2 text-right">Unitário</th>
@@ -464,19 +464,7 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Helper Card -->
-                    <div class="bg-tertiary-container/10 p-6 rounded-2xl border border-tertiary-container/20">
-                        <div class="flex items-start gap-3">
-                            <span class="material-symbols-outlined text-tertiary">info</span>
-                            <div>
-                                <h4 class="text-sm font-bold text-tertiary mb-1">Dica de Produtividade</h4>
-                                <p class="text-xs text-on-tertiary-container/70 leading-relaxed">Pressione <kbd
-                                        class="px-1.5 py-0.5 bg-white rounded shadow-sm text-[10px] font-bold">ALT +
-                                        S</kbd>
-                                    para adicionar um novo serviço rapidamente sem usar o mouse.</p>
-                            </div>
-                        </div>
-                    </div>
+
                     <div class="relative h-32 rounded-2xl overflow-hidden ghost-border">
                         <img class="w-full h-full object-cover grayscale opacity-30"
                             data-alt="modern car mechanic workshop with organized tools and bright diagnostic displays reflecting high technical precision"

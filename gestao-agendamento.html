@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html lang="pt-BR">
 
@@ -103,7 +103,7 @@
     <aside
         class="h-screen w-64 fixed left-0 top-0 -translate-x-full lg:translate-x-0 transition-transform duration-300 z-[100] sidebar-mobile bg-slate-50 dark:bg-slate-900 flex flex-col py-6 space-y-2 font-sans text-sm font-medium z-50">
         <div class="px-6 mb-8">
-            <h1 class="text-xl font-bold text-orange-600 workshop-name-display">AutoFlow</h1>
+            <h1 class="text-xl font-bold text-orange-600 workshop-name-display">MyFleetCar</h1>
             <p class="text-[10px] uppercase tracking-widest text-slate-400 font-bold">Mechanical Excellence</p>
         </div>
 
@@ -167,97 +167,101 @@
     <main class="lg:ml-64 min-h-screen bg-surface">
         <!-- Top App Bar -->
         <header
-            class="sticky top-0 z-40 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl border-b border-orange-100/15 flex justify-between items-center px-8 h-16 w-full shadow-sm">
-            <div class="flex items-center space-x-4">
-                <h2 class="text-xl font-extrabold tracking-tight text-on-background">Agendamento</h2>
-                <div class="h-4 w-px bg-slate-200 mx-2"></div>
-                <div class="flex items-center space-x-2 text-sm font-medium text-slate-500">
-                    <span id="current-week-display">Semana -</span>
-                    <span class="material-symbols-outlined text-xs">chevron_right</span>
-                    <span id="current-month-display" class="text-on-background">-</span>
-                </div>
-
-            </div>
-            <div class="flex items-center space-x-4">
-                <button
-                    class="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-primary to-primary-container text-white rounded-xl font-bold text-sm shadow-lg shadow-orange-500/20 active:scale-95 transition-all">
-                    <span class="material-symbols-outlined text-lg">add</span>
-                    <span>Novo Agendamento</span>
+            class="sticky top-0 z-40 bg-white/90 backdrop-blur-xl border-b border-orange-100/15 flex justify-between items-center px-4 md:px-8 h-16 w-full shadow-sm">
+            <div class="flex items-center gap-2 md:gap-4">
+                <button onclick="window.history.back()" class="p-2 text-slate-400 hover:text-primary lg:hidden">
+                    <span class="material-symbols-outlined">arrow_back</span>
                 </button>
-                <div class="h-8 w-px bg-slate-200 mx-2"></div>
+                <div class="flex flex-col md:flex-row md:items-center">
+                    <h2 class="text-sm md:text-xl font-extrabold tracking-tight text-on-background">Agendamento</h2>
+                    <div class="hidden md:block h-4 w-px bg-slate-200 mx-4"></div>
+                    <div class="flex items-center space-x-2 text-[10px] md:text-sm font-medium text-slate-500">
+                        <span id="current-week-display">Semana -</span>
+                        <span id="current-month-display" class="text-on-background font-bold">-</span>
+                    </div>
+                </div>
+            </div>
+            <div class="flex items-center gap-2 md:gap-4">
+                <button
+                    class="bg-gradient-to-r from-primary to-primary-container text-white px-3 md:px-4 py-2 rounded-xl font-bold text-[10px] md:text-sm shadow-lg shadow-orange-500/20 active:scale-95 transition-all flex items-center gap-1 md:gap-2">
+                    <span class="material-symbols-outlined text-[18px]">add</span>
+                    <span class="hidden sm:inline">Novo</span>
+                    <span class="sm:hidden">Novo</span>
+                </button>
+                <div class="hidden md:block h-8 w-px bg-slate-200 mx-2"></div>
                 <button class="p-2 text-slate-500 hover:bg-slate-50 rounded-lg transition-colors">
-                    <span class="material-symbols-outlined">notifications</span>
+                    <span class="material-symbols-outlined text-[20px]">notifications</span>
                 </button>
             </div>
         </header>
         <!-- Page Content -->
-        <div class="p-8 flex gap-8">
+        <div class="p-4 md:p-8 flex flex-col lg:flex-row gap-6 md:gap-8">
             <!-- Left Side: Calendar Grid -->
-            <div class="flex-1">
+            <div class="flex-1 min-w-0">
                 <div
                     class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden ring-1 ring-outline-variant/15">
                     <!-- Calendar Header -->
-                    <div id="calendar-days-header" class="grid grid-cols-8 border-b border-surface-container-low bg-surface-container-low/30">
-                        <div class="p-4 border-r border-surface-container-low"></div>
-                        <div class="p-4 text-center border-r border-surface-container-low">
-                            <span class="block text-[10px] font-black text-slate-400 uppercase tracking-widest">Seg</span>
-                            <span class="text-lg font-bold">-</span>
+                    <div id="calendar-days-header" class="grid grid-cols-8 border-b border-surface-container-low bg-surface-container-low/30 overflow-x-auto no-scrollbar">
+                        <div class="sticky left-0 bg-surface-container-low/30 z-10 p-2 md:p-4 border-r border-surface-container-low min-w-[50px]"></div>
+                        <div class="p-2 md:p-4 text-center border-r border-surface-container-low min-w-[60px]">
+                            <span class="block text-[8px] md:text-[10px] font-black text-slate-400 uppercase tracking-widest">Seg</span>
+                            <span class="text-sm md:text-lg font-bold">-</span>
                         </div>
-                        <div class="p-4 text-center border-r border-surface-container-low">
-                            <span class="block text-[10px] font-black text-slate-400 uppercase tracking-widest">Ter</span>
-                            <span class="text-lg font-bold">-</span>
+                        <div class="p-2 md:p-4 text-center border-r border-surface-container-low min-w-[60px]">
+                            <span class="block text-[8px] md:text-[10px] font-black text-slate-400 uppercase tracking-widest">Ter</span>
+                            <span class="text-sm md:text-lg font-bold">-</span>
                         </div>
-                        <div class="p-4 text-center border-r border-surface-container-low">
-                            <span class="block text-[10px] font-black text-slate-400 uppercase tracking-widest">Qua</span>
-                            <span class="text-lg font-bold">-</span>
+                        <div class="p-2 md:p-4 text-center border-r border-surface-container-low min-w-[60px]">
+                            <span class="block text-[8px] md:text-[10px] font-black text-slate-400 uppercase tracking-widest">Qua</span>
+                            <span class="text-sm md:text-lg font-bold">-</span>
                         </div>
-                        <div class="p-4 text-center border-r border-surface-container-low">
-                            <span class="block text-[10px] font-black text-slate-400 uppercase tracking-widest">Qui</span>
-                            <span class="text-lg font-bold">-</span>
+                        <div class="p-2 md:p-4 text-center border-r border-surface-container-low min-w-[60px]">
+                            <span class="block text-[8px] md:text-[10px] font-black text-slate-400 uppercase tracking-widest">Qui</span>
+                            <span class="text-sm md:text-lg font-bold">-</span>
                         </div>
-                        <div class="p-4 text-center border-r border-surface-container-low">
-                            <span class="block text-[10px] font-black text-slate-400 uppercase tracking-widest">Sex</span>
-                            <span class="text-lg font-bold">-</span>
+                        <div class="p-2 md:p-4 text-center border-r border-surface-container-low min-w-[60px]">
+                            <span class="block text-[8px] md:text-[10px] font-black text-slate-400 uppercase tracking-widest">Sex</span>
+                            <span class="text-sm md:text-lg font-bold">-</span>
                         </div>
-                        <div class="p-4 text-center border-r border-surface-container-low">
-                            <span class="block text-[10px] font-black text-slate-400 uppercase tracking-widest">Sáb</span>
-                            <span class="text-lg font-bold text-slate-400">-</span>
+                        <div class="p-2 md:p-4 text-center border-r border-surface-container-low min-w-[60px]">
+                            <span class="block text-[8px] md:text-[10px] font-black text-slate-400 uppercase tracking-widest">Sáb</span>
+                            <span class="text-sm md:text-lg font-bold text-slate-400">-</span>
                         </div>
-                        <div class="p-4 text-center">
-                            <span class="block text-[10px] font-black text-slate-400 uppercase tracking-widest">Dom</span>
-                            <span class="text-lg font-bold text-slate-400">-</span>
+                        <div class="p-2 md:p-4 text-center min-w-[60px]">
+                            <span class="block text-[8px] md:text-[10px] font-black text-slate-400 uppercase tracking-widest">Dom</span>
+                            <span class="text-sm md:text-lg font-bold text-slate-400">-</span>
                         </div>
                     </div>
 
                     <!-- Calendar Body -->
                     <div
-                        class="grid grid-cols-8 relative bg-[radial-gradient(#e2e7ff_1px,transparent_1px)] [background-size:20px_20px]">
+                        class="grid grid-cols-8 relative bg-[radial-gradient(#e2e7ff_1px,transparent_1px)] [background-size:20px_20px] overflow-x-auto no-scrollbar">
                         <!-- Time Column -->
-                        <div class="border-r border-surface-container-low">
-                            <div class="h-20 p-2 text-right border-b border-surface-container-low/50">
-                                <span class="text-[10px] font-bold text-slate-400">08:00</span>
+                        <div class="sticky left-0 bg-white z-10 border-r border-surface-container-low min-w-[50px]">
+                            <div class="h-16 md:h-20 p-2 text-right border-b border-surface-container-low/50">
+                                <span class="text-[9px] md:text-[10px] font-bold text-slate-400">08:00</span>
                             </div>
-                            <div class="h-20 p-2 text-right border-b border-surface-container-low/50">
-                                <span class="text-[10px] font-bold text-slate-400">09:00</span>
+                            <div class="h-16 md:h-20 p-2 text-right border-b border-surface-container-low/50">
+                                <span class="text-[9px] md:text-[10px] font-bold text-slate-400">09:00</span>
                             </div>
-                            <div class="h-20 p-2 text-right border-b border-surface-container-low/50">
-                                <span class="text-[10px] font-bold text-slate-400">10:00</span>
+                            <div class="h-16 md:h-20 p-2 text-right border-b border-surface-container-low/50">
+                                <span class="text-[9px] md:text-[10px] font-bold text-slate-400">10:00</span>
                             </div>
-                            <div class="h-20 p-2 text-right border-b border-surface-container-low/50">
-                                <span class="text-[10px] font-bold text-slate-400">11:00</span>
+                            <div class="h-16 md:h-20 p-2 text-right border-b border-surface-container-low/50">
+                                <span class="text-[9px] md:text-[10px] font-bold text-slate-400">11:00</span>
                             </div>
-                            <div class="h-20 p-2 text-right border-b border-surface-container-low/50">
-                                <span class="text-[10px] font-bold text-slate-400">12:00</span>
+                            <div class="h-16 md:h-20 p-2 text-right border-b border-surface-container-low/50">
+                                <span class="text-[9px] md:text-[10px] font-bold text-slate-400">12:00</span>
                             </div>
-                            <div class="h-20 p-2 text-right border-b border-surface-container-low/50">
-                                <span class="text-[10px] font-bold text-slate-400">13:00</span>
+                            <div class="h-16 md:h-20 p-2 text-right border-b border-surface-container-low/50">
+                                <span class="text-[9px] md:text-[10px] font-bold text-slate-400">13:00</span>
                             </div>
-                            <div class="h-20 p-2 text-right border-b border-surface-container-low/50">
-                                <span class="text-[10px] font-bold text-slate-400">14:00</span>
+                            <div class="h-16 md:h-20 p-2 text-right border-b border-surface-container-low/50">
+                                <span class="text-[9px] md:text-[10px] font-bold text-slate-400">14:00</span>
                             </div>
                         </div>
                         <!-- Days Columns (Content Cells) -->
-                        <div id="calendar-events-grid" class="col-span-7 grid grid-cols-7 relative">
+                        <div id="calendar-events-grid" class="col-span-7 grid grid-cols-7 relative min-w-[420px]">
                             <!-- Column 1 (Mon) -->
                             <div class="h-full border-r border-surface-container-low/50"></div>
                             <!-- Column 2 (Tue) -->
@@ -277,7 +281,7 @@
                 </div>
             </div>
             <!-- Right Side: Interaction Panel -->
-            <aside class="w-80 space-y-6">
+            <aside class="w-full lg:w-80 space-y-6">
                 <!-- Action Card: Public Link -->
                 <div
                     class="bg-gradient-to-br from-tertiary to-tertiary-container p-6 rounded-2xl text-white shadow-xl shadow-tertiary/10 relative overflow-hidden">

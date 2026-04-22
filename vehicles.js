@@ -51,7 +51,7 @@ function initClientRegistration() {
  */
 async function loadClientDetails(clientId) {
     try {
-        const { data, error } = await AutoFlow.DB.select('customers', {
+        const { data, error } = await MyFleetCar.DB.select('customers', {
             match: { id: clientId }
         });
 
@@ -100,7 +100,7 @@ async function loadClientVehicles(clientId) {
     if (!listContainer) return;
 
     try {
-        const { data: vehicles, error } = await AutoFlow.DB.select('vehicles', {
+        const { data: vehicles, error } = await MyFleetCar.DB.select('vehicles', {
             match: { customer_id: clientId },
             order: { column: 'created_at', ascending: false }
         });
@@ -153,7 +153,7 @@ window.deleteVehicle = async (vehicleId, clientId) => {
     if (!confirm('Tem certeza que deseja excluir este veículo?')) return;
 
     try {
-        const { error } = await AutoFlow.DB.delete('vehicles', { id: vehicleId });
+        const { error } = await MyFleetCar.DB.delete('vehicles', { id: vehicleId });
         if (error) throw error;
 
         loadClientVehicles(clientId);
@@ -200,7 +200,7 @@ function setupModalListeners() {
 async function handleVehicleSubmit(e, clientId) {
     e.preventDefault();
     
-    const { data: { user } } = await AutoFlow.Auth.getUser();
+    const { data: { user } } = await MyFleetCar.Auth.getUser();
     if (!user) {
         alert('Sessão expirada.');
         return;
@@ -222,7 +222,7 @@ async function handleVehicleSubmit(e, clientId) {
     submitBtn.textContent = 'SALVANDO...';
 
     try {
-        const { error } = await AutoFlow.DB.insert('vehicles', vehicleData);
+        const { error } = await MyFleetCar.DB.insert('vehicles', vehicleData);
         if (error) throw error;
 
         // Success

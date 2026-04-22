@@ -135,7 +135,7 @@ async function checkAuth() {
 window.tempVehicles = [];
 
 // Global exposure
-window.AutoFlow = {
+window.MyFleetCar = {
     Auth,
     DB,
     checkAuth,

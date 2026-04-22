@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>AutoFlow - Gerenciamento de Equipe</title>
+    <title>MyFleetCar - Gerenciamento de Equipe</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
@@ -31,7 +31,7 @@
     <!-- SideNavBar -->
     <aside class="h-screen w-64 fixed left-0 top-0 -translate-x-full lg:translate-x-0 transition-transform duration-300 z-[100] sidebar-mobile bg-slate-50 flex flex-col py-6 space-y-2 z-50 overflow-y-auto border-r border-orange-100/15">
         <div class="px-6 mb-8">
-            <h1 class="text-xl font-bold text-orange-600 workshop-name-display">AutoFlow</h1>
+            <h1 class="text-xl font-bold text-orange-600 workshop-name-display">MyFleetCar</h1>
             <p class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Mechanical Excellence</p>
         </div>
         <nav class="flex-1 px-4 space-y-1">
@@ -68,33 +68,33 @@
 
     <main class="lg:ml-64 flex-1">
         <!-- TopNavBar -->
-        <header class="fixed top-0 right-0 w-full lg:w-[calc(100%-16rem)] z-40 z-40 bg-white/80 backdrop-blur-xl border-b border-orange-100/15 shadow-sm">
-            <div class="flex justify-between items-center px-8 h-16 w-full">
+        <header class="fixed top-0 right-0 w-full lg:w-[calc(100%-16rem)] z-40 bg-white/80 backdrop-blur-xl border-b border-orange-100/15 shadow-sm">
+            <div class="flex justify-between items-center px-4 md:px-8 h-16 w-full">
                 <h2 class="text-lg font-bold text-slate-900">Configurações</h2>
             </div>
-            <nav class="flex px-8 border-t border-orange-100/5">
-                <a href="painel-configuracao.html" class="px-4 py-3 text-xs font-medium text-slate-500 hover:text-primary transition-colors">Info Oficina</a>
-                <a href="usuario-permisoes-configuracao.html" class="px-4 py-3 text-xs font-medium text-slate-500 hover:text-primary transition-colors">Usuários & Permissões</a>
-                <a href="equipe-configuracao.html" class="px-4 py-3 text-xs font-bold border-b-2 border-primary text-primary">Gerenciar Equipe</a>
-                <a href="seguranca-preferencia-configuracao.html" class="px-4 py-3 text-xs font-medium text-slate-500 hover:text-primary transition-colors">Segurança & Preferências</a>
+            <nav class="flex px-4 md:px-8 border-t border-orange-100/5 overflow-x-auto no-scrollbar whitespace-nowrap">
+                <a href="painel-configuracao.html" class="px-4 py-3 text-[10px] md:text-xs font-medium text-slate-500 hover:text-primary transition-colors">Perfil Oficina</a>
+                <a href="usuario-permisoes-configuracao.html" class="px-4 py-3 text-[10px] md:text-xs font-medium text-slate-500 hover:text-primary transition-colors">Usuários & Permissões</a>
+                <a href="equipe-configuracao.html" class="px-4 py-3 text-[10px] md:text-xs font-bold border-b-2 border-primary text-primary">Gerenciar Equipe</a>
+                <a href="seguranca-preferencia-configuracao.html" class="px-4 py-3 text-[10px] md:text-xs font-medium text-slate-500 hover:text-primary transition-colors">Segurança & Preferências</a>
             </nav>
         </header>
 
-        <section class="mt-32 p-10 max-w-7xl mx-auto">
-            <div class="flex justify-between items-end mb-8">
+        <section class="mt-28 p-4 md:p-10 max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mb-8">
                 <div>
-                    <h1 class="text-3xl font-extrabold tracking-tight text-on-surface">Gestão da Equipe</h1>
-                    <p class="text-slate-500 mt-1">Cadastre seus funcionários e defina modelos de remuneração.</p>
+                    <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight text-on-surface">Gestão da Equipe</h1>
+                    <p class="text-sm md:text-base text-slate-500 mt-1">Cadastre seus funcionários e remuneração.</p>
                 </div>
-                <button onclick="openStaffModal()" class="btn-primary-gradient text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 shadow-lg shadow-primary/20 transition-all active:scale-95">
+                <button onclick="openStaffModal()" class="w-full md:w-auto btn-primary-gradient text-white px-6 py-3 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-primary/20 transition-all active:scale-95">
                     <span class="material-symbols-outlined">person_add</span>
                     Novo Funcionário
                 </button>
             </div>
 
             <!-- Staff Table -->
-            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-                <table class="w-full text-left">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-x-auto no-scrollbar">
+                <table class="w-full text-left min-w-[600px]">
                     <thead class="bg-slate-50">
                         <tr>
                             <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Nome / Cargo</th>

@@ -1,5 +1,5 @@
 /**
- * Service Orders Management Logic for AutoFlow SaaS
+ * Service Orders Management Logic for MyFleetCar SaaS
  */
 
 let laborServices = [];
@@ -40,7 +40,7 @@ async function loadServiceOrders() {
 
     try {
         // Fetch service orders with customer and vehicle info
-        const { data: orders, error } = await AutoFlow.DB.select('service_orders', {
+        const { data: orders, error } = await MyFleetCar.DB.select('service_orders', {
             select: '*, customers(full_name, phone), vehicles(brand, model, license_plate)',
             order: { column: 'created_at', ascending: false }
         });
@@ -157,57 +157,54 @@ function renderServiceOrdersTable(orders) {
         }
 
         const osLabel = order.os_number || '#' + order.id.toString().slice(-6).toUpperCase();
-        const waMessage = encodeURIComponent(`Olá ${customerName}, sua Ordem de Serviço ${osLabel} está com status: ${order.status}.`);
-        const waLink = customerPhone ? `https://wa.me/${customerPhone.replace(/\D/g, '')}?text=${waMessage}` : '#';
+        
+        // WhatsApp Share logic - simplified to call a global function
+        const shareLink = `javascript:shareOSViaWhatsApp(${JSON.stringify(order).replace(/"/g, '&quot;')})`;
 
         return `
             <tr class="hover:bg-slate-50/50 transition-all group">
-                <td class="px-8 py-6 whitespace-nowrap">
+                <td class="px-4 md:px-8 py-4 md:py-6 whitespace-nowrap">
                     <a href="detalhes-ordem.html?id=${order.id}" class="flex flex-col hover:text-orange-600 transition-colors">
-                        <span class="text-xs font-black text-slate-900">${osLabel}</span>
-                        <span class="text-[10px] text-slate-400 font-medium italic">Ver Detalhes</span>
+                        <span class="text-xs md:text-sm font-black text-slate-900">${osLabel}</span>
+                        <span class="text-[9px] text-slate-400 font-bold uppercase tracking-tighter">Ver Detalhes</span>
                     </a>
                 </td>
-                <td class="px-4 py-6 whitespace-nowrap">
-                    <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center font-bold text-[10px]">
-                            ${customerName.charAt(0)}
-                        </div>
-                        <span class="text-xs font-bold text-slate-700">${customerName}</span>
-                    </div>
-                </td>
-                <td class="px-4 py-6 whitespace-nowrap">
+                <td class="px-4 py-4 md:py-6">
                     <div class="flex flex-col">
-                        <span class="text-xs font-bold text-slate-600">${vehicleInfo}</span>
-                        <div class="flex items-center gap-2">
-                             <span class="text-[10px] font-mono text-slate-400 uppercase border border-slate-200 px-1 rounded">${vehiclePlate}</span>
+                        <span class="text-xs md:text-sm font-black text-slate-700 leading-tight">${vehicleInfo}</span>
+                        <div class="flex items-center gap-1.5 mt-0.5">
+                             <span class="text-[9px] md:text-[10px] font-mono text-slate-500 font-black uppercase border border-slate-200 px-1 rounded bg-slate-50">${vehiclePlate}</span>
+                             <span class="text-[9px] md:text-[10px] text-slate-400 font-bold truncate max-w-[100px] md:max-w-none">| ${customerName}</span>
                         </div>
-                        ${servicesHtml}
+                        <div class="hidden md:block">
+                            ${servicesHtml}
+                        </div>
                     </div>
                 </td>
-                <td class="px-4 py-6 whitespace-nowrap">
-                    <span class="text-xs font-medium text-slate-500">${order.mechanic_name || '--'}</span>
+                <td class="hidden md:table-cell px-4 py-6 whitespace-nowrap">
+                    <span class="text-xs font-semibold text-slate-500">${order.mechanic_name || '--'}</span>
                 </td>
-                <td class="px-4 py-6 whitespace-nowrap">
+                <td class="hidden sm:table-cell px-4 py-6 whitespace-nowrap">
                     <span class="text-xs font-medium text-slate-500">${new Date(order.entry_date || order.created_at).toLocaleDateString('pt-BR')}</span>
                 </td>
-                <td class="px-4 py-6 whitespace-nowrap">
-                    <span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] ${statusColors[order.status] || 'bg-slate-100 text-slate-600'} uppercase tracking-widest">
+                <td class="px-4 py-4 md:py-6 whitespace-nowrap">
+                    <span class="inline-flex items-center px-2 py-0.5 md:px-3 md:py-1 rounded-lg text-[9px] md:text-[10px] ${statusColors[order.status] || 'bg-slate-100 text-slate-600'} uppercase font-black tracking-widest">
                         ${order.status}
                     </span>
+                    <div class="sm:hidden mt-1 text-[10px] font-black text-slate-900">R$ ${order.total_amount ? order.total_amount.toLocaleString('pt-BR', { minimumFractionDigits: 2 }) : '0,00'}</div>
                 </td>
-                <td class="px-4 py-6 whitespace-nowrap">
-                    <span class="text-sm font-black text-slate-900">R$ ${order.total_amount ? order.total_amount.toLocaleString('pt-BR', { minimumFractionDigits: 2 }) : '0,00'}</span>
+                <td class="hidden sm:table-cell px-4 py-6 whitespace-nowrap text-right">
+                    <span class="text-xs md:text-sm font-black text-slate-900">R$ ${order.total_amount ? order.total_amount.toLocaleString('pt-BR', { minimumFractionDigits: 2 }) : '0,00'}</span>
                 </td>
-                <td class="px-8 py-6 whitespace-nowrap text-right">
-                    <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <a href="${waLink}" target="_blank" class="p-2 text-slate-400 hover:text-green-500 transition-colors" title="Compartilhar via WhatsApp">
+                <td class="px-4 md:px-8 py-4 md:py-6 whitespace-nowrap text-right">
+                    <div class="flex items-center justify-end gap-1 md:gap-2">
+                        <button onclick='shareOSViaWhatsApp(${JSON.stringify(order).replace(/"/g, "&quot;")})' class="p-1.5 md:p-2 text-slate-400 hover:text-green-500 transition-colors" title="Compartilhar via WhatsApp">
                             <span class="material-symbols-outlined text-lg">share</span>
-                        </a>
-                        <button onclick="downloadPDF('${order.id}')" class="p-2 text-slate-400 hover:text-red-500 transition-colors" title="Baixar PDF">
+                        </button>
+                        <button onclick='downloadPDF("${order.id}")' class="p-1.5 md:p-2 text-slate-400 hover:text-blue-500 transition-colors" title="Gerar PDF">
                             <span class="material-symbols-outlined text-lg">picture_as_pdf</span>
                         </button>
-                        <a href="detalhes-ordem.html?id=${order.id}" class="p-2 text-slate-400 hover:text-orange-50 transition-colors" title="Visualizar OS">
+                        <a href="detalhes-ordem.html?id=${order.id}" class="p-1.5 md:p-2 text-slate-400 hover:text-orange-500 transition-colors" title="Visualizar OS">
                             <span class="material-symbols-outlined text-lg">visibility</span>
                         </a>
                     </div>
@@ -252,7 +249,7 @@ async function initNewOrderForm() {
                     limit: 5
                 };
 
-                const { data: customers, error } = await AutoFlow.DB.select('customers', queryOpts);
+                const { data: customers, error } = await MyFleetCar.DB.select('customers', queryOpts);
 
                 if (error) throw error;
 
@@ -283,7 +280,7 @@ async function initNewOrderForm() {
         resultsContainer.classList.add('hidden');
 
         try {
-            const { data: vehicles } = await AutoFlow.DB.select('vehicles', { match: { customer_id: id } });
+            const { data: vehicles } = await MyFleetCar.DB.select('vehicles', { match: { customer_id: id } });
             if (vehicles && vehicles.length > 0) {
                 vehicleSelect.disabled = false;
                 vehicleSelect.innerHTML = '<option value="">Selecione o veículo...</option>' +
@@ -406,7 +403,7 @@ async function handleNewOrder(e) {
     e.preventDefault();
 
     const form = e.target;
-    const { data: { user } } = await AutoFlow.Auth.getUser();
+    const { data: { user } } = await MyFleetCar.Auth.getUser();
     if (!user) return;
 
     const customerId = document.getElementById('selected-customer-id').value;
@@ -448,7 +445,7 @@ async function handleNewOrder(e) {
     }
 
     try {
-        const { error } = await AutoFlow.DB.insert('service_orders', orderData);
+        const { error } = await MyFleetCar.DB.insert('service_orders', orderData);
         if (error) throw error;
 
         alert('Ordem de Serviço criada com sucesso!');
@@ -472,7 +469,7 @@ async function loadOrderDetails() {
     if (!orderId) return;
 
     try {
-        const { data: order, error } = await AutoFlow.DB.select('service_orders', {
+        const { data: order, error } = await MyFleetCar.DB.select('service_orders', {
             select: '*, customers(*), vehicles(*)',
             match: { id: orderId }
         });
@@ -551,13 +548,14 @@ async function loadOrderDetails() {
         renderStatusActions(o);
 
         // Setup WhatsApp link
-        const customerName = o.customers ? o.customers.full_name : 'Cliente';
-        const osLabel = o.os_number || '#' + o.id.toString().slice(-6).toUpperCase();
-        const waMessage = encodeURIComponent(`Olá ${customerName}, segue o status da sua Ordem de Serviço ${osLabel}: ${o.status}.`);
-        const customerPhone = o.customers ? o.customers.phone : '';
         const waBtn = document.getElementById('wa-btn');
-        if (waBtn && customerPhone) {
-            waBtn.onclick = () => window.open(`https://wa.me/${customerPhone.replace(/\D/g, '')}?text=${waMessage}`, '_blank');
+        if (waBtn) {
+            waBtn.onclick = () => generateOSPDF(o, 'share');
+        }
+        
+        const downloadBtn = document.querySelector('button[onclick*="downloadPDF"]');
+        if (downloadBtn) {
+            downloadBtn.onclick = () => generateOSPDF(o, 'download');
         }
 
         // Auto print if requested
@@ -680,7 +678,7 @@ async function updateOrderStatus(id, newStatus, extraData = {}) {
     try {
         const oldStatus = window.currentOrder.status;
 
-        const { error } = await AutoFlow.DB.update('service_orders', {
+        const { error } = await MyFleetCar.DB.update('service_orders', {
             status: newStatus,
             ...extraData
         }, { id });
@@ -694,7 +692,7 @@ async function updateOrderStatus(id, newStatus, extraData = {}) {
 
         // If completing, also create a financial transaction
         if (newStatus === 'Concluído' && extraData.payment_method) {
-            const { data: { user } } = await AutoFlow.Auth.getUser();
+            const { data: { user } } = await MyFleetCar.Auth.getUser();
 
             // Ensure numeric amount (stripping currency symbols and formatting)
             let totalAmount = window.currentOrder.total_amount || 0;
@@ -715,17 +713,17 @@ async function updateOrderStatus(id, newStatus, extraData = {}) {
             };
 
             // IMPROVEMENT: Check if a transaction for this OS already exists to prevent duplicates
-            const { data: existingTrans } = await AutoFlow.DB.select('financial_transactions', {
+            const { data: existingTrans } = await MyFleetCar.DB.select('financial_transactions', {
                 match: { workshop_id: user.id, service_order_id: id }
             });
 
             let transRes;
             if (existingTrans && existingTrans.length > 0) {
                 // Update existing
-                transRes = await AutoFlow.DB.update('financial_transactions', transRecord, { id: existingTrans[0].id });
+                transRes = await MyFleetCar.DB.update('financial_transactions', transRecord, { id: existingTrans[0].id });
             } else {
                 // Insert new
-                transRes = await AutoFlow.DB.insert('financial_transactions', transRecord);
+                transRes = await MyFleetCar.DB.insert('financial_transactions', transRecord);
             }
 
             if (transRes.error) {
@@ -814,7 +812,7 @@ async function loadMechanics() {
     if (!select) return;
 
     try {
-        const { data: staff, error } = await AutoFlow.DB.select('staff', {
+        const { data: staff, error } = await MyFleetCar.DB.select('staff', {
             order: { column: 'name', ascending: true }
         });
 
@@ -848,53 +846,84 @@ window.downloadPDF = function (id) {
 };
 
 /**
+ * Shares OS link via WhatsApp
+ */
+window.shareOSViaWhatsApp = function (order) {
+    if (!order) return;
+    
+    const customerName = order.customers ? order.customers.full_name : 'Cliente';
+    const osLabel = order.os_number || '#' + (order.id.toString().length > 10 ? order.id.toString().slice(-6).toUpperCase() : order.id);
+    const customerPhone = order.customers ? order.customers.phone : '';
+    
+    if (!customerPhone) {
+        alert('Este cliente não possui telefone cadastrado.');
+        return;
+    }
+
+    const baseUrl = window.location.origin + window.location.pathname.replace(/\/[^\/]*$/, '');
+    const docLink = `${baseUrl}/imprimir-ordem.html?id=${order.id}`;
+    
+    const message = `Olá *${customerName}*!\n\nSou da *Oficina MyFleetCar*. Sua Ordem de Serviço *${osLabel}* está com o status: *${order.status.toUpperCase()}*.\n\nVocê pode visualizar os detalhes e o documento oficial no link abaixo:\n${docLink}\n\nQualquer dúvida, estamos à disposição!`;
+    
+    const waUrl = `https://wa.me/${customerPhone.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`;
+    window.open(waUrl, '_blank');
+};
+
+/**
  * Renders the items list with per-item mechanic logic
  */
-async function renderOrderItems(order) {
+function renderOrderItems(order) {
     const list = document.getElementById('order-items-list');
     if (!list) return;
 
     // Get all mechanics to populate dropdowns
-    const { data: staff } = await AutoFlow.DB.select('staff', { order: { column: 'name', ascending: true } });
+    MyFleetCar.DB.select('staff', { order: { column: 'name', ascending: true } }).then(({ data: staff }) => {
+        if (!order.labor_services || order.labor_services.length === 0) {
+            list.innerHTML = '<tr><td colspan="5" class="px-6 py-12 text-center text-slate-400 italic">Nenhum item adicionado.</td></tr>';
+            return;
+        }
 
-    if (!order.labor_services || order.labor_services.length === 0) {
-        list.innerHTML = '<tr><td colspan="5" class="px-6 py-12 text-center text-slate-400 italic">Nenhum item adicionado.</td></tr>';
-        return;
-    }
+        list.innerHTML = order.labor_services.map((item, index) => {
+            const subtotal = (item.price || 0) * (item.qty || 1);
+            const itemMechanic = item.mechanic_name || order.mechanic_name || 'Nenhum';
+            const description = item.name || item.description || 'Sem Descrição';
 
-    list.innerHTML = order.labor_services.map((item, index) => {
-        const subtotal = (item.price || 0) * (item.qty || 1);
-        const itemMechanic = item.mechanic_name || order.mechanic_name || 'Nenhum';
-        const description = item.name || item.description || 'Sem Descrição';
-
-        return `
-            <tr class="hover:bg-slate-50 transition-colors">
-                <td class="px-6 py-4">
-                    <span class="text-sm font-bold text-slate-700">${description}</span>
-                </td>
-                <td class="px-6 py-4">
-                    <select onchange="updateItemMechanic(${index}, this.value)" class="bg-transparent border-none text-[10px] font-bold text-slate-500 uppercase focus:ring-0 cursor-pointer">
-                        <option value="">${itemMechanic} (Padrão)</option>
-                        ${(staff || []).map(s => `<option value="${s.name}" ${item.mechanic_name === s.name ? 'selected' : ''}>${s.name}</option>`).join('')}
-                    </select>
-                </td>
-                <td class="px-6 py-4 text-center">
-                    <span class="text-xs font-bold text-slate-600">${item.qty}</span>
-                </td>
-                <td class="px-6 py-4">
-                    <span class="text-xs text-slate-500">R$ ${item.price.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
-                </td>
-                <td class="px-6 py-4 text-right">
-                    <div class="flex items-center justify-end gap-3">
-                        <span class="text-sm font-black text-slate-900">R$ ${subtotal.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
-                        <button onclick="removeItemFromOS(${index})" class="text-slate-300 hover:text-red-500 transition-colors">
-                            <span class="material-symbols-outlined text-sm">delete</span>
-                        </button>
-                    </div>
-                </td>
-            </tr>
-        `;
-    }).join('');
+            return `
+                <tr class="hover:bg-slate-50 transition-colors">
+                    <td class="px-4 md:px-6 py-4">
+                        <div class="flex flex-col">
+                            <span class="text-xs md:text-sm font-bold text-slate-700">${description}</span>
+                            <div class="sm:hidden flex items-center gap-2 mt-1 text-[9px] font-bold text-slate-400">
+                                <span>Qtd: ${item.qty}</span>
+                                <span>•</span>
+                                <span>UN: R$ ${item.price.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="hidden md:table-cell px-6 py-4">
+                        <select onchange="updateItemMechanic(${index}, this.value)" class="bg-transparent border-none text-[10px] font-bold text-slate-500 uppercase focus:ring-0 cursor-pointer">
+                            <option value="">${itemMechanic} (Padrão)</option>
+                            ${(staff || []).map(s => `<option value="${s.name}" ${item.mechanic_name === s.name ? 'selected' : ''}>${s.name}</option>`).join('')}
+                        </select>
+                    </td>
+                    <td class="hidden sm:table-cell px-6 py-4 text-center">
+                        <span class="text-xs font-bold text-slate-600">${item.qty}</span>
+                    </td>
+                    <td class="hidden sm:table-cell px-6 py-4">
+                        <span class="text-xs text-slate-500">R$ ${item.price.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+                    </td>
+                    <td class="px-4 md:px-6 py-4 text-right">
+                        <div class="flex items-center justify-end gap-3">
+                            <span class="text-xs md:text-sm font-black text-slate-900">R$ ${subtotal.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+                            <button onclick="removeItemFromOS(${index})" class="text-slate-300 hover:text-red-500 transition-colors">
+                                <span class="material-symbols-outlined text-sm">delete</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+    });
 }
 
 /**
@@ -912,7 +941,7 @@ window.addNewItem = async function () {
     const updatedServices = [...(window.currentOrder.labor_services || []), newItem];
 
     try {
-        await AutoFlow.DB.update('service_orders', { labor_services: updatedServices }, { id: window.currentOrder.id });
+        await MyFleetCar.DB.update('service_orders', { labor_services: updatedServices }, { id: window.currentOrder.id });
         await addHistoryEntry(window.currentOrder.id, 'Item', `Adicionado item: ${desc}`);
         window.location.reload();
     } catch (err) {
@@ -928,7 +957,7 @@ window.removeItemFromOS = async function (index) {
     const itemDesc = removedItem.name || removedItem.description;
 
     try {
-        await AutoFlow.DB.update('service_orders', { labor_services: updated }, { id: window.currentOrder.id });
+        await MyFleetCar.DB.update('service_orders', { labor_services: updated }, { id: window.currentOrder.id });
         await addHistoryEntry(window.currentOrder.id, 'Item', `Removido item: ${itemDesc}`);
         window.location.reload();
     } catch (err) {
@@ -942,7 +971,7 @@ window.updateItemMechanic = async function (index, mechanicName) {
     const itemDesc = updated[index].name || updated[index].description;
 
     try {
-        await AutoFlow.DB.update('service_orders', { labor_services: updated }, { id: window.currentOrder.id });
+        await MyFleetCar.DB.update('service_orders', { labor_services: updated }, { id: window.currentOrder.id });
         await addHistoryEntry(window.currentOrder.id, 'Mecânico', `Item "${itemDesc}" vinculado a ${mechanicName || 'Padrão'}`);
     } catch (err) {
         console.error(err);
@@ -962,7 +991,7 @@ window.recalculateAndSave = async function () {
     if (noCharge) finalTotal = 0;
 
     try {
-        await AutoFlow.DB.update('service_orders', {
+        await MyFleetCar.DB.update('service_orders', {
             additional_charges: additional,
             discount_amount: discount,
             no_charge: noCharge,
@@ -983,7 +1012,7 @@ async function loadHistory(osId) {
     if (!timeline) return;
 
     try {
-        const { data: history, error } = await AutoFlow.DB.select('service_order_history', {
+        const { data: history, error } = await MyFleetCar.DB.select('service_order_history', {
             match: { service_order_id: osId },
             order: { column: 'created_at', ascending: false }
         });
@@ -1016,8 +1045,8 @@ async function loadHistory(osId) {
 
 async function addHistoryEntry(osId, type, description, oldValue = null, newValue = null) {
     try {
-        const { data: { user } } = await AutoFlow.Auth.getUser();
-        await AutoFlow.DB.insert('service_order_history', {
+        const { data: { user } } = await MyFleetCar.Auth.getUser();
+        await MyFleetCar.DB.insert('service_order_history', {
             service_order_id: osId,
             workshop_id: user.id,
             type,
@@ -1051,7 +1080,7 @@ async function generateOSNumber(workshopId) {
 
     try {
         // Fetch the highest OS number for this workshop and year
-        const { data, error } = await AutoFlow.DB.select('service_orders', {
+        const { data, error } = await MyFleetCar.DB.select('service_orders', {
             select: 'os_number',
             match: { workshop_id: workshopId },
             ilike: { os_number: `${prefix}%` },
@@ -1106,14 +1135,14 @@ window.confirmDeletion = async () => {
         const orderId = window.currentOrder.id;
 
         // 1. Delete History
-        await AutoFlow.DB.delete('service_order_history', { service_order_id: orderId });
+        await MyFleetCar.DB.delete('service_order_history', { service_order_id: orderId });
 
         // 2. Delete Financial Transactions (to keep clean metrics)
-        await AutoFlow.DB.delete('financial_transactions', { service_order_id: orderId });
+        await MyFleetCar.DB.delete('financial_transactions', { service_order_id: orderId });
 
         // 3. SOFT DELETE: Instead of deleting the record, we change status to 'Excluída'
         // This keeps the sequential OS number integrity intact.
-        await AutoFlow.DB.update('service_orders', { status: 'Excluída' }, { id: orderId });
+        await MyFleetCar.DB.update('service_orders', { status: 'Excluída' }, { id: orderId });
 
         alert('Ordem de Serviço excluída com sucesso.');
         window.location.href = 'lista-ordem.html';
