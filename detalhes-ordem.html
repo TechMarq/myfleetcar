@@ -117,11 +117,37 @@
             transform: scale(0.98);
         }
 
+        /* Custom Scrollbar */
+        #order-timeline::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        #order-timeline::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        #order-timeline::-webkit-scrollbar-thumb {
+            background: #e2e8f0;
+            border-radius: 10px;
+        }
+
+        #order-timeline::-webkit-scrollbar-thumb:hover {
+            background: #cbd5e1;
+        }
+
         /* Print Specific Styles - Compact for 1 Page */
         @media print {
-            aside, header, nav, button, .no-print, #status-actions, .modal {
+
+            aside,
+            header,
+            nav,
+            button,
+            .no-print,
+            #status-actions,
+            .modal {
                 display: none !important;
             }
+
             body {
                 background: white !important;
                 color: black !important;
@@ -129,12 +155,20 @@
                 padding: 10px !important;
                 font-size: 10px !important;
             }
+
             main {
                 margin: 0 !important;
                 width: 100% !important;
             }
-            .mt-28 { margin-top: 0 !important; }
-            .ml-64 { margin-left: 0 !important; }
+
+            .mt-28 {
+                margin-top: 0 !important;
+            }
+
+            .ml-64 {
+                margin-left: 0 !important;
+            }
+
             section {
                 border: 1px solid #eee !important;
                 box-shadow: none !important;
@@ -142,21 +176,84 @@
                 padding: 12px !important;
                 page-break-inside: avoid;
             }
-            .grid { display: block !important; }
-            .col-span-12, .lg:col-span-4, .lg:col-span-8 { width: 100% !important; }
-            .print-only-header { display: flex !important; margin-bottom: 15px !important; padding-bottom: 10px !important; }
-            .order-id-display { font-size: 1.5rem !important; color: #ea580c !important; }
-            .text-4xl { font-size: 1.5rem !important; }
-            .text-2xl { font-size: 1.2rem !important; }
-            .text-sm { font-size: 9px !important; }
-            .px-8, .p-8, .p-6 { padding: 4px !important; }
-            .mb-12, .mb-8, .mb-6 { margin-bottom: 8px !important; }
-            select { border: none !important; appearance: none; background: transparent !important; pointer-events: none; }
-            table th, table td { padding: 4px 8px !important; }
-            #order-timeline { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
-            #order-timeline > div { margin: 0 !important; padding: 2px !important; border: 1px solid #f1f5f9; border-radius: 4px; }
-            #order-timeline .absolute { display: none; }
-            #order-timeline .pl-8 { padding-left: 4px !important; }
+
+            .grid {
+                display: block !important;
+            }
+
+            .col-span-12,
+            .lg:col-span-4,
+            .lg:col-span-8 {
+                width: 100% !important;
+            }
+
+            .print-only-header {
+                display: flex !important;
+                margin-bottom: 15px !important;
+                padding-bottom: 10px !important;
+            }
+
+            .order-id-display {
+                font-size: 1.5rem !important;
+                color: #ea580c !important;
+            }
+
+            .text-4xl {
+                font-size: 1.5rem !important;
+            }
+
+            .text-2xl {
+                font-size: 1.2rem !important;
+            }
+
+            .text-sm {
+                font-size: 9px !important;
+            }
+
+            .px-8,
+            .p-8,
+            .p-6 {
+                padding: 4px !important;
+            }
+
+            .mb-12,
+            .mb-8,
+            .mb-6 {
+                margin-bottom: 8px !important;
+            }
+
+            select {
+                border: none !important;
+                appearance: none;
+                background: transparent !important;
+                pointer-events: none;
+            }
+
+            table th,
+            table td {
+                padding: 4px 8px !important;
+            }
+
+            #order-timeline {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 4px;
+            }
+
+            #order-timeline>div {
+                margin: 0 !important;
+                padding: 2px !important;
+                border: 1px solid #f1f5f9;
+                border-radius: 4px;
+            }
+
+            #order-timeline .absolute {
+                display: none;
+            }
+
+            #order-timeline .pl-8 {
+                padding-left: 4px !important;
+            }
         }
     </style>
 </head>
@@ -210,8 +307,7 @@
         </nav>
         <div class="px-4 mt-auto">
             <div class="p-4 rounded-xl bg-surface-container-low flex items-center space-x-3 mb-2">
-                <img class="w-10 h-10 rounded-full object-cover"
-                    data-alt="professional male workshop manager portrait"
+                <img class="w-10 h-10 rounded-full object-cover" data-alt="professional male workshop manager portrait"
                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhPLBS7s1ZuQnGXymXiuBJ9868nnRddz-gP3XAOrY68Jq9o0KixW-BUonODLYl3srJtQGdWkN5_hv6A6IF9R7-3N7IIY07p3v3-Hk3h336t834MZYCX-4YCqmBz9mCX8NOYAAALVVu-cIt2MMISgYj5kzscUNzzN_lS_KLNdiehWiGTqxXxzj1CPXQvQ7LDF2RhdjSvTpng9INFVDk-nm_joxt429ETmCldwckpOU2lyL4OxGroqrKIqhzHc42pIxKWLdFaqgNpd8" />
                 <div>
                     <p class="text-xs font-bold text-on-surface user-name-display">Usuário</p>
@@ -228,46 +324,55 @@
     </aside>
     <main class="flex-1 flex flex-col min-w-0">
         <!-- Predicted TopNavBar (Integrated into layout) -->
-    <header
-        class="fixed top-0 right-0 w-full lg:w-[calc(100%-16rem)] z-40 bg-white/90 backdrop-blur-xl border-b border-orange-100/15 shadow-sm">
-        <div class="flex justify-between items-center px-4 md:px-8 h-16 w-full">
-            <div class="flex items-center gap-2 md:gap-4">
-                <button onclick="window.location.href='lista-ordem.html'" class="p-2 text-slate-400 hover:text-primary transition-colors lg:hidden">
-                    <span class="material-symbols-outlined">arrow_back</span>
-                </button>
-                <h2 class="text-sm md:text-lg font-bold text-slate-900 truncate max-w-[150px] md:max-w-none">Detalhes da Ordem</h2>
+        <header
+            class="fixed top-0 right-0 w-full lg:w-[calc(100%-16rem)] z-40 bg-white/90 backdrop-blur-xl border-b border-orange-100/15 shadow-sm">
+            <div class="flex justify-between items-center px-4 md:px-8 h-16 w-full">
+                <div class="flex items-center gap-2 md:gap-4">
+                    <button onclick="window.location.href='lista-ordem.html'"
+                        class="p-2 text-slate-400 hover:text-primary transition-colors lg:hidden">
+                        <span class="material-symbols-outlined">arrow_back</span>
+                    </button>
+                    <h2 class="text-sm md:text-lg font-bold text-slate-900 truncate max-w-[150px] md:max-w-none">
+                        Detalhes da Ordem</h2>
+                </div>
+                <div class="flex items-center gap-2 md:gap-4">
+                    <button class="text-slate-500 hover:text-orange-500 transition-all p-2">
+                        <span class="material-symbols-outlined text-[20px] md:text-[24px]">notifications</span>
+                    </button>
+                    <div class="h-6 w-[1px] bg-slate-200 mx-1"></div>
+                    <button onclick="window.print()" class="p-2 text-slate-500 hover:text-primary no-print">
+                        <span class="material-symbols-outlined text-[20px] md:text-[24px]">print</span>
+                    </button>
+                </div>
             </div>
-            <div class="flex items-center gap-2 md:gap-4">
-                <button class="text-slate-500 hover:text-orange-500 transition-all p-2">
-                    <span class="material-symbols-outlined text-[20px] md:text-[24px]">notifications</span>
-                </button>
-                <div class="h-6 w-[1px] bg-slate-200 mx-1"></div>
-                <button onclick="window.print()" class="p-2 text-slate-500 hover:text-primary no-print">
-                    <span class="material-symbols-outlined text-[20px] md:text-[24px]">print</span>
-                </button>
-            </div>
-        </div>
 
-        <!-- Service Module Sub-navigation (Scrollable on Mobile) -->
-        <nav class="flex px-4 md:px-8 border-t border-orange-100/5 overflow-x-auto no-scrollbar whitespace-nowrap">
-            <a href="lista-ordem.html"
-                class="px-4 py-2 md:py-3 text-[10px] md:text-xs font-medium text-slate-500 hover:text-primary transition-colors">Lista de Ordens</a>
-            <a href="nova-ordem.html"
-                class="px-4 py-2 md:py-3 text-[10px] md:text-xs font-medium text-slate-500 hover:text-primary transition-colors">Nova Ordem</a>
-            <a href="#"
-                class="px-4 py-2 md:py-3 text-[10px] md:text-xs font-bold border-b-2 border-primary text-primary">Detalhes da Ordem</a>
-        </nav>
-    </header>
+            <!-- Service Module Sub-navigation (Scrollable on Mobile) -->
+            <nav class="flex px-4 md:px-8 border-t border-orange-100/5 overflow-x-auto no-scrollbar whitespace-nowrap">
+                <a href="lista-ordem.html"
+                    class="px-4 py-2 md:py-3 text-[10px] md:text-xs font-medium text-slate-500 hover:text-primary transition-colors">Lista
+                    de Ordens</a>
+                <a href="nova-ordem.html"
+                    class="px-4 py-2 md:py-3 text-[10px] md:text-xs font-medium text-slate-500 hover:text-primary transition-colors">Nova
+                    Ordem</a>
+                <a href="#"
+                    class="px-4 py-2 md:py-3 text-[10px] md:text-xs font-bold border-b-2 border-primary text-primary">Detalhes
+                    da Ordem</a>
+            </nav>
+        </header>
         <!-- Page Content -->
         <div class="mt-28 md:mt-32 p-4 md:p-8 max-w-7xl mx-auto w-full">
-            
+
             <!-- Professional Print Header -->
             <div class="hidden print-only-header items-center justify-between mb-8 border-b-2 border-orange-500 pb-6">
                 <div class="flex items-center gap-4">
-                    <div class="w-16 h-16 bg-orange-600 rounded-2xl flex items-center justify-center text-white font-black text-2xl">AF</div>
+                    <div
+                        class="w-16 h-16 bg-orange-600 rounded-2xl flex items-center justify-center text-white font-black text-2xl">
+                        AF</div>
                     <div>
-                        <img src="img/mainlogohorizontalfull-myfleetcar.png" alt="MyFleetCar Logo" class="h-12 w-auto mb-1">
-                        <p class="text-[10px] text-slate-500 uppercase tracking-widest font-black">Ordem de Serviço Profissional</p>
+                        <img src="img/mainlogohorizontalfull-myfleetcar.png" alt="MyFleetCar Logo"
+                            class="h-12 w-auto mb-1">
+                        <p class="text-[10px] text-slate-500 uppercase tracking-widest font-black">Ordem de Serviço
+                            Profissional</p>
                     </div>
                 </div>
                 <div class="text-right">
@@ -281,19 +386,25 @@
             <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 md:gap-6 mb-8 md:mb-12 no-print">
                 <div>
                     <div class="flex items-center gap-2 md:gap-3 mb-1 md:mb-2">
-                        <span class="text-[10px] md:text-sm font-bold text-orange-600 tracking-widest uppercase">Ordem de
+                        <span class="text-[10px] md:text-sm font-bold text-orange-600 tracking-widest uppercase">Ordem
+                            de
                             Serviço</span>
                         <span class="h-1 w-1 bg-slate-300 rounded-full"></span>
-                        <span class="text-[10px] md:text-sm text-slate-500 font-medium order-date-display">Carregando...</span>
+                        <span
+                            class="text-[10px] md:text-sm text-slate-500 font-medium order-date-display">Carregando...</span>
                     </div>
 
                     <div class="flex items-center gap-3 md:gap-4">
-                        <h2 class="text-2xl md:text-4xl font-extrabold text-on-surface tracking-tighter order-id-display">#OS-</h2>
+                        <h2
+                            class="text-2xl md:text-4xl font-extrabold text-on-surface tracking-tighter order-id-display">
+                            #OS-</h2>
                         <div id="order-status-badge"
                             class="px-2 py-0.5 md:px-3 md:py-1 bg-slate-100 text-slate-600 text-[10px] font-bold rounded-lg border border-slate-200 uppercase">
                             AGUARDANDO
                         </div>
-                        <button onclick="requestOrderDeletion()" class="p-1.5 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all" title="Excluir Ordem de Serviço">
+                        <button onclick="requestOrderDeletion()"
+                            class="p-1.5 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
+                            title="Excluir Ordem de Serviço">
                             <span class="material-symbols-outlined text-lg md:text-xl">delete</span>
                         </button>
                     </div>
@@ -350,14 +461,16 @@
                     <section class="bg-surface p-6 rounded-xl border border-slate-100">
                         <div class="flex items-center justify-between mb-8">
                             <h3 class="text-xs font-black uppercase tracking-widest text-slate-400">Histórico da OS</h3>
-                            <button onclick="openModal('modal-history')" class="text-[10px] font-bold text-orange-600 hover:underline flex items-center gap-1">
+                            <button onclick="openModal('modal-history')"
+                                class="text-[10px] font-bold text-orange-600 hover:underline flex items-center gap-1">
                                 <span class="material-symbols-outlined text-sm">add</span> Adicionar Nota
                             </button>
                         </div>
-                        
-                        <div class="space-y-6 relative before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[2px] before:bg-slate-100" id="order-timeline">
-                             <!-- Historical entries will be injected here -->
-                             <p class="text-xs text-slate-400 italic text-center py-4">Carregando histórico...</p>
+
+                        <div class="space-y-6 relative before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[2px] before:bg-slate-100 max-h-[400px] overflow-y-auto pr-4 scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent"
+                            id="order-timeline">
+                            <!-- Historical entries will be injected here -->
+                            <p class="text-xs text-slate-400 italic text-center py-4">Carregando histórico...</p>
                         </div>
                     </section>
                 </div>
@@ -368,7 +481,8 @@
                         class="bg-surface-container-lowest rounded-2xl overflow-hidden border border-outline-variant/15 shadow-sm">
                         <div class="p-6 border-b border-slate-50 flex items-center justify-between">
                             <h3 class="text-lg font-bold text-on-surface">Escopo de Trabalho</h3>
-                            <button onclick="openModal('modal-add-item')" class="text-orange-600 text-sm font-bold flex items-center gap-1 hover:underline">
+                            <button onclick="openModal('modal-add-item')"
+                                class="text-orange-600 text-sm font-bold flex items-center gap-1 hover:underline">
                                 <span class="material-symbols-outlined text-lg">add_circle</span> Adicionar Item
                             </button>
                         </div>
@@ -377,7 +491,8 @@
                                 <thead class="bg-surface-container-low">
                                     <tr>
                                     <tr>
-                                    <tr class="text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-100">
+                                    <tr
+                                        class="text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-100">
                                         <th class="px-4 md:px-6 py-4">Descrição</th>
                                         <th class="hidden md:table-cell px-6 py-4 text-center">Mecânico</th>
                                         <th class="hidden sm:table-cell px-6 py-4 text-center">Qtd</th>
@@ -407,20 +522,28 @@
                                 </div>
                                 <div class="flex justify-between items-center text-sm">
                                     <span class="text-slate-500">Adicional (Taxas/Outros)</span>
-                                    <input type="number" id="financial-additional" onchange="recalculateAndSave()" class="w-24 bg-white border border-slate-200 rounded-lg text-xs p-1 text-right" value="0">
+                                    <input type="number" id="financial-additional" onchange="recalculateAndSave()"
+                                        class="w-24 bg-white border border-slate-200 rounded-lg text-xs p-1 text-right"
+                                        value="0">
                                 </div>
                                 <div class="flex justify-between items-center text-sm">
                                     <span class="text-slate-500">Desconto</span>
-                                    <input type="number" id="financial-discount" onchange="recalculateAndSave()" class="w-24 bg-white border border-slate-200 rounded-lg text-xs p-1 text-right text-red-600" value="0">
+                                    <input type="number" id="financial-discount" onchange="recalculateAndSave()"
+                                        class="w-24 bg-white border border-slate-200 rounded-lg text-xs p-1 text-right text-red-600"
+                                        value="0">
                                 </div>
                                 <div class="flex items-center gap-2 pt-2">
-                                    <input type="checkbox" id="no-charge-toggle" onchange="recalculateAndSave()" class="rounded text-orange-600">
-                                    <label for="no-charge-toggle" class="text-xs font-bold text-slate-500 uppercase">Não cobrar esta OS</label>
+                                    <input type="checkbox" id="no-charge-toggle" onchange="recalculateAndSave()"
+                                        class="rounded text-orange-600">
+                                    <label for="no-charge-toggle" class="text-xs font-bold text-slate-500 uppercase">Não
+                                        cobrar esta OS</label>
                                 </div>
                                 <div class="pt-4 border-t border-slate-200 flex justify-between items-end">
                                     <div>
-                                        <p class="text-[10px] font-black text-slate-400 uppercase">Valor Total a Pagar</p>
-                                        <p id="total-amount" class="text-3xl font-black text-on-surface tracking-tighter">R$ 0,00</p>
+                                        <p class="text-[10px] font-black text-slate-400 uppercase">Valor Total a Pagar
+                                        </p>
+                                        <p id="total-amount"
+                                            class="text-3xl font-black text-on-surface tracking-tighter">R$ 0,00</p>
                                     </div>
                                     <div class="text-right">
                                         <span id="payment-status-label"
@@ -433,7 +556,7 @@
                         <div class="flex flex-col gap-4">
                             <h3 class="text-xs font-black uppercase tracking-widest text-slate-400 mb-2">Comunicação e
                                 Documentos</h3>
-                             <button id="wa-btn"
+                            <button id="wa-btn"
                                 class="w-full flex items-center justify-between p-4 bg-surface-container-lowest border border-outline-variant/15 rounded-xl hover:bg-slate-50 transition-all group">
                                 <div class="flex items-center gap-4">
                                     <div
@@ -483,19 +606,19 @@
                 </div>
             </div>
             <!-- Photos & Evidence Section (Asymmetric / Editorial) -->
-                       <div class="flex items-center justify-between mb-8">
-                    <h3 class="text-xs font-black uppercase tracking-widest text-slate-400">Evidências e Fotos</h3>
-                    <button class="text-xs font-bold text-slate-500 hover:text-on-surface">Ver todas (0)</button>
-                </div>
-                <div class="grid grid-cols-4 gap-4" id="evidence-gallery">
-                    <div class="col-span-4 h-40 bg-slate-50 border-2 border-dashed border-slate-200 rounded-2xl flex flex-col items-center justify-center text-slate-400">
-                        <span class="material-symbols-outlined text-4xl mb-2">add_a_photo</span>
-                        <p class="text-xs font-medium">Nenhuma foto anexada</p>
-                    </div>
-                </div>
-div>
+            <div class="flex items-center justify-between mb-8">
+                <h3 class="text-xs font-black uppercase tracking-widest text-slate-400">Evidências e Fotos</h3>
+                <button class="text-xs font-bold text-slate-500 hover:text-on-surface">Ver todas (0)</button>
+            </div>
+            <div class="grid grid-cols-4 gap-4" id="evidence-gallery">
+                <div
+                    class="col-span-4 h-40 bg-slate-50 border-2 border-dashed border-slate-200 rounded-2xl flex flex-col items-center justify-center text-slate-400">
+                    <span class="material-symbols-outlined text-4xl mb-2">add_a_photo</span>
+                    <p class="text-xs font-medium">Nenhuma foto anexada</p>
                 </div>
             </div>
+        </div>
+        </div>
         </div>
     </main>
     <!-- Mobile Bottom NavBar Suppression (Relevance Check Rule) -->
@@ -505,10 +628,12 @@ div>
     <div id="modal-approve" class="fixed inset-0 z-[100] hidden">
         <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"></div>
         <div class="absolute inset-0 flex items-center justify-center p-4">
-            <div class="bg-white rounded-3xl w-full max-w-md shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
+            <div
+                class="bg-white rounded-3xl w-full max-w-md shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
                 <div class="p-8">
                     <div class="flex items-center gap-4 mb-6">
-                        <div class="w-12 h-12 rounded-2xl bg-orange-50 text-orange-600 flex items-center justify-center">
+                        <div
+                            class="w-12 h-12 rounded-2xl bg-orange-50 text-orange-600 flex items-center justify-center">
                             <span class="material-symbols-outlined text-2xl">person_add</span>
                         </div>
                         <div>
@@ -519,8 +644,11 @@ div>
 
                     <div class="space-y-4">
                         <div>
-                            <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Mecânico Responsável</label>
-                            <select id="approve-mechanic" class="w-full bg-slate-50 border-none rounded-xl text-sm p-4 focus:ring-2 focus:ring-orange-500/20">
+                            <label
+                                class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Mecânico
+                                Responsável</label>
+                            <select id="approve-mechanic"
+                                class="w-full bg-slate-50 border-none rounded-xl text-sm p-4 focus:ring-2 focus:ring-orange-500/20">
                                 <option value="">Selecione o mecânico...</option>
                                 <option value="Mecânico Geral">Mecânico Geral</option>
                                 <option value="Especialista em Suspensão">Especialista em Suspensão</option>
@@ -529,19 +657,26 @@ div>
                         </div>
                         <div class="grid grid-cols-2 gap-4">
                             <div>
-                                <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Data de Entrega</label>
-                                <input type="date" id="approve-date" class="w-full bg-slate-50 border-none rounded-xl text-sm p-4 focus:ring-2 focus:ring-orange-500/20">
+                                <label
+                                    class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Data
+                                    de Entrega</label>
+                                <input type="date" id="approve-date"
+                                    class="w-full bg-slate-50 border-none rounded-xl text-sm p-4 focus:ring-2 focus:ring-orange-500/20">
                             </div>
                             <div>
-                                <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Horário</label>
-                                <input type="time" id="approve-time" class="w-full bg-slate-50 border-none rounded-xl text-sm p-4 focus:ring-2 focus:ring-orange-500/20">
+                                <label
+                                    class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Horário</label>
+                                <input type="time" id="approve-time"
+                                    class="w-full bg-slate-50 border-none rounded-xl text-sm p-4 focus:ring-2 focus:ring-orange-500/20">
                             </div>
                         </div>
                     </div>
 
                     <div class="flex items-center gap-3 mt-8">
-                        <button onclick="closeModal('modal-approve')" class="flex-1 px-6 py-4 rounded-2xl text-sm font-bold text-slate-500 hover:bg-slate-50 transition-colors">Cancelar</button>
-                        <button onclick="confirmApproval()" class="flex-1 px-6 py-4 bg-orange-600 rounded-2xl text-sm font-bold text-white shadow-lg shadow-orange-600/20 hover:bg-orange-700 transition-colors">Confirmar</button>
+                        <button onclick="closeModal('modal-approve')"
+                            class="flex-1 px-6 py-4 rounded-2xl text-sm font-bold text-slate-500 hover:bg-slate-50 transition-colors">Cancelar</button>
+                        <button onclick="confirmApproval()"
+                            class="flex-1 px-6 py-4 bg-orange-600 rounded-2xl text-sm font-bold text-white shadow-lg shadow-orange-600/20 hover:bg-orange-700 transition-colors">Confirmar</button>
                     </div>
                 </div>
             </div>
@@ -552,7 +687,8 @@ div>
     <div id="modal-complete" class="fixed inset-0 z-[100] hidden">
         <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"></div>
         <div class="absolute inset-0 flex items-center justify-center p-4">
-            <div class="bg-white rounded-3xl w-full max-w-md shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
+            <div
+                class="bg-white rounded-3xl w-full max-w-md shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
                 <div class="p-8">
                     <div class="flex items-center gap-4 mb-6">
                         <div class="w-12 h-12 rounded-2xl bg-green-50 text-green-600 flex items-center justify-center">
@@ -566,8 +702,11 @@ div>
 
                     <div class="space-y-4">
                         <div>
-                            <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Forma de Pagamento</label>
-                            <select id="complete-payment-method" class="w-full bg-slate-50 border-none rounded-xl text-sm p-4 focus:ring-2 focus:ring-green-500/20">
+                            <label
+                                class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Forma
+                                de Pagamento</label>
+                            <select id="complete-payment-method"
+                                class="w-full bg-slate-50 border-none rounded-xl text-sm p-4 focus:ring-2 focus:ring-green-500/20">
                                 <option value="Pix">Pix</option>
                                 <option value="Cartão de Crédito">Cartão de Crédito</option>
                                 <option value="Faturado">Faturado (Mensal)</option>
@@ -575,12 +714,18 @@ div>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Data de Vencimento / Combinada</label>
-                            <input type="date" id="complete-due-date" class="w-full bg-slate-50 border-none rounded-xl text-sm p-4 focus:ring-2 focus:ring-green-500/20">
+                            <label
+                                class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Data
+                                de Vencimento / Combinada</label>
+                            <input type="date" id="complete-due-date"
+                                class="w-full bg-slate-50 border-none rounded-xl text-sm p-4 focus:ring-2 focus:ring-green-500/20">
                         </div>
                         <div>
-                            <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Status Inicial do Pagamento</label>
-                            <select id="complete-payment-status" class="w-full bg-slate-50 border-none rounded-xl text-sm p-4 focus:ring-2 focus:ring-green-500/20">
+                            <label
+                                class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Status
+                                Inicial do Pagamento</label>
+                            <select id="complete-payment-status"
+                                class="w-full bg-slate-50 border-none rounded-xl text-sm p-4 focus:ring-2 focus:ring-green-500/20">
                                 <option value="Pago">Confirmar como já Pago</option>
                                 <option value="Pendente">Marcar como Pendente</option>
                             </select>
@@ -588,8 +733,11 @@ div>
                     </div>
 
                     <div class="flex items-center gap-3 mt-8">
-                        <button onclick="closeModal('modal-complete')" class="flex-1 px-6 py-4 rounded-2xl text-sm font-bold text-slate-500 hover:bg-slate-50 transition-colors">Cancelar</button>
-                        <button onclick="confirmCompletion()" class="flex-1 px-6 py-4 bg-green-600 rounded-2xl text-sm font-bold text-white shadow-lg shadow-green-600/20 hover:bg-green-700 transition-colors">Concluir e Salvar</button>
+                        <button onclick="closeModal('modal-complete')"
+                            class="flex-1 px-6 py-4 rounded-2xl text-sm font-bold text-slate-500 hover:bg-slate-50 transition-colors">Cancelar</button>
+                        <button onclick="confirmCompletion()"
+                            class="flex-1 px-6 py-4 bg-green-600 rounded-2xl text-sm font-bold text-white shadow-lg shadow-green-600/20 hover:bg-green-700 transition-colors">Concluir
+                            e Salvar</button>
                     </div>
                 </div>
             </div>
@@ -606,28 +754,35 @@ div>
                     <form id="add-item-form" onsubmit="event.preventDefault(); addNewItem();" class="space-y-4">
                         <div>
                             <label class="block text-xs font-black text-slate-400 uppercase mb-2">Descrição</label>
-                            <input type="text" id="item-description" required class="w-full bg-slate-50 border-none rounded-xl p-4 text-sm">
+                            <input type="text" id="item-description" required
+                                class="w-full bg-slate-50 border-none rounded-xl p-4 text-sm">
                         </div>
                         <div class="grid grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-xs font-black text-slate-400 uppercase mb-2">Qtd</label>
-                                <input type="number" id="item-qty" value="1" step="1" required class="w-full bg-slate-50 border-none rounded-xl p-4 text-sm">
+                                <input type="number" id="item-qty" value="1" step="1" required
+                                    class="w-full bg-slate-50 border-none rounded-xl p-4 text-sm">
                             </div>
                             <div>
-                                <label class="block text-xs font-black text-slate-400 uppercase mb-2">Preço Un. (R$)</label>
-                                <input type="number" id="item-price" step="0.01" required class="w-full bg-slate-50 border-none rounded-xl p-4 text-sm">
+                                <label class="block text-xs font-black text-slate-400 uppercase mb-2">Preço Un.
+                                    (R$)</label>
+                                <input type="number" id="item-price" step="0.01" required
+                                    class="w-full bg-slate-50 border-none rounded-xl p-4 text-sm">
                             </div>
                         </div>
                         <div>
-                            <label class="block text-xs font-black text-slate-400 uppercase mb-2">Mecânico Específico (Opcional)</label>
+                            <label class="block text-xs font-black text-slate-400 uppercase mb-2">Mecânico Específico
+                                (Opcional)</label>
                             <select id="item-mechanic" class="w-full bg-slate-50 border-none rounded-xl p-4 text-sm">
                                 <option value="">Mesmo da OS</option>
                                 <!-- Population via JS -->
                             </select>
                         </div>
                         <div class="flex gap-3 pt-4">
-                            <button type="button" onclick="closeModal('modal-add-item')" class="flex-1 px-6 py-4 rounded-xl text-sm font-bold text-slate-500 hover:bg-slate-100">Cancelar</button>
-                            <button type="submit" class="flex-1 px-6 py-4 btn-primary-gradient rounded-xl text-sm font-bold text-white shadow-lg">Adicionar</button>
+                            <button type="button" onclick="closeModal('modal-add-item')"
+                                class="flex-1 px-6 py-4 rounded-xl text-sm font-bold text-slate-500 hover:bg-slate-100">Cancelar</button>
+                            <button type="submit"
+                                class="flex-1 px-6 py-4 btn-primary-gradient rounded-xl text-sm font-bold text-white shadow-lg">Adicionar</button>
                         </div>
                     </form>
                 </div>
@@ -644,12 +799,18 @@ div>
                     <h3 class="text-xl font-bold text-slate-900 mb-6">Nova Anotação de Histórico</h3>
                     <div class="space-y-4">
                         <div>
-                            <label class="block text-xs font-black text-slate-400 uppercase mb-2">Conteúdo da Nota</label>
-                            <textarea id="history-manual-text" rows="4" class="w-full bg-slate-50 border-none rounded-xl p-4 text-sm" placeholder="Ex: Peça chegou com defeito, aguardando troca..."></textarea>
+                            <label class="block text-xs font-black text-slate-400 uppercase mb-2">Conteúdo da
+                                Nota</label>
+                            <textarea id="history-manual-text" rows="4"
+                                class="w-full bg-slate-50 border-none rounded-xl p-4 text-sm"
+                                placeholder="Ex: Peça chegou com defeito, aguardando troca..."></textarea>
                         </div>
                         <div class="flex gap-3 pt-4">
-                            <button onclick="closeModal('modal-history')" class="flex-1 px-6 py-4 rounded-xl text-sm font-bold text-slate-500 hover:bg-slate-100">Cancelar</button>
-                            <button onclick="saveManualHistory()" class="flex-1 px-6 py-4 btn-primary-gradient rounded-xl text-sm font-bold text-white shadow-lg">Salvar Nota</button>
+                            <button onclick="closeModal('modal-history')"
+                                class="flex-1 px-6 py-4 rounded-xl text-sm font-bold text-slate-500 hover:bg-slate-100">Cancelar</button>
+                            <button onclick="saveManualHistory()"
+                                class="flex-1 px-6 py-4 btn-primary-gradient rounded-xl text-sm font-bold text-white shadow-lg">Salvar
+                                Nota</button>
                         </div>
                     </div>
                 </div>
@@ -661,24 +822,31 @@ div>
     <div id="modal-delete" class="fixed inset-0 z-[110] hidden">
         <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-md"></div>
         <div class="absolute inset-0 flex items-center justify-center p-4">
-            <div class="bg-white rounded-3xl w-full max-w-sm shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
+            <div
+                class="bg-white rounded-3xl w-full max-w-sm shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
                 <div class="p-8 text-center">
-                    <div class="w-20 h-20 bg-red-50 text-red-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <div
+                        class="w-20 h-20 bg-red-50 text-red-600 rounded-full flex items-center justify-center mx-auto mb-6">
                         <span class="material-symbols-outlined text-4xl">warning</span>
                     </div>
                     <h3 class="text-xl font-bold text-slate-900 mb-2">Excluir Ordem?</h3>
-                    <p class="text-sm text-slate-500 mb-6">Essa ação removerá permanentemente esta OS e seus lançamentos financeiros.</p>
-                    
+                    <p class="text-sm text-slate-500 mb-6">Essa ação removerá permanentemente esta OS e seus lançamentos
+                        financeiros.</p>
+
                     <div class="bg-slate-50 p-4 rounded-2xl mb-6">
-                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Digite o código para confirmar</p>
-                        <p id="delete-code-display" class="text-2xl font-black text-slate-900 tracking-[0.5em] mb-4 select-none">ABCDEF</p>
-                        <input type="text" id="delete-confirm-input" placeholder="Digite aqui..." 
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Digite o código
+                            para confirmar</p>
+                        <p id="delete-code-display"
+                            class="text-2xl font-black text-slate-900 tracking-[0.5em] mb-4 select-none">ABCDEF</p>
+                        <input type="text" id="delete-confirm-input" placeholder="Digite aqui..."
                             class="w-full text-center bg-white border-2 border-slate-200 rounded-xl p-3 text-lg font-black focus:border-red-500 focus:ring-red-500/20 uppercase">
                     </div>
 
                     <div class="flex gap-3">
-                        <button onclick="closeModal('modal-delete')" class="flex-1 px-6 py-4 rounded-2xl text-sm font-bold text-slate-500 hover:bg-slate-50 transition-colors">Abortar</button>
-                        <button onclick="confirmDeletion()" class="flex-1 px-6 py-4 bg-red-600 rounded-2xl text-sm font-bold text-white shadow-lg shadow-red-600/20 hover:bg-red-700 transition-colors">Confirmar</button>
+                        <button onclick="closeModal('modal-delete')"
+                            class="flex-1 px-6 py-4 rounded-2xl text-sm font-bold text-slate-500 hover:bg-slate-50 transition-colors">Abortar</button>
+                        <button onclick="confirmDeletion()"
+                            class="flex-1 px-6 py-4 bg-red-600 rounded-2xl text-sm font-bold text-white shadow-lg shadow-red-600/20 hover:bg-red-700 transition-colors">Confirmar</button>
                     </div>
                 </div>
             </div>

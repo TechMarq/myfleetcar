@@ -1722,6 +1722,24 @@
                 flex-direction: row
             }
         }
+
+        /* Mobile specific optimizations for Revenue */
+        @media (max-width: 640px) {
+            .revenue-module-text {
+                font-size: 0.7rem !important;
+            }
+            .revenue-module-label {
+                font-size: 0.6rem !important;
+            }
+            table th, table td {
+                padding-left: 0.5rem !important;
+                padding-right: 0.5rem !important;
+            }
+            main {
+                padding: 1rem !important;
+                margin-top: 6rem !important;
+            }
+        }
     </style>
 </head>
 
@@ -1832,34 +1850,34 @@
     <!-- Main Content Canvas -->
     <main class="lg:ml-64 mt-28 p-4 md:p-8 min-h-screen pb-32">
         <!-- Dashboard Summary Bento Grid -->
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6 mb-6 md:mb-8">
             <div
-                class="col-span-2 bg-surface-container-lowest p-4 md:p-6 rounded-xl shadow-sm border border-outline-variant/10">
-                <div class="flex justify-between items-start mb-4">
+                class="col-span-2 bg-surface-container-lowest p-3 md:p-6 rounded-xl shadow-sm border border-outline-variant/10">
+                <div class="flex justify-between items-start mb-2 md:mb-4">
                     <div>
-                        <p class="text-[10px] md:text-xs font-bold text-secondary uppercase tracking-widest">Receita
+                        <p class="text-[9px] md:text-xs font-bold text-secondary uppercase tracking-widest">Receita
                             Total</p>
-                        <h3 id="revenue-summary-paid" class="text-xl md:text-4xl font-black text-on-surface mt-1">R$
+                        <h3 id="revenue-summary-paid" class="text-lg md:text-4xl font-black text-on-surface mt-0.5 md:mt-1">R$
                             0,00</h3>
                     </div>
-                    <div class="p-3 bg-tertiary-container/10 rounded-full text-tertiary">
-                        <span class="material-symbols-outlined">trending_up</span>
+                    <div class="p-2 md:p-3 bg-tertiary-container/10 rounded-full text-tertiary">
+                        <span class="material-symbols-outlined text-sm md:text-base">trending_up</span>
                     </div>
                 </div>
                 <div class="flex items-center gap-2">
-                    <span class="text-xs font-bold text-slate-300 bg-slate-100 px-2 py-0.5 rounded-full">0%</span>
-                    <span class="text-xs text-slate-400 font-medium tracking-tight">em relação ao mês anterior</span>
+                    <span class="text-[9px] md:text-xs font-bold text-slate-300 bg-slate-100 px-1.5 py-0.5 rounded-full">0%</span>
+                    <span class="text-[9px] md:text-xs text-slate-400 font-medium tracking-tight">vs mês anterior</span>
                 </div>
             </div>
-            <div class="bg-surface-container-lowest p-4 md:p-6 rounded-xl shadow-sm border border-outline-variant/10">
-                <p class="text-[10px] md:text-xs font-bold text-secondary uppercase tracking-widest">A Receber</p>
-                <h3 id="revenue-summary-pending" class="text-lg md:text-3xl font-black text-primary mt-1">R$ 0,00</h3>
-                <p class="text-[10px] text-slate-400 mt-2 font-medium">0 pendentes</p>
+            <div class="bg-surface-container-lowest p-3 md:p-6 rounded-xl shadow-sm border border-outline-variant/10">
+                <p class="text-[9px] md:text-xs font-bold text-secondary uppercase tracking-widest">A Receber</p>
+                <h3 id="revenue-summary-pending" class="text-base md:text-3xl font-black text-primary mt-0.5 md:mt-1">R$ 0,00</h3>
+                <p class="text-[8px] md:text-[10px] text-slate-400 mt-1 md:mt-2 font-medium truncate">0 pendentes</p>
             </div>
-            <div class="bg-surface-container-lowest p-4 md:p-6 rounded-xl shadow-sm border border-outline-variant/10">
-                <p class="text-[10px] md:text-xs font-bold text-secondary uppercase tracking-widest">Ticket Médio</p>
-                <h3 id="revenue-summary-avg" class="text-lg md:text-3xl font-black text-on-surface mt-1">R$ 0,00</h3>
-                <div class="w-full bg-slate-100 h-1 rounded-full mt-4">
+            <div class="bg-surface-container-lowest p-3 md:p-6 rounded-xl shadow-sm border border-outline-variant/10">
+                <p class="text-[9px] md:text-xs font-bold text-secondary uppercase tracking-widest">Ticket Médio</p>
+                <h3 id="revenue-summary-avg" class="text-base md:text-3xl font-black text-on-surface mt-0.5 md:mt-1">R$ 0,00</h3>
+                <div class="w-full bg-slate-100 h-1 rounded-full mt-2 md:mt-4">
                     <div class="bg-tertiary h-1 rounded-full w-0"></div>
                 </div>
             </div>
@@ -1868,42 +1886,31 @@
         <div class="bg-surface-container-low rounded-2xl p-1">
             <div class="bg-surface-container-lowest rounded-xl shadow-sm">
                 <!-- Table Controls -->
-                <div class="p-4 md:p-6 flex flex-col md:flex-row justify-between items-stretch md:items-center gap-4">
+                <div class="p-3 md:p-6 flex flex-col md:flex-row justify-between items-stretch md:items-center gap-3 md:gap-4">
                     <div
-                        class="flex bg-surface-container-low p-1 rounded-full overflow-x-auto no-scrollbar whitespace-nowrap">
+                        class="flex bg-surface-container-low p-0.5 rounded-full overflow-x-auto no-scrollbar whitespace-nowrap">
                         <button onclick="setRevenueFilter('all', this)"
-                            class="revenue-filter-btn px-4 md:px-6 py-1.5 md:py-2 rounded-full text-[10px] md:text-sm font-bold bg-white shadow-sm text-on-surface transition-all whitespace-nowrap">Todas</button>
+                            class="revenue-filter-btn px-3 md:px-6 py-1 md:py-2 rounded-full text-[9px] md:text-sm font-bold bg-white shadow-sm text-on-surface transition-all whitespace-nowrap">Todas</button>
                         <button onclick="setRevenueFilter('Pago', this)"
-                            class="revenue-filter-btn px-4 md:px-6 py-1.5 md:py-2 rounded-full text-[10px] md:text-sm font-medium text-slate-500 hover:text-on-surface transition-all whitespace-nowrap">Pagas</button>
+                            class="revenue-filter-btn px-3 md:px-6 py-1 md:py-2 rounded-full text-[9px] md:text-sm font-medium text-slate-500 hover:text-on-surface transition-all whitespace-nowrap">Pagas</button>
                         <button onclick="setRevenueFilter('Pendente', this)"
-                            class="revenue-filter-btn px-4 md:px-6 py-1.5 md:py-2 rounded-full text-[10px] md:text-sm font-medium text-slate-500 hover:text-on-surface transition-all whitespace-nowrap">Pendentes</button>
+                            class="revenue-filter-btn px-3 md:px-6 py-1 md:py-2 rounded-full text-[9px] md:text-sm font-medium text-slate-500 hover:text-on-surface transition-all whitespace-nowrap">Pendentes</button>
                         <button onclick="setRevenueFilter('Atrasado', this)"
-                            class="revenue-filter-btn px-4 md:px-6 py-1.5 md:py-2 rounded-full text-[10px] md:text-sm font-medium text-slate-500 hover:text-on-surface transition-all whitespace-nowrap">Atrasadas</button>
+                            class="revenue-filter-btn px-3 md:px-6 py-1 md:py-2 rounded-full text-[9px] md:text-sm font-medium text-slate-500 hover:text-on-surface transition-all whitespace-nowrap">Atrasadas</button>
                     </div>
-                    <div class="flex flex-col gap-3">
+                    <div class="flex flex-col gap-2">
                         <div class="grid grid-cols-2 gap-2">
                             <div class="relative">
                                 <span
-                                    class="absolute left-2 top-1 text-[8px] font-black text-slate-400 uppercase leading-none">De</span>
+                                    class="absolute left-2 top-1 text-[7px] font-black text-slate-400 uppercase leading-none">De</span>
                                 <input type="date" id="revenue-date-start" onchange="applyRevenueFilters()"
-                                    class="w-full text-[10px] font-bold text-slate-600 border border-slate-100 bg-slate-50 rounded-lg pl-2 pr-1 pt-3 pb-1 focus:ring-2 focus:ring-primary/20 outline-none">
+                                    class="w-full text-[9px] font-bold text-slate-600 border border-slate-100 bg-slate-50 rounded-lg pl-2 pr-1 pt-2.5 pb-0.5 focus:ring-2 focus:ring-primary/20 outline-none">
                             </div>
                             <div class="relative">
                                 <span
-                                    class="absolute left-2 top-1 text-[8px] font-black text-slate-400 uppercase leading-none">Até</span>
+                                    class="absolute left-2 top-1 text-[7px] font-black text-slate-400 uppercase leading-none">Até</span>
                                 <input type="date" id="revenue-date-end" onchange="applyRevenueFilters()"
-                                    class="w-full text-[10px] font-bold text-slate-600 border border-slate-100 bg-slate-50 rounded-lg pl-2 pr-1 pt-3 pb-1 focus:ring-2 focus:ring-primary/20 outline-none">
-                            </div>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <div onclick="Financial.initRevenuePage()"
-                                class="flex items-center justify-center w-10 h-10 bg-slate-100 rounded-lg hover:bg-slate-200 transition-all cursor-pointer shadow-sm">
-                                <span class="material-symbols-outlined text-sm">refresh</span>
-                            </div>
-                            <div
-                                class="flex-1 flex items-center justify-center gap-2 text-[10px] font-bold text-secondary uppercase h-10 border border-outline-variant/15 rounded-lg hover:bg-surface-container-low transition-all cursor-pointer">
-                                <span class="material-symbols-outlined text-sm">download</span>
-                                <span>Exportar</span>
+                                    class="w-full text-[9px] font-bold text-slate-600 border border-slate-100 bg-slate-50 rounded-lg pl-2 pr-1 pt-2.5 pb-0.5 focus:ring-2 focus:ring-primary/20 outline-none">
                             </div>
                         </div>
                     </div>

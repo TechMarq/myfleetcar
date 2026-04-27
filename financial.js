@@ -254,86 +254,86 @@ const Financial = {
         }
 
         grid.innerHTML = employees.map(emp => `
-            <div class="col-span-full bg-surface-container-lowest rounded-2xl shadow-sm border border-outline-variant/10 overflow-hidden mb-8">
+            <div class="col-span-full bg-surface-container-lowest rounded-2xl shadow-sm border border-outline-variant/10 overflow-hidden mb-4 md:mb-8">
                 <!-- Employee Header -->
-                <div class="px-8 py-6 bg-slate-50/50 border-b border-slate-100 flex justify-between items-center">
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center font-black text-xl shadow-md shadow-primary/20">
+                <div class="px-4 md:px-8 py-4 md:py-6 bg-slate-50/50 border-b border-slate-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div class="flex items-center gap-3 md:gap-4">
+                        <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-primary text-white flex items-center justify-center font-black text-lg md:text-xl shadow-md shadow-primary/20">
                             ${emp.name.charAt(0)}
                         </div>
                         <div>
-                            <h3 class="text-lg font-black text-on-surface">${emp.name}</h3>
-                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">${emp.items.length} Serviços Realizados</p>
+                            <h3 class="text-base md:text-lg font-black text-on-surface leading-tight">${emp.name}</h3>
+                            <p class="text-[9px] md:text-[10px] text-slate-400 font-bold uppercase tracking-widest">${emp.items.length} Serviços</p>
                         </div>
                     </div>
-                    <div class="flex gap-8">
-                        <div class="text-right">
-                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-none">Total Pago</p>
-                            <p class="text-lg font-black text-slate-400">R$ ${emp.total_paid.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
+                    <div class="flex w-full md:w-auto justify-between md:justify-end gap-4 md:gap-8 border-t md:border-t-0 border-slate-100 pt-3 md:pt-0">
+                        <div class="text-left md:text-right">
+                            <p class="text-[8px] md:text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-none">Total Pago</p>
+                            <p class="text-sm md:text-lg font-black text-slate-400">R$ ${emp.total_paid.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
                         </div>
                         <div class="text-right">
-                            <p class="text-[10px] text-primary font-bold uppercase tracking-widest leading-none">A Receber</p>
-                            <p class="text-xl font-black text-primary">R$ ${emp.total_pending.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
+                            <p class="text-[8px] md:text-[10px] text-primary font-bold uppercase tracking-widest leading-none">A Receber</p>
+                            <p class="text-base md:text-xl font-black text-primary">R$ ${emp.total_pending.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- OS List Table -->
-                <div class="overflow-x-auto">
+                <div class="overflow-x-auto no-scrollbar">
                     <table class="w-full text-left border-collapse">
                         <thead>
-                            <tr class="bg-slate-50/30 text-[10px] font-black uppercase tracking-widest text-slate-400 border-b border-slate-100">
-                                <th class="px-4 py-4 text-center w-12">
-                                    <input type="checkbox" onclick="toggleSelectAllCommissions(this, '${emp.id}')" class="rounded border-slate-300 text-primary focus:ring-primary">
+                            <tr class="bg-slate-50/30 text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-400 border-b border-slate-100">
+                                <th class="px-2 md:px-4 py-3 md:py-4 text-center w-10 md:w-12">
+                                    <input type="checkbox" onclick="toggleSelectAllCommissions(this, '${emp.id}')" class="rounded border-slate-300 text-primary focus:ring-primary scale-75 md:scale-100">
                                 </th>
-                                <th class="px-8 py-4">OS / Serviço</th>
-                                <th class="px-6 py-4">Valor Serviço</th>
-                                <th class="px-6 py-4">Comissão (%)</th>
-                                <th class="px-6 py-4">Valor Comissão</th>
-                                <th class="px-6 py-4 text-center">Status</th>
-                                <th class="px-8 py-4 text-right">Ação</th>
+                                <th class="px-4 md:px-8 py-3 md:py-4">OS / Serviço</th>
+                                <th class="px-6 py-4 hidden md:table-cell">Valor Serviço</th>
+                                <th class="px-6 py-4 hidden md:table-cell">Comissão (%)</th>
+                                <th class="px-4 md:px-6 py-3 md:py-4">Valor Comissão</th>
+                                <th class="px-4 md:px-6 py-3 md:py-4 text-center">Status</th>
+                                <th class="px-4 md:px-8 py-3 md:py-4 text-right">Ação</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-50">
                             ${emp.items.map(item => `
-                                <tr class="hover:bg-slate-50/30 transition-colors" data-os="${item.os_id}" data-amount="${item.amount}" data-emp="${emp.name}" data-empid="${emp.id}" data-ref="OS #${item.os_number}">
-                                    <td class="px-4 py-4 w-12 text-center">
+                                <tr class="hover:bg-slate-50/30 transition-colors text-[10px] md:text-xs" data-os="${item.os_id}" data-amount="${item.amount}" data-emp="${emp.name}" data-empid="${emp.id}" data-ref="OS #${item.os_number}">
+                                    <td class="px-2 md:px-4 py-3 md:py-4 w-10 md:w-12 text-center">
                                         ${item.status === 'Pendente' ? `
-                                            <input type="checkbox" onchange="toggleCommissionSelection(this)" class="commission-checkbox-${emp.id} commission-checkbox rounded border-slate-300 text-primary focus:ring-primary">
+                                            <input type="checkbox" onchange="toggleCommissionSelection(this)" class="commission-checkbox-${emp.id} commission-checkbox rounded border-slate-300 text-primary focus:ring-primary scale-75 md:scale-100">
                                         ` : ''}
                                     </td>
-                                    <td class="px-8 py-4">
-                                        <p class="text-xs font-bold text-on-surface">OS #${item.os_number}</p>
-                                        <p class="text-[10px] text-slate-500 font-medium">${item.item_name}</p>
+                                    <td class="px-4 md:px-8 py-3 md:py-4">
+                                        <p class="font-bold text-on-surface">#${item.os_number}</p>
+                                        <p class="text-[9px] md:text-[10px] text-slate-500 font-medium truncate max-w-[100px] md:max-w-none">${item.item_name}</p>
                                     </td>
-                                    <td class="px-6 py-4">
-                                        <p class="text-xs font-medium text-slate-600">R$ ${item.total_os.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
+                                    <td class="px-6 py-4 hidden md:table-cell">
+                                        <p class="font-medium text-slate-600">R$ ${item.total_os.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
                                     </td>
-                                    <td class="px-6 py-4">
-                                        <p class="text-xs font-medium text-slate-600">${item.rate}</p>
+                                    <td class="px-6 py-4 hidden md:table-cell">
+                                        <p class="font-medium text-slate-600">${item.rate}</p>
                                     </td>
-                                    <td class="px-6 py-4">
-                                        <p class="text-xs font-black text-on-surface">R$ ${item.amount.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
+                                    <td class="px-4 md:px-6 py-3 md:py-4">
+                                        <p class="font-black text-on-surface">R$ ${item.amount.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
                                     </td>
-                                    <td class="px-6 py-4 text-center">
-                                        <span class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${item.status === 'Pago' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700'}">
+                                    <td class="px-4 md:px-6 py-3 md:py-4 text-center">
+                                        <span class="px-2 md:px-3 py-0.5 md:py-1 rounded-full text-[8px] md:text-[10px] font-black uppercase tracking-widest ${item.status === 'Pago' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700'}">
                                             ${item.status}
                                         </span>
                                     </td>
-                                    <td class="px-8 py-4 text-right">
+                                    <td class="px-4 md:px-8 py-3 md:py-4 text-right">
                                         ${item.status === 'Pendente' ? `
                                             <button onclick="Financial.payCommission('${emp.id}', '${emp.name}', '${item.os_id}', ${item.amount}, 'OS #${item.os_number}', '${item.item_name}')" 
-                                                class="px-4 py-2 bg-primary text-white text-[10px] font-black uppercase tracking-widest rounded-lg hover:bg-primary-container transition-all shadow-sm">
-                                                Pagar Agora
+                                                class="px-2 md:px-4 py-1.5 md:py-2 bg-primary text-white text-[8px] md:text-[10px] font-black uppercase tracking-widest rounded-lg hover:bg-primary-container transition-all shadow-sm">
+                                                Pagar
                                             </button>
                                         ` : `
-                                            <div class="flex items-center justify-end gap-2 group/undo">
-                                                <div class="flex items-center text-green-600 gap-1 font-black text-[10px] uppercase tracking-widest">
-                                                    <span class="material-symbols-outlined text-sm">check_circle</span>
-                                                    Liquidado
+                                            <div class="flex items-center justify-end gap-1 md:gap-2 group/undo">
+                                                <div class="flex items-center text-green-600 gap-1 font-black text-[8px] md:text-[10px] uppercase tracking-widest">
+                                                    <span class="material-symbols-outlined text-xs md:text-sm">check_circle</span>
+                                                    <span class="hidden md:inline">Liquidado</span>
                                                 </div>
-                                                <button onclick="Financial.undoCommission('${item.paid_transaction_id}')" class="opacity-50 hover:opacity-100 p-1.5 bg-orange-50 text-orange-600 rounded lg:opacity-0 lg:group-hover/undo:opacity-100 transition-all shadow-sm" title="Reverter Pagamento">
-                                                    <span class="material-symbols-outlined text-[16px]">undo</span>
+                                                <button onclick="Financial.undoCommission('${item.paid_transaction_id}')" class="opacity-100 md:opacity-50 hover:opacity-100 p-1 bg-orange-50 text-orange-600 rounded md:opacity-0 md:group-hover/undo:opacity-100 transition-all shadow-sm" title="Reverter Pagamento">
+                                                    <span class="material-symbols-outlined text-[14px] md:text-[16px]">undo</span>
                                                 </button>
                                             </div>
                                         `}
@@ -429,17 +429,17 @@ const Financial = {
             }
 
             listContainer.innerHTML = transactions.map(t => `
-                <div class="flex items-center justify-between group">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-xl ${t.type === 'Receita' ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600'} flex items-center justify-center">
-                            <span class="material-symbols-outlined text-lg">${t.type === 'Receita' ? 'keyboard_double_arrow_up' : 'keyboard_double_arrow_down'}</span>
+                <div class="flex items-center justify-between group py-2 md:py-3 border-b border-slate-50 last:border-0">
+                    <div class="flex items-center gap-2 md:gap-3 overflow-hidden">
+                        <div class="w-8 h-8 md:w-10 md:h-10 rounded-lg ${t.type === 'Receita' ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600'} flex items-center justify-center flex-shrink-0">
+                            <span class="material-symbols-outlined text-base md:text-lg">${t.type === 'Receita' ? 'keyboard_double_arrow_up' : 'keyboard_double_arrow_down'}</span>
                         </div>
-                        <div>
-                            <p class="text-sm font-bold text-on-surface">${t.description}</p>
-                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-tight">${new Date(t.created_at).toLocaleDateString('pt-BR')}</p>
+                        <div class="truncate">
+                            <p class="text-[11px] md:text-sm font-bold text-on-surface truncate">${t.description}</p>
+                            <p class="text-[8px] md:text-[10px] text-slate-400 font-bold uppercase tracking-tight">${new Date(t.created_at).toLocaleDateString('pt-BR')}</p>
                         </div>
                     </div>
-                    <p class="text-sm font-black ${t.type === 'Receita' ? 'text-green-600' : 'text-red-600'}">
+                    <p class="text-[11px] md:text-sm font-black ${t.type === 'Receita' ? 'text-green-600' : 'text-red-600'} whitespace-nowrap ml-2">
                         ${t.type === 'Receita' ? '+' : '-'} R$ ${t.amount.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                     </p>
                 </div>
@@ -485,7 +485,7 @@ const Financial = {
                 filter: 'all',
                 search: '',
                 sortColumn: 'due_date',
-                sortOrder: 'desc', // 'asc' or 'desc'
+                sortOrder: 'asc', // 'asc' or 'desc'
                 firstDayOfMonth
             };
 
@@ -583,51 +583,51 @@ const Financial = {
             const waLink = customerPhone ? `https://wa.me/${customerPhone.replace(/\D/g, '')}?text=${waMsg}` : '#';
 
             return `
-                <tr class="border-b border-slate-50 hover:bg-slate-50/50 transition-colors group">
-                    <td class="px-8 py-4">
-                        <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center text-slate-400">
-                                <span class="material-symbols-outlined text-sm">receipt_long</span>
+                <tr class="border-b border-slate-50 hover:bg-slate-50/50 transition-colors group text-[10px] md:text-sm">
+                    <td class="px-3 md:px-8 py-3 md:py-4">
+                        <div class="flex items-center gap-2 md:gap-3">
+                            <div class="w-7 h-7 md:w-8 md:h-8 rounded-lg bg-slate-100 flex items-center justify-center text-slate-400 flex-shrink-0">
+                                <span class="material-symbols-outlined text-xs md:text-sm">receipt_long</span>
                             </div>
-                            <div>
-                                <p class="text-sm font-bold text-on-surface">${t.description}</p>
-                                <p class="text-[10px] text-slate-400 font-bold uppercase">${t.category || 'Serviço'}</p>
+                            <div class="truncate">
+                                <p class="font-bold text-on-surface truncate max-w-[120px] md:max-w-none">${t.description}</p>
+                                <p class="text-[8px] md:text-[10px] text-slate-400 font-bold uppercase">${t.category || 'Serviço'} • <span class="text-primary/70">${transDate.toLocaleDateString('pt-BR')}</span></p>
                             </div>
                         </div>
                     </td>
-                    <td class="px-6 py-4">
-                        <p class="text-sm font-medium text-slate-600">${customerName}</p>
+                    <td class="px-3 md:px-6 py-3 md:py-4">
+                        <p class="font-medium text-slate-600 truncate max-w-[100px] md:max-w-none">${customerName}</p>
                     </td>
-                    <td class="px-6 py-4">
-                        <p class="text-sm font-medium text-slate-600">${transDate.toLocaleDateString('pt-BR')}</p>
+                    <td class="hidden md:table-cell px-6 py-4">
+                        <p class="font-medium text-slate-600">${transDate.toLocaleDateString('pt-BR')}</p>
                         <p class="text-[10px] text-slate-400 font-bold uppercase tracking-tighter">Vencimento</p>
                     </td>
-                    <td class="px-6 py-4">
+                    <td class="hidden lg:table-cell px-6 py-4">
                         <span class="px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest ${statusStyle}">
                             ${statusLabel}
                         </span>
                     </td>
-                    <td class="px-6 py-4 text-right">
-                        <p class="text-sm font-black text-on-surface">R$ ${parseFloat(t.amount || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
-                        <p class="text-[10px] text-slate-400 font-bold uppercase">${t.payment_method || '-'}</p>
+                    <td class="px-3 md:px-6 py-3 md:py-4 text-right">
+                        <p class="font-black text-on-surface">R$ ${parseFloat(t.amount || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
+                        <p class="text-[8px] md:text-[10px] text-slate-400 font-bold uppercase">${t.payment_method || '-'}</p>
                     </td>
-                    <td class="px-8 py-4 text-right">
-                        <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-all">
+                    <td class="px-4 md:px-8 py-3 md:py-4 text-right">
+                        <div class="flex items-center justify-end gap-1 md:gap-2 opacity-100 md:opacity-0 group-hover:opacity-100 transition-all">
                             <!-- Action: Enviar Lembrete -->
-                            <a href="${waLink}" target="_blank" class="p-2 bg-green-50 text-green-600 rounded-lg hover:bg-green-600 hover:text-white transition-all shadow-sm" title="Enviar Lembrete WhatsApp">
-                                <span class="material-symbols-outlined text-sm">send</span>
+                            <a href="${waLink}" target="_blank" class="p-1.5 md:p-2 bg-green-50 text-green-600 rounded-lg hover:bg-green-600 hover:text-white transition-all shadow-sm" title="Enviar Lembrete WhatsApp">
+                                <span class="material-symbols-outlined text-xs md:text-sm">send</span>
                             </a>
                             
                             <!-- Action: Reabrir OS -->
                             ${t.service_order_id ? `
-                            <button onclick="reopenOSFromFinance('${t.service_order_id}')" class="p-2 bg-orange-50 text-orange-600 rounded-lg hover:bg-orange-600 hover:text-white transition-all shadow-sm" title="Reabrir Ordem">
-                                <span class="material-symbols-outlined text-sm">settings_backup_restore</span>
+                            <button onclick="reopenOSFromFinance('${t.service_order_id}')" class="p-1.5 md:p-2 bg-orange-50 text-orange-600 rounded-lg hover:bg-orange-600 hover:text-white transition-all shadow-sm" title="Reabrir Ordem">
+                                <span class="material-symbols-outlined text-xs md:text-sm">settings_backup_restore</span>
                             </button>
                             ` : ''}
-
+ 
                             <!-- Action: Toggle Status -->
-                            <button onclick="toggleTransactionStatus('${t.id}', '${t.status}')" class="p-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-600 hover:text-white transition-all shadow-sm" title="${t.status === 'Pago' ? 'Marcar como Pendente' : 'Marcar como Pago'}">
-                                <span class="material-symbols-outlined text-sm">${t.status === 'Pago' ? 'undo' : 'check'}</span>
+                            <button onclick="toggleTransactionStatus('${t.id}', '${t.status}')" class="p-1.5 md:p-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-600 hover:text-white transition-all shadow-sm" title="${t.status === 'Pago' ? 'Marcar como Pendente' : 'Marcar como Pago'}">
+                                <span class="material-symbols-outlined text-xs md:text-sm">${t.status === 'Pago' ? 'undo' : 'check'}</span>
                             </button>
                         </div>
                     </td>
@@ -718,7 +718,7 @@ const Financial = {
                 transactions: expenses,
                 filter: 'all',
                 sortColumn: 'due_date',
-                sortOrder: 'desc',
+                sortOrder: 'asc',
                 firstDayOfMonth
             };
 
@@ -790,44 +790,44 @@ const Financial = {
             const statusLabel = t.status === 'Pago' ? 'Pago' : (isOverdue ? 'Atrasado' : 'Pendente');
 
             return `
-                <tr class="border-b border-slate-50 hover:bg-slate-50/50 transition-colors group" data-id="${t.id}">
-                    <td class="px-8 py-4">
+                <tr class="border-b border-slate-50 hover:bg-slate-50/50 transition-colors group text-[10px] md:text-sm" data-id="${t.id}">
+                    <td class="hidden md:table-cell px-8 py-4">
                         <input type="checkbox" onchange="toggleItemSelection('${t.id}', this)" class="item-checkbox rounded border-slate-300 text-primary focus:ring-primary">
                     </td>
-                    <td class="px-4 py-4">
-                        <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 rounded-lg bg-red-50 text-red-400 flex items-center justify-center">
-                                <span class="material-symbols-outlined text-sm">payments</span>
+                    <td class="px-3 md:px-4 py-3 md:py-4">
+                        <div class="flex items-center gap-2 md:gap-3">
+                            <div class="w-7 h-7 md:w-8 md:h-8 rounded-lg bg-red-50 text-red-400 flex items-center justify-center flex-shrink-0">
+                                <span class="material-symbols-outlined text-xs md:text-sm">payments</span>
                             </div>
-                            <div>
-                                <p class="text-sm font-bold text-on-surface">${t.description}</p>
-                                <p class="text-[10px] text-slate-400 font-bold uppercase">${t.category || 'Geral'}</p>
+                            <div class="truncate">
+                                <p class="font-bold text-on-surface truncate max-w-[120px] md:max-w-none">${t.description}</p>
+                                <p class="text-[8px] md:text-[10px] text-slate-400 font-bold uppercase">${t.category || 'Geral'} • <span class="text-primary/70">${transDate.toLocaleDateString('pt-BR')}</span></p>
                             </div>
                         </div>
                     </td>
-                    <td class="px-6 py-4">
-                        <span class="text-xs font-medium text-slate-500 bg-slate-100 px-2 py-1 rounded-lg">${t.category || 'Fixo'}</span>
+                    <td class="hidden sm:table-cell px-6 py-4">
+                        <span class="text-[9px] md:text-xs font-medium text-slate-500 bg-slate-100 px-2 py-0.5 md:py-1 rounded-lg">${t.category || 'Fixo'}</span>
                     </td>
-                    <td class="px-6 py-4">
-                        <p class="text-sm font-medium text-slate-600">${transDate.toLocaleDateString('pt-BR')}</p>
+                    <td class="hidden md:table-cell px-6 py-4">
+                        <p class="font-medium text-slate-600">${transDate.toLocaleDateString('pt-BR')}</p>
                         <p class="text-[10px] text-slate-400 font-bold uppercase tracking-tighter">Vencimento</p>
                     </td>
-                    <td class="px-6 py-4">
+                    <td class="hidden lg:table-cell px-6 py-4">
                         <span class="px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest ${statusStyle}">
                             ${statusLabel}
                         </span>
                     </td>
-                    <td class="px-6 py-4 text-right">
-                        <p class="text-sm font-black text-on-surface">R$ ${parseFloat(t.amount || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
-                        <p class="text-[10px] text-slate-400 font-bold uppercase">${t.payment_method || '-'}</p>
+                    <td class="px-3 md:px-6 py-3 md:py-4 text-right">
+                        <p class="font-black text-on-surface">R$ ${parseFloat(t.amount || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
+                        <p class="text-[8px] md:text-[10px] text-slate-400 font-bold uppercase">${t.payment_method || '-'}</p>
                     </td>
-                    <td class="px-8 py-4 text-right">
-                        <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-all">
-                            <button onclick="toggleExpenseStatus('${t.id}', '${t.status}')" class="p-2 bg-slate-50 text-slate-400 rounded-lg hover:bg-blue-600 hover:text-white transition-all shadow-sm" title="Alternar Status">
-                                <span class="material-symbols-outlined text-sm">${t.status === 'Pago' ? 'undo' : 'check'}</span>
+                    <td class="px-4 md:px-8 py-3 md:py-4 text-right">
+                        <div class="flex items-center justify-end gap-1 md:gap-2 opacity-100 md:opacity-0 group-hover:opacity-100 transition-all">
+                            <button onclick="toggleExpenseStatus('${t.id}', '${t.status}')" class="p-1.5 md:p-2 bg-slate-50 text-slate-400 rounded-lg hover:bg-blue-600 hover:text-white transition-all shadow-sm" title="Alternar Status">
+                                <span class="material-symbols-outlined text-xs md:text-sm">${t.status === 'Pago' ? 'undo' : 'check'}</span>
                             </button>
-                            <button onclick="handleDeleteRequest('${t.id}')" class="p-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-600 hover:text-white transition-all shadow-sm" title="Excluir">
-                                <span class="material-symbols-outlined text-sm">delete</span>
+                            <button onclick="handleDeleteRequest('${t.id}')" class="p-1.5 md:p-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-600 hover:text-white transition-all shadow-sm" title="Excluir">
+                                <span class="material-symbols-outlined text-xs md:text-sm">delete</span>
                             </button>
                         </div>
                     </td>

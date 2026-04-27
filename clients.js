@@ -135,19 +135,19 @@ function renderClientRows(clients, searchTerm = '') {
         
         return `
             <tr class="hover:bg-slate-50/50 transition-colors group">
-                <td class="px-4 md:px-6 py-4">
+                <td class="px-4 md:px-6 py-4 cursor-pointer" onclick="viewClientDetail('${client.id}')">
                     <div class="flex items-center gap-3">
                         <div class="w-10 h-10 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center font-bold flex-shrink-0">
                             ${(client.full_name || 'C').charAt(0)}
                         </div>
                         <div class="min-w-0">
-                            <div class="text-xs md:text-sm font-bold text-on-surface truncate">${client.full_name}</div>
+                            <div class="text-xs md:text-sm font-bold text-on-surface truncate hover:text-primary transition-colors">${client.full_name}</div>
                             <div class="text-[10px] text-slate-500 truncate">${client.email || 'Sem e-mail'}</div>
                         </div>
                     </div>
                 </td>
                 <td class="hidden lg:table-cell px-6 py-4 text-sm text-slate-600 font-medium">${client.phone || '-'}</td>
-                <td class="px-4 md:px-6 py-4 text-sm text-slate-600">
+                <td class="px-4 md:px-6 py-4 text-sm text-slate-600 cursor-pointer" onclick="viewClientDetail('${client.id}')">
                     <div class="flex items-center gap-2">
                         <div class="flex flex-col">
                             <span class="font-black text-on-surface tracking-wider uppercase text-[10px] md:text-xs">${primaryVehicle ? primaryVehicle.license_plate : '-'}</span>

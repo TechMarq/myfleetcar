@@ -99,6 +99,20 @@
             background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(20px);
         }
+
+        /* Mobile specific optimizations for Dashboard */
+        @media (max-width: 640px) {
+            .dashboard-module-text {
+                font-size: 0.7rem !important;
+            }
+            .dashboard-module-label {
+                font-size: 0.6rem !important;
+            }
+            main {
+                padding: 1rem !important;
+                margin-top: 6rem !important;
+            }
+        }
     </style>
 </head>
 
@@ -219,79 +233,79 @@
                 <h1 class="text-xl md:text-3xl font-black text-on-surface tracking-tight">Performance Financeira</h1>
             </div>
             <!-- Bento Metrics Grid -->
-            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6 mb-10">
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-6 mb-6 md:mb-10">
                 <!-- Metric Card 1 -->
                 <div
-                    class="bg-surface-container-lowest p-4 md:p-6 rounded-xl shadow-sm border border-outline-variant/10 flex flex-col justify-between group hover:border-primary-container/30 transition-all">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="p-2 bg-green-50 text-green-600 rounded-lg">
-                            <span class="material-symbols-outlined" style="">trending_up</span>
+                    class="bg-surface-container-lowest p-3 md:p-6 rounded-xl shadow-sm border border-outline-variant/10 flex flex-col justify-between group hover:border-primary-container/30 transition-all">
+                    <div class="flex justify-between items-start mb-2 md:mb-4">
+                        <div class="p-1.5 md:p-2 bg-green-50 text-green-600 rounded-lg">
+                            <span class="material-symbols-outlined text-sm md:text-base" style="">trending_up</span>
                         </div>
                     </div>
 
                     <div>
-                        <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Mensal Bruto</p>
-                        <h3 id="metric-bruto" class="text-lg md:text-2xl font-black text-on-surface">R$ 0,00</h3>
+                        <p class="text-[9px] md:text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-0.5 md:mb-1">Mensal Bruto</p>
+                        <h3 id="metric-bruto" class="text-base md:text-2xl font-black text-on-surface">R$ 0,00</h3>
                     </div>
 
                 </div>
                 <!-- Metric Card 2 -->
                 <div
-                    class="bg-surface-container-lowest p-4 md:p-6 rounded-xl shadow-sm border border-outline-variant/10 flex flex-col justify-between group hover:border-primary-container/30 transition-all">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="p-2 bg-blue-50 text-blue-600 rounded-lg">
-                            <span class="material-symbols-outlined" style="">schedule_send</span>
+                    class="bg-surface-container-lowest p-3 md:p-6 rounded-xl shadow-sm border border-outline-variant/10 flex flex-col justify-between group hover:border-primary-container/30 transition-all">
+                    <div class="flex justify-between items-start mb-2 md:mb-4">
+                        <div class="p-1.5 md:p-2 bg-blue-50 text-blue-600 rounded-lg">
+                            <span class="material-symbols-outlined text-sm md:text-base" style="">schedule_send</span>
                         </div>
                     </div>
 
                     <div>
-                        <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Mensal Previsto
+                        <p class="text-[9px] md:text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-0.5 md:mb-1">Previsto
                         </p>
-                        <h3 id="metric-previsto" class="text-lg md:text-2xl font-black text-blue-600">R$ 0,00</h3>
+                        <h3 id="metric-previsto" class="text-base md:text-2xl font-black text-blue-600">R$ 0,00</h3>
                     </div>
 
                 </div>
                 <!-- Metric Card 3 -->
                 <div
-                    class="bg-surface-container-lowest p-6 rounded-xl shadow-sm border border-outline-variant/10 flex flex-col justify-between group hover:border-primary-container/30 transition-all md:col-span-2 lg:col-span-1">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="p-2 bg-orange-50 text-orange-600 rounded-lg">
-                            <span class="material-symbols-outlined" style="">payments</span>
+                    class="bg-surface-container-lowest p-3 md:p-6 rounded-xl shadow-sm border border-outline-variant/10 flex flex-col justify-between group hover:border-primary-container/30 transition-all md:col-span-2 lg:col-span-1">
+                    <div class="flex justify-between items-start mb-2 md:mb-4">
+                        <div class="p-1.5 md:p-2 bg-orange-50 text-orange-600 rounded-lg">
+                            <span class="material-symbols-outlined text-sm md:text-base" style="">payments</span>
                         </div>
                     </div>
 
                     <div>
-                        <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Mensal Líquido</p>
-                        <h3 id="metric-liquido" class="text-lg md:text-2xl font-black text-green-600">R$ 0,00</h3>
+                        <p class="text-[9px] md:text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-0.5 md:mb-1">Líquido</p>
+                        <h3 id="metric-liquido" class="text-base md:text-2xl font-black text-green-600">R$ 0,00</h3>
                     </div>
 
                 </div>
                 <!-- Metric Card 4 -->
                 <div
-                    class="bg-surface-container-lowest p-4 md:p-6 rounded-xl shadow-sm border border-outline-variant/10 flex flex-col justify-between group hover:border-primary-container/30 transition-all">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="p-2 bg-blue-50 text-blue-600 rounded-lg">
-                            <span class="material-symbols-outlined" style="">point_of_sale</span>
+                    class="bg-surface-container-lowest p-3 md:p-6 rounded-xl shadow-sm border border-outline-variant/10 flex flex-col justify-between group hover:border-primary-container/30 transition-all">
+                    <div class="flex justify-between items-start mb-2 md:mb-4">
+                        <div class="p-1.5 md:p-2 bg-blue-50 text-blue-600 rounded-lg">
+                            <span class="material-symbols-outlined text-sm md:text-base" style="">point_of_sale</span>
                         </div>
                     </div>
                     <div>
-                        <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Comissões (Dívida)
+                        <p class="text-[9px] md:text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-0.5 md:mb-1">Comissões
                         </p>
-                        <h3 id="metric-comissoes" class="text-lg md:text-2xl font-black text-orange-600">R$ 0,00</h3>
+                        <h3 id="metric-comissoes" class="text-base md:text-2xl font-black text-orange-600">R$ 0,00</h3>
                     </div>
 
                 </div>
                 <!-- Metric Card 5 -->
                 <div
-                    class="bg-surface-container-lowest p-4 md:p-6 rounded-xl shadow-sm border border-outline-variant/10 flex flex-col justify-between group hover:border-primary-container/30 transition-all">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="p-2 bg-slate-50 text-slate-600 rounded-lg">
-                            <span class="material-symbols-outlined" style="">task_alt</span>
+                    class="bg-surface-container-lowest p-3 md:p-6 rounded-xl shadow-sm border border-outline-variant/10 flex flex-col justify-between group hover:border-primary-container/30 transition-all">
+                    <div class="flex justify-between items-start mb-2 md:mb-4">
+                        <div class="p-1.5 md:p-2 bg-slate-50 text-slate-600 rounded-lg">
+                            <span class="material-symbols-outlined text-sm md:text-base" style="">task_alt</span>
                         </div>
                     </div>
                     <div>
-                        <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Resumo OS</p>
-                        <h3 id="metric-os-summary" class="text-lg md:text-2xl font-black text-on-surface">0 / 0</h3>
+                        <p class="text-[9px] md:text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-0.5 md:mb-1">Resumo OS</p>
+                        <h3 id="metric-os-summary" class="text-base md:text-2xl font-black text-on-surface">0 / 0</h3>
                     </div>
 
                 </div>

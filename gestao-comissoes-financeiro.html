@@ -90,6 +90,20 @@
             font-family: 'Inter', sans-serif;
             background-color: #faf8ff;
         }
+
+        /* Mobile specific optimizations for Commissions */
+        @media (max-width: 640px) {
+            .commission-module-text {
+                font-size: 0.7rem !important;
+            }
+            .commission-module-label {
+                font-size: 0.6rem !important;
+            }
+            table th, table td {
+                padding-left: 0.5rem !important;
+                padding-right: 0.5rem !important;
+            }
+        }
     </style>
 </head>
 
@@ -190,13 +204,13 @@
 
     <main class="lg:ml-64 mt-28 p-4 md:p-8 pb-32">
         <!-- Page Description -->
-        <div class="mb-8 p-4 md:p-6 bg-primary/5 border border-primary/10 rounded-2xl flex items-center gap-4 md:gap-6">
-            <div class="w-10 h-10 md:w-12 md:h-12 flex-shrink-0 rounded-xl bg-gradient-to-br from-primary to-primary-container text-white flex items-center justify-center shadow-lg shadow-primary/20">
-                <span class="material-symbols-outlined text-xl md:text-2xl">payments</span>
+        <div class="mb-6 p-3 md:p-6 bg-primary/5 border border-primary/10 rounded-2xl flex items-center gap-3 md:gap-6">
+            <div class="w-8 h-8 md:w-12 md:h-12 flex-shrink-0 rounded-xl bg-gradient-to-br from-primary to-primary-container text-white flex items-center justify-center shadow-lg shadow-primary/20">
+                <span class="material-symbols-outlined text-lg md:text-2xl">payments</span>
             </div>
             <div>
-                <h2 class="text-xs md:text-sm font-black text-on-surface uppercase tracking-tight">Pagamento de Comissários</h2>
-                <p class="text-[10px] md:text-xs text-slate-500 mt-0.5">As comissões aparecem após a OS estar **Concluída** e o pagamento registrado como **Pago**.</p>
+                <h2 class="text-[10px] md:text-sm font-black text-on-surface uppercase tracking-tight">Pagamento de Comissários</h2>
+                <p class="text-[9px] md:text-xs text-slate-500 mt-0.5">As comissões aparecem após a OS estar **Concluída** e o pagamento registrado como **Pago**.</p>
             </div>
         </div>
 
@@ -214,20 +228,20 @@
 
     <!-- Bulk Actions Bar para Comissões -->
     <div id="commission-bulk-bar"
-        class="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 bg-slate-900 text-white px-8 py-4 rounded-2xl shadow-2xl flex items-center gap-8 translate-y-32 transition-all duration-500 border border-white/10 backdrop-blur-xl">
-        <div class="flex items-center gap-3">
-            <span id="commission-selected-count" class="bg-primary px-2 py-0.5 rounded-lg text-xs font-black text-white">0</span>
-            <p class="text-sm font-bold uppercase tracking-widest text-white/70">Selecionados</p>
+        class="fixed bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 z-50 bg-slate-900 text-white px-4 md:px-8 py-3 md:py-4 rounded-xl md:rounded-2xl shadow-2xl flex items-center gap-4 md:gap-8 translate-y-32 transition-all duration-500 border border-white/10 backdrop-blur-xl w-[90%] md:w-auto justify-between md:justify-start">
+        <div class="flex items-center gap-2 md:gap-3">
+            <span id="commission-selected-count" class="bg-primary px-1.5 py-0.5 rounded-lg text-[10px] md:text-xs font-black text-white">0</span>
+            <p class="text-[9px] md:text-sm font-bold uppercase tracking-widest text-white/70">Selecionados</p>
         </div>
-        <div class="h-6 w-[1px] bg-white/10"></div>
+        <div class="h-6 w-[1px] bg-white/10 hidden md:block"></div>
         <div class="flex items-center gap-4">
             <button onclick="bulkPayCommissions()" class="flex items-center gap-2 hover:text-green-400 transition-colors">
-                <span class="material-symbols-outlined text-xl">payments</span>
-                <span class="text-[10px] font-black uppercase tracking-tighter">Pagar Selecionados</span>
+                <span class="material-symbols-outlined text-lg md:text-xl">payments</span>
+                <span class="text-[9px] md:text-[10px] font-black uppercase tracking-tighter">Pagar Selecionados</span>
             </button>
         </div>
         <button onclick="clearCommissionSelection()" class="text-white/40 hover:text-white transition-colors">
-            <span class="material-symbols-outlined">close</span>
+            <span class="material-symbols-outlined text-lg">close</span>
         </button>
     </div>
 

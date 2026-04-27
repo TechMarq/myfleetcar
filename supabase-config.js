@@ -40,6 +40,22 @@ const Auth = {
         return { data, error };
     },
 
+    async resetPassword(email) {
+        if (!supabaseClient) return { error: { message: 'Supabase not initialized' } };
+        const { data, error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+            redirectTo: window.location.origin + '/nova-senha.html',
+        });
+        return { data, error };
+    },
+
+    async signInWithOtp(phone) {
+        if (!supabaseClient) return { error: { message: 'Supabase not initialized' } };
+        const { data, error } = await supabaseClient.auth.signInWithOtp({
+            phone: phone,
+        });
+        return { data, error };
+    },
+
     async signOut() {
         if (!supabaseClient) return { error: { message: 'Supabase not initialized' } };
         const { error } = await supabaseClient.auth.signOut();
@@ -114,18 +130,56 @@ const DB = {
     }
 };
 
+/**
+ * Storage Module
+ */
+const Storage = {
+    async uploadFile(bucket, path, file) {
+        if (!supabaseClient) return { error: { message: 'Supabase not initialized' } };
+        return await supabaseClient.storage.from(bucket).upload(path, file, {
+            upsert: true
+        });
+    },
+
+    getPublicUrl(bucket, path) {
+        if (!supabaseClient) return null;
+        const { data } = supabaseClient.storage.from(bucket).getPublicUrl(path);
+        return data?.publicUrl;
+    }
+};
+
 // Protect routes
 async function checkAuth() {
     const { data: { session } } = await Auth.getSession();
-    const isLoginPage = window.location.pathname.includes('login.html') ||
-        window.location.pathname.includes('registro-conta-login.html') ||
-        window.location.pathname.includes('index.html');
+    const path = window.location.pathname;
+    
+    const isLoginPage = path.includes('login.html') || 
+                       path.includes('registro-conta-login.html') || 
+                       path.includes('index.html');
+    
+    const isPublicPage = isLoginPage || 
+                        path.includes('master-admin') || 
+                        path.includes('suspensao.html');
 
-    if (!session && !isLoginPage) {
-        window.location.href = 'login.html';
-    } else if (session && isLoginPage) {
-        // If already logged in and trying to access login/register/landing, go to home
-        if (!window.location.pathname.includes('index.html')) {
+    if (!session) {
+        if (!isPublicPage) window.location.href = 'login.html';
+    } else {
+        // Logged in: Check for suspension
+        try {
+            const workshopId = session.user.user_metadata?.workshop_id || session.user.id;
+            const { data: profile } = await DB.select('profiles', { match: { id: workshopId } });
+            
+            if (profile && profile.length > 0 && profile[0].status === 'suspended') {
+                if (!path.includes('suspensao.html')) {
+                    window.location.href = 'suspensao.html';
+                }
+                return;
+            }
+        } catch (e) {
+            console.error('Auth verification error:', e);
+        }
+
+        if (isLoginPage && !path.includes('index.html')) {
             window.location.href = 'home.html';
         }
     }
@@ -138,6 +192,7 @@ window.tempVehicles = [];
 window.MyFleetCar = {
     Auth,
     DB,
+    Storage,
     checkAuth,
     supabase: supabaseClient
 };

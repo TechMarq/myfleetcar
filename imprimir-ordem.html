@@ -234,12 +234,15 @@
             document.getElementById('discount-val').textContent = `- R$ ${(o.discount_amount || 0).toLocaleString('pt-BR', {minimumFractionDigits:2})}`;
             document.getElementById('total-val').textContent = `R$ ${o.total_amount.toLocaleString('pt-BR', {minimumFractionDigits:2})}`;
 
-            // Auto print if not in preview
+            // Auto print or download if requested
             if (urlParams.get('print') === 'true') {
                 setTimeout(() => window.print(), 1000);
+            }
+
+            if (urlParams.get('download') === 'true') {
+                setTimeout(() => downloadAsPDF(), 1200);
             }
         });
     </script>
 </body>
 </html>
-

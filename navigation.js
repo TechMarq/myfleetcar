@@ -46,18 +46,56 @@ async function updateUserProfile() {
     if (!window.MyFleetCar || !window.MyFleetCar.Auth) return;
     
     const { data: { user } } = await window.MyFleetCar.Auth.getUser();
+    if (!user) return;
+
+    // Determine the workshop ID to fetch branding
+    // Master user: id is their own. Sub-user: id should be in metadata.
+    const workshopId = user.user_metadata?.workshop_id || user.id;
+
+    // Fetch workshop profile for branding (Logo and Workshop Name)
+    const { data: profile } = await window.MyFleetCar.DB.select('profiles', {
+        match: { id: workshopId }
+    });
+    const p = (profile && profile.length > 0) ? profile[0] : null;
+
     if (user) {
-        // Update user name in sidebar if element exists (ID based on our templates)
+        // 1. Update User Name
+        // Logic: Show owner_name if master, or specific name if available in metadata
         const nameElements = document.querySelectorAll('.user-name-display');
         nameElements.forEach(el => {
-            el.textContent = user.user_metadata.owner_name || user.email;
+            const displayName = user.user_metadata?.full_name || user.user_metadata?.owner_name || p?.owner_name || user.email;
+            el.textContent = displayName;
         });
 
+        // 2. Update Workshop Name (Secondary text in sidebar)
+        // Find specifically the sidebar subtext (fix for config page)
+        const sidebarSubText = document.querySelector('aside .p-4.rounded-xl p.text-slate-500, aside .p-4.rounded-xl p.text-\\[10px\\]');
+        if (sidebarSubText) {
+            sidebarSubText.textContent = p?.workshop_name || user.user_metadata?.workshop_name || 'Minha Oficina';
+        }
+
+        // Update other elements with the class (except headers that might use it differently)
         const workshopElements = document.querySelectorAll('.workshop-name-display');
         workshopElements.forEach(el => {
-            el.textContent = user.user_metadata.workshop_name || 'Minha Oficina';
+            if (el.tagName !== 'H2' || el.closest('header') === null) {
+                el.textContent = p?.workshop_name || user.user_metadata?.workshop_name || 'Minha Oficina';
+            }
         });
-        // 3. Handle Logout
+
+        // 3. Update Profile Image (Workshop Logo)
+        // Targeted selector for the sidebar avatar only
+        const avatarImages = document.querySelectorAll('aside .p-4.rounded-xl img.rounded-full');
+        avatarImages.forEach(img => {
+            if (p && p.logo_url) {
+                img.src = p.logo_url;
+            } else {
+                img.src = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(p?.workshop_name || 'MO') + '&background=ff6b00&color=fff';
+            }
+            // Remove hardcoded data-alt or alt to avoid confusion
+            img.removeAttribute('data-alt');
+        });
+
+        // 4. Handle Logout
         const logoutBtn = document.getElementById('logout-btn');
         if (logoutBtn) {
             logoutBtn.addEventListener('click', async (e) => {

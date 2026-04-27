@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Master Control | MyFleetCar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <style>
+        body { font-family: 'Outfit', sans-serif; }
+        .glass { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(12px); }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex items-center justify-center p-6 overflow-hidden">
+    <!-- Background Decor -->
+    <div class="absolute top-0 left-0 w-full h-full overflow-hidden -z-10">
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-orange-600/10 rounded-full blur-[120px]"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-600/10 rounded-full blur-[120px]"></div>
+    </div>
+
+    <div class="w-full max-w-md">
+        <div class="text-center mb-10">
+            <div class="inline-flex p-4 rounded-2xl bg-gradient-to-br from-orange-500 to-orange-700 shadow-xl shadow-orange-900/20 mb-6">
+                <span class="material-symbols-outlined text-4xl text-white">shield_person</span>
+            </div>
+            <h1 class="text-3xl font-extrabold tracking-tight mb-2 uppercase italic text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400">Master Admin</h1>
+            <p class="text-slate-500 text-sm font-medium tracking-widest uppercase">MyFleetCar SaaS Control Center</p>
+        </div>
+
+        <div class="glass border border-slate-800 p-8 rounded-3xl shadow-2xl relative">
+            <form id="admin-login-form" class="space-y-6">
+                <div>
+                    <label class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mb-2 block px-1">Master Access Key</label>
+                    <div class="relative">
+                        <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-600">terminal</span>
+                        <input id="admin-key" type="password" placeholder="ENTER SYSTEM KEY" 
+                            class="w-full bg-slate-900/50 border border-slate-800 rounded-2xl pl-12 pr-4 py-4 focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 outline-none transition-all font-mono text-orange-500 placeholder:text-slate-700 uppercase tracking-widest" />
+                    </div>
+                </div>
+
+                <button type="submit" 
+                    class="w-full bg-white text-slate-950 font-black py-4 rounded-2xl hover:bg-orange-500 hover:text-white transition-all duration-300 shadow-lg shadow-white/5 active:scale-95 flex items-center justify-center gap-2">
+                    AUTHENTICATE
+                    <span class="material-symbols-outlined text-base">verified_user</span>
+                </button>
+            </form>
+            
+            <p class="mt-8 text-center text-[10px] text-slate-700 uppercase font-black tracking-widest">
+                Unauthorized access is strictly prohibited & logged.
+            </p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script>
+        document.getElementById('admin-login-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const key = document.getElementById('admin-key').value;
+            
+            // Temporary simple authentication for the user
+            // In a real scenario, this would be a specialized auth check
+            if (key === 'MYFLEET2026') { // Standard key for the user, they can change it later
+                sessionStorage.setItem('master_admin_auth', 'true');
+                window.location.href = 'master-admin-dashboard.html';
+            } else {
+                alert('CHAVE DE ACESSO INVÁLIDA.');
+            }
+        });
+    </script>
+</body>
+</html>

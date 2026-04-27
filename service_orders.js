@@ -171,10 +171,13 @@ function renderServiceOrdersTable(orders) {
                 </td>
                 <td class="px-4 py-4 md:py-6">
                     <div class="flex flex-col">
-                        <span class="text-xs md:text-sm font-black text-slate-700 leading-tight">${vehicleInfo}</span>
-                        <div class="flex items-center gap-1.5 mt-0.5">
-                             <span class="text-[9px] md:text-[10px] font-mono text-slate-500 font-black uppercase border border-slate-200 px-1 rounded bg-slate-50">${vehiclePlate}</span>
-                             <span class="text-[9px] md:text-[10px] text-slate-400 font-bold truncate max-w-[100px] md:max-w-none">| ${customerName}</span>
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs md:text-sm font-black text-slate-900 leading-tight uppercase tracking-tight">${vehiclePlate}</span>
+                            <span class="h-1 w-1 rounded-full bg-slate-300"></span>
+                            <span class="text-xs md:text-sm font-bold text-slate-700 leading-tight truncate max-w-[150px] md:max-w-none">${customerName}</span>
+                        </div>
+                        <div class="flex items-center gap-1.5 mt-1">
+                             <span class="text-[9px] md:text-[10px] text-slate-400 font-bold uppercase tracking-wider">${vehicleInfo}</span>
                         </div>
                         <div class="hidden md:block">
                             ${servicesHtml}
@@ -543,7 +546,7 @@ async function loadOrderDetails() {
         // Load History
         loadHistory(o.id);
 
-        // Global ref for actions
+        // Final Actions
         window.currentOrder = o;
         renderStatusActions(o);
 
@@ -556,6 +559,11 @@ async function loadOrderDetails() {
         const downloadBtn = document.querySelector('button[onclick*="downloadPDF"]');
         if (downloadBtn) {
             downloadBtn.onclick = () => generateOSPDF(o, 'download');
+        }
+
+        // CRITICAL: Lock if concluded (wait for rendering to finish)
+        if (o.status === 'Concluído' || o.status === 'Finalizada') {
+            setTimeout(() => applyOrderLock(true), 500);
         }
 
         // Auto print if requested
@@ -635,6 +643,15 @@ function renderStatusActions(order) {
  * Workflow Functions
  */
 window.openModal = (id) => {
+    // Bloquear modais de edição se a OS estiver concluída
+    if (window.currentOrder && (window.currentOrder.status === 'Concluído' || window.currentOrder.status === 'Finalizada')) {
+        const protectedModals = ['modal-add-item', 'modal-history', 'modal-delete'];
+        if (protectedModals.includes(id)) {
+            console.warn('Ação bloqueada: OS Concluída');
+            return;
+        }
+    }
+
     const modal = document.getElementById(id);
     modal.classList.remove('hidden');
 
@@ -901,7 +918,7 @@ function renderOrderItems(order) {
                         </div>
                     </td>
                     <td class="hidden md:table-cell px-6 py-4">
-                        <select onchange="updateItemMechanic(${index}, this.value)" class="bg-transparent border-none text-[10px] font-bold text-slate-500 uppercase focus:ring-0 cursor-pointer">
+                        <select onchange="updateItemMechanic(${index}, this.value)" ${order.status === 'Concluído' ? 'disabled' : ''} class="bg-transparent border-none text-[10px] font-bold text-slate-500 uppercase focus:ring-0 cursor-pointer disabled:cursor-not-allowed">
                             <option value="">${itemMechanic} (Padrão)</option>
                             ${(staff || []).map(s => `<option value="${s.name}" ${item.mechanic_name === s.name ? 'selected' : ''}>${s.name}</option>`).join('')}
                         </select>
@@ -915,9 +932,10 @@ function renderOrderItems(order) {
                     <td class="px-4 md:px-6 py-4 text-right">
                         <div class="flex items-center justify-end gap-3">
                             <span class="text-xs md:text-sm font-black text-slate-900">R$ ${subtotal.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+                            ${order.status === 'Concluído' ? '' : `
                             <button onclick="removeItemFromOS(${index})" class="text-slate-300 hover:text-red-500 transition-colors">
                                 <span class="material-symbols-outlined text-sm">delete</span>
-                            </button>
+                            </button>`}
                         </div>
                     </td>
                 </tr>
@@ -930,6 +948,7 @@ function renderOrderItems(order) {
  * Logic for adding/updating items
  */
 window.addNewItem = async function () {
+    if (window.currentOrder.status === 'Concluído') return;
     const desc = document.getElementById('item-description').value;
     const qty = parseFloat(document.getElementById('item-qty').value);
     const price = parseFloat(document.getElementById('item-price').value);
@@ -951,6 +970,7 @@ window.addNewItem = async function () {
 };
 
 window.removeItemFromOS = async function (index) {
+    if (window.currentOrder.status === 'Concluído') return;
     if (!confirm('Excluir este item?')) return;
     const updated = [...window.currentOrder.labor_services];
     const removedItem = updated.splice(index, 1)[0];
@@ -966,6 +986,7 @@ window.removeItemFromOS = async function (index) {
 };
 
 window.updateItemMechanic = async function (index, mechanicName) {
+    if (window.currentOrder.status === 'Concluído') return;
     const updated = [...window.currentOrder.labor_services];
     updated[index].mechanic_name = mechanicName || null;
     const itemDesc = updated[index].name || updated[index].description;
@@ -982,6 +1003,7 @@ window.updateItemMechanic = async function (index, mechanicName) {
  * Financial Recalculation
  */
 window.recalculateAndSave = async function () {
+    if (window.currentOrder.status === 'Concluído') return;
     const additional = parseFloat(document.getElementById('financial-additional').value) || 0;
     const discount = parseFloat(document.getElementById('financial-discount').value) || 0;
     const noCharge = document.getElementById('no-charge-toggle').checked;
@@ -1109,6 +1131,7 @@ async function generateOSNumber(workshopId) {
 let generatedDeleteCode = '';
 
 window.requestOrderDeletion = () => {
+    if (window.currentOrder.status === 'Concluído') return;
     // Generate a 6-char random code (uppercase letters and numbers)
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     generatedDeleteCode = '';
@@ -1151,3 +1174,99 @@ window.confirmDeletion = async () => {
         alert('Erro ao excluir ordem: ' + err.message);
     }
 };
+
+/**
+ * PDF Generation & SHARING
+ */
+window.generateOSPDF = function (order, action = 'download') {
+    const id = order.id;
+    if (action === 'share') {
+        const osNum = order.os_number || 'OS';
+        const text = encodeURIComponent(`Olá! Segue o link para visualizar sua Ordem de Serviço (${osNum}) na MyFleetCar: ${window.location.origin}/imprimir-ordem.html?id=${id}`);
+        const phone = order.customers?.phone ? order.customers.phone.replace(/\D/g, '') : '';
+        
+        // Ensure brazilian country code if missing and length is local
+        let finalPhone = phone;
+        if (phone.length === 11 || phone.length === 10) finalPhone = '55' + phone;
+
+        window.open(`https://wa.me/${finalPhone}?text=${text}`, '_blank');
+    } else {
+        // Download approach: Open the print page with download=true flag
+        window.open(`imprimir-ordem.html?id=${id}&download=true`, '_blank');
+    }
+};
+
+window.downloadPDF = function(id) {
+    const orderId = id || (window.currentOrder ? window.currentOrder.id : null);
+    if (!orderId) {
+        alert('ID da ordem não encontrado.');
+        return;
+    }
+    window.open(`imprimir-ordem.html?id=${orderId}&download=true`, '_blank');
+};
+
+/**
+ * UI Logic: Lock concluded orders
+ */
+function applyOrderLock(isLocked) {
+    if (!isLocked) return;
+    console.log('--- APLICANDO BLOQUEIO DE OS CONCLUÍDA ---');
+
+    // 1. Hide "Add Item" and "Add Note" buttons
+    const addBtn = document.querySelector('button[onclick*="modal-add-item"]');
+    if (addBtn) {
+        addBtn.classList.add('hidden');
+        addBtn.style.display = 'none';
+    }
+
+    const addNoteBtn = document.querySelector('button[onclick*="modal-history"]');
+    if (addNoteBtn) {
+        addNoteBtn.classList.add('hidden');
+        addNoteBtn.style.display = 'none';
+    }
+
+    // 2. Disable financial inputs
+    const inputs = [
+        'financial-additional',
+        'financial-discount',
+        'no-charge-toggle'
+    ];
+    inputs.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.disabled = true;
+            el.classList.add('bg-slate-50', 'cursor-not-allowed', 'opacity-60');
+            el.onclick = (e) => { e.preventDefault(); return false; };
+            el.onchange = null;
+        }
+    });
+
+    // 3. Prevent general deletion
+    const deleteBtn = document.querySelector('button[onclick*="requestOrderDeletion"]');
+    if (deleteBtn) {
+        deleteBtn.classList.add('hidden');
+        deleteBtn.style.display = 'none';
+    }
+
+    // 4. Add a visual indicator
+    const financialCard = document.querySelector('.bg-surface-container-low.p-8');
+    if (financialCard && !document.getElementById('lock-notice')) {
+        const lockNotice = document.createElement('div');
+        lockNotice.id = 'lock-notice';
+        lockNotice.className = 'mt-4 p-3 bg-orange-50 border border-orange-100 rounded-xl text-[10px] font-bold text-orange-600 uppercase flex items-center gap-2';
+        lockNotice.innerHTML = `<span class="material-symbols-outlined text-sm">lock</span> OS Bloqueada para alterações`;
+        financialCard.appendChild(lockNotice);
+    }
+
+    // 5. Hide delete buttons in rows
+    document.querySelectorAll('#order-items-list button[onclick*="removeItemFromOS"]').forEach(btn => {
+        btn.classList.add('hidden');
+        btn.style.display = 'none';
+    });
+    
+    document.querySelectorAll('#order-items-list select').forEach(sel => {
+        sel.disabled = true;
+        sel.classList.add('cursor-not-allowed', 'opacity-60');
+    });
+}
+

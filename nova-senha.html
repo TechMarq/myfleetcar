@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>MyFleetCar | Nova Senha</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#a04100",
+                        "primary-container": "#ff6b00",
+                        surface: "#faf8ff",
+                        "on-surface": "#131b2e",
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .kinetic-gradient { background: linear-gradient(135deg, #a04100 0%, #ff6b00 100%); }
+        .glass-panel { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(20px); }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface antialiased min-h-screen flex items-center justify-center p-6">
+    <div class="w-full max-w-[440px]">
+        <div class="mb-10 text-center">
+            <h1 class="text-3xl font-black text-on-surface tracking-tight mb-2">Definir Nova Senha</h1>
+            <p class="text-slate-500 text-sm font-medium">Crie uma senha forte para proteger sua conta.</p>
+        </div>
+
+        <div class="glass-panel p-10 rounded-xl shadow-2xl border border-orange-100/15">
+            <form id="new-password-form" class="space-y-6">
+                <div class="space-y-2">
+                    <label class="block text-xs font-bold uppercase tracking-widest text-slate-400 ml-1">Nova Senha</label>
+                    <input type="password" id="new-password" required class="w-full bg-surface-container-lowest border border-outline-variant/15 rounded-xl px-4 py-4 text-on-surface focus:ring-4 focus:ring-primary-container/10 focus:border-primary-container outline-none transition-all duration-200 font-medium" placeholder="••••••••">
+                </div>
+                <div class="space-y-2">
+                    <label class="block text-xs font-bold uppercase tracking-widest text-slate-400 ml-1">Confirmar Senha</label>
+                    <input type="password" id="confirm-password" required class="w-full bg-surface-container-lowest border border-outline-variant/15 rounded-xl px-4 py-4 text-on-surface focus:ring-4 focus:ring-primary-container/10 focus:border-primary-container outline-none transition-all duration-200 font-medium" placeholder="••••••••">
+                </div>
+                <button type="submit" class="w-full kinetic-gradient text-white py-4 rounded-xl font-bold tracking-wide shadow-lg shadow-primary/20 hover:scale-[1.01] active:scale-[0.98] transition-all">
+                    Atualizar Senha
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script>
+        document.getElementById('new-password-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const password = document.getElementById('new-password').value;
+            const confirm = document.getElementById('confirm-password').value;
+
+            if (password !== confirm) {
+                alert('As senhas não coincidem!');
+                return;
+            }
+
+            if (password.length < 6) {
+                alert('A senha deve ter pelo menos 6 caracteres.');
+                return;
+            }
+
+            const btn = e.target.querySelector('button');
+            const originalText = btn.textContent;
+            btn.disabled = true;
+            btn.textContent = 'Atualizando...';
+
+            try {
+                const { error } = await MyFleetCar.supabase.auth.updateUser({ password: password });
+                if (error) throw error;
+
+                alert('Senha atualizada com sucesso!');
+                window.location.href = 'login.html';
+            } catch (err) {
+                console.error(err);
+                alert('Erro ao atualizar senha: ' + err.message);
+                btn.disabled = false;
+                btn.textContent = originalText;
+            }
+        });
+    </script>
+</body>
+</html>
