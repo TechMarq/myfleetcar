@@ -226,7 +226,7 @@
                     </div>
                 </div>
 
-                <button
+                <button id="btn-create-os"
                     class="kinetic-gradient text-white px-8 py-4 rounded-xl font-bold text-sm tracking-tight flex items-center gap-3 shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all">
                     <span class="material-symbols-outlined">add_task</span>
                     Criar Ordem de Serviço
@@ -298,24 +298,24 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/5 shadow-sm">
                         <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Total Gasto</p>
-                        <h4 class="text-2xl font-black text-on-surface leading-none">R$ 0</h4>
+                        <h4 id="card-total-spent" class="text-2xl font-black text-on-surface leading-none">R$ 0</h4>
                         <div class="mt-4 h-1 bg-slate-100 rounded-full overflow-hidden">
-                            <div class="h-full bg-primary w-0"></div>
+                            <div id="bar-total-spent" class="h-full bg-primary w-0 transition-all duration-500"></div>
                         </div>
                     </div>
                     <div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/5 shadow-sm">
                         <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Visitas</p>
-                        <h4 class="text-2xl font-black text-on-surface leading-none">0 <span
+                        <h4 id="card-visits" class="text-2xl font-black text-on-surface leading-none">0 <span
                                 class="text-sm font-medium text-slate-400">Ordens</span></h4>
                         <div class="mt-4 h-1 bg-slate-100 rounded-full overflow-hidden">
-                            <div class="h-full bg-tertiary w-0"></div>
+                            <div id="bar-visits" class="h-full bg-tertiary w-0 transition-all duration-500"></div>
                         </div>
                     </div>
                     <div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/5 shadow-sm">
                         <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Ticket Médio</p>
-                        <h4 class="text-2xl font-black text-on-surface leading-none text-tertiary">R$ 0</h4>
+                        <h4 id="card-avg-ticket" class="text-2xl font-black text-on-surface leading-none text-tertiary">R$ 0</h4>
                         <div class="mt-4 h-1 bg-slate-100 rounded-full overflow-hidden">
-                            <div class="h-full bg-tertiary-container w-0"></div>
+                            <div id="bar-avg-ticket" class="h-full bg-tertiary-container w-0 transition-all duration-500"></div>
                         </div>
                     </div>
                 </div>

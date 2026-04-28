@@ -74,6 +74,46 @@ async function updateUserProfile() {
             sidebarSubText.textContent = p?.workshop_name || user.user_metadata?.workshop_name || 'Minha Oficina';
         }
 
+        // 2.1 Update Account Status Display
+        const statusElements = document.querySelectorAll('.account-status-display');
+        const status = p?.status || 'trial';
+        
+        let remainingDays = 7;
+        if (p?.created_at) {
+            const createdAt = new Date(p.created_at);
+            const now = new Date();
+            const diffDays = Math.ceil(Math.abs(now - createdAt) / (1000 * 60 * 60 * 24));
+            remainingDays = Math.max(0, 7 - diffDays);
+        }
+
+        let statusLabel = 'Plano de Teste';
+        let statusClass = 'text-blue-500';
+
+        if (status === 'active') {
+            statusLabel = 'Plano Ativo';
+            statusClass = 'text-green-500';
+        } else if (status === 'free') {
+            statusLabel = 'Plano Gratuito';
+            statusClass = 'text-emerald-500';
+        } else if (status === 'suspended') {
+            statusLabel = 'Conta Suspensa';
+            statusClass = 'text-red-500';
+        } else if (status === 'trial') {
+            statusLabel = remainingDays > 0 ? `Teste (${remainingDays} dias)` : 'Teste Expirado';
+        }
+
+        // Try to find the generic "Workshop Owner" text and replace it, or update specific elements
+        const ownerText = document.querySelector('aside .p-4.rounded-xl div p:last-child');
+        if (ownerText && !ownerText.classList.contains('workshop-name-display')) {
+            ownerText.textContent = statusLabel;
+            ownerText.className = `text-[10px] font-black uppercase tracking-widest ${statusClass}`;
+        }
+
+        statusElements.forEach(el => {
+            el.textContent = statusLabel;
+            el.className = `account-status-display text-[10px] font-black uppercase tracking-widest ${statusClass}`;
+        });
+
         // Update other elements with the class (except headers that might use it differently)
         const workshopElements = document.querySelectorAll('.workshop-name-display');
         workshopElements.forEach(el => {
@@ -95,7 +135,29 @@ async function updateUserProfile() {
             img.removeAttribute('data-alt');
         });
 
-        // 4. Handle Logout
+        // 4. Handle Trial Banner
+        if (p && (status === 'trial')) {
+            const remaining = remainingDays;
+
+            if (remaining >= 0) {
+                const aside = document.querySelector('aside');
+                if (aside && !document.getElementById('trial-banner')) {
+                    const banner = document.createElement('div');
+                    banner.id = 'trial-banner';
+                    banner.className = 'mx-4 mb-4 p-4 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-800 text-white shadow-lg shadow-blue-900/20';
+                    banner.innerHTML = `
+                        <p class="text-[9px] font-black uppercase tracking-widest opacity-80 mb-1">Período de Teste</p>
+                        <h4 class="text-xs font-black">${remaining > 0 ? `${remaining} dias restantes` : 'Último dia de teste!'}</h4>
+                        <p class="text-[9px] mt-2 leading-tight opacity-70">Aproveite todos os recursos. Após o teste, entre em contato para ativar.</p>
+                    `;
+                    // Insert before the logout button or at the bottom of navigation
+                    const nav = aside.querySelector('nav');
+                    if (nav) nav.after(banner);
+                }
+            }
+        }
+
+        // 5. Handle Logout
         const logoutBtn = document.getElementById('logout-btn');
         if (logoutBtn) {
             logoutBtn.addEventListener('click', async (e) => {

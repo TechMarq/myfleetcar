@@ -108,6 +108,16 @@ const DB = {
                 request = request.lte(col, val);
             }
         }
+        if (query.gt) {
+            for (const [col, val] of Object.entries(query.gt)) {
+                request = request.gt(col, val);
+            }
+        }
+        if (query.lt) {
+            for (const [col, val] of Object.entries(query.lt)) {
+                request = request.lt(col, val);
+            }
+        }
         if (query.in) {
             for (const [col, val] of Object.entries(query.in)) {
                 request = request.in(col, val);
@@ -164,16 +174,32 @@ async function checkAuth() {
     if (!session) {
         if (!isPublicPage) window.location.href = 'login.html';
     } else {
-        // Logged in: Check for suspension
+        // Logged in: Check for suspension or Trial Expiration
         try {
             const workshopId = session.user.user_metadata?.workshop_id || session.user.id;
             const { data: profile } = await DB.select('profiles', { match: { id: workshopId } });
             
-            if (profile && profile.length > 0 && profile[0].status === 'suspended') {
-                if (!path.includes('suspensao.html')) {
-                    window.location.href = 'suspensao.html';
+            if (profile && profile.length > 0) {
+                const p = profile[0];
+                const status = p.status || 'trial'; // Default to trial
+                const createdAt = new Date(p.created_at);
+                const now = new Date();
+                
+                // Calculate Trial
+                const diffTime = Math.abs(now - createdAt);
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                const trialExpired = diffDays > 7;
+
+                // BLOCK LOGIC:
+                // 1. Explicitly suspended
+                // 2. Status is still 'trial' but more than 7 days have passed
+                // 3. 'active' and 'free' are NOT blocked
+                if (status === 'suspended' || (status === 'trial' && trialExpired)) {
+                    if (!path.includes('suspensao.html')) {
+                        window.location.href = 'suspensao.html' + (trialExpired ? '?reason=trial' : '');
+                    }
+                    return;
                 }
-                return;
             }
         } catch (e) {
             console.error('Auth verification error:', e);

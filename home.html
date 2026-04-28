@@ -100,6 +100,18 @@
         .kinetic-gradient {
             background: linear-gradient(135deg, #a04100 0%, #ff6b00 100%);
         }
+
+        @keyframes pulse-red {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.4); }
+            70% { transform: scale(1.03); box-shadow: 0 0 0 10px rgba(220, 38, 38, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
+        }
+
+        .animate-pulse-red {
+            animation: pulse-red 1.5s infinite;
+            border-color: #ef4444 !important;
+            background-color: #fef2f2 !important;
+        }
     </style>
 </head>
 
@@ -198,8 +210,8 @@
             <!-- Metric Cards Grid -->
             <section class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4 md:gap-6">
                 <!-- Card: Receita Mensal -->
-                <div
-                    class="bg-surface-container-lowest p-4 md:p-6 rounded-xl shadow-sm border border-outline-variant/5 hover:border-primary/20 transition-all">
+                <div onclick="window.location.href='gestao-receita-financeiro.html'"
+                    class="bg-surface-container-lowest p-4 md:p-6 rounded-xl shadow-sm border border-outline-variant/5 hover:border-primary/20 transition-all cursor-pointer">
                     <div class="flex justify-between items-start mb-2 md:mb-4">
                         <div class="p-1.5 md:p-2 bg-orange-50 text-orange-600 rounded-lg">
                             <span class="material-symbols-outlined text-[18px] md:text-[24px]">monetization_on</span>
@@ -211,8 +223,8 @@
                     <h3 id="metric-revenue-month" class="text-base md:text-xl font-black text-on-surface">R$ 0,00</h3>
                 </div>
                 <!-- Card: OS Abertas -->
-                <div
-                    class="bg-surface-container-lowest p-4 md:p-6 rounded-xl shadow-sm border border-outline-variant/5 hover:border-primary/20 transition-all">
+                <div onclick="window.location.href='lista-ordem.html'"
+                    class="bg-surface-container-lowest p-4 md:p-6 rounded-xl shadow-sm border border-outline-variant/5 hover:border-primary/20 transition-all cursor-pointer">
                     <div class="flex justify-between items-start mb-2 md:mb-4">
                         <div class="p-1.5 md:p-2 bg-blue-50 text-blue-600 rounded-lg">
                             <span class="material-symbols-outlined text-[18px] md:text-[24px]">pending_actions</span>
@@ -222,8 +234,8 @@
                     <h3 id="metric-os-open" class="text-base md:text-xl font-black text-on-surface">0</h3>
                 </div>
                 <!-- Card: OS Finalizadas -->
-                <div
-                    class="bg-surface-container-lowest p-4 md:p-6 rounded-xl shadow-sm border border-outline-variant/5 hover:border-primary/20 transition-all">
+                <div onclick="window.location.href='lista-ordem.html'"
+                    class="bg-surface-container-lowest p-4 md:p-6 rounded-xl shadow-sm border border-outline-variant/5 hover:border-primary/20 transition-all cursor-pointer">
                     <div class="flex justify-between items-start mb-2 md:mb-4">
                         <div class="p-1.5 md:p-2 bg-emerald-50 text-emerald-600 rounded-lg">
                             <span class="material-symbols-outlined text-[18px] md:text-[24px]">task_alt</span>
@@ -233,8 +245,8 @@
                     <h3 id="metric-os-finished" class="text-base md:text-xl font-black text-on-surface">0</h3>
                 </div>
                 <!-- Card: Veículos em Serviço -->
-                <div
-                    class="bg-surface-container-lowest p-4 md:p-6 rounded-xl shadow-sm border border-outline-variant/5 hover:border-primary/20 transition-all">
+                <div onclick="window.location.href='lista-ordem.html'"
+                    class="bg-surface-container-lowest p-4 md:p-6 rounded-xl shadow-sm border border-outline-variant/5 hover:border-primary/20 transition-all cursor-pointer">
                     <div class="flex justify-between items-start mb-2 md:mb-4">
                         <div class="p-1.5 md:p-2 bg-slate-100 text-slate-700 rounded-lg">
                             <span class="material-symbols-outlined text-[18px] md:text-[24px]">directions_car</span>
@@ -244,8 +256,8 @@
                     <h3 id="metric-active-vehicles" class="text-base md:text-xl font-black text-on-surface">0</h3>
                 </div>
                 <!-- Card: Agendamentos -->
-                <div
-                    class="bg-surface-container-lowest p-4 md:p-6 rounded-xl shadow-sm border border-outline-variant/5 hover:border-primary/20 transition-all">
+                <div onclick="window.location.href='agendamento.html'"
+                    class="bg-surface-container-lowest p-4 md:p-6 rounded-xl shadow-sm border border-outline-variant/5 hover:border-primary/20 transition-all cursor-pointer">
                     <div class="flex justify-between items-start mb-2 md:mb-4">
                         <div class="p-1.5 md:p-2 bg-purple-50 text-purple-600 rounded-lg">
                             <span class="material-symbols-outlined text-[18px] md:text-[24px]">event</span>
@@ -255,8 +267,8 @@
                     <h3 id="metric-appointments-today" class="text-base md:text-xl font-black text-on-surface">0</h3>
                 </div>
                 <!-- Card: Alertas -->
-                <div
-                    class="bg-red-50 p-4 md:p-6 rounded-xl shadow-sm border border-red-100 hover:border-red-300 transition-all">
+                <div id="card-delayed" onclick="window.location.href='lista-ordem.html'"
+                    class="bg-red-50 p-4 md:p-6 rounded-xl shadow-sm border border-red-100 hover:border-red-300 transition-all cursor-pointer">
                     <div class="flex justify-between items-start mb-2 md:mb-4">
                         <div class="p-1.5 md:p-2 bg-white text-red-600 rounded-lg">
                             <span class="material-symbols-outlined text-[18px] md:text-[24px]">warning</span>
@@ -424,6 +436,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase-config.js"></script>
     <script src="navigation.js"></script>
+    <script src="notifications.js"></script>
     <script src="dashboard.js"></script>
 </body>
 

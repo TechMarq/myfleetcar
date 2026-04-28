@@ -69,9 +69,13 @@
                     <p id="page-subtitle" class="text-slate-500 font-medium">Controle total sobre as subscrições e status das oficinas.</p>
                 </div>
                 <div class="flex items-center gap-4">
+                    <button onclick="MasterAdmin.openNewUserModal()" class="bg-orange-600 text-white px-6 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl shadow-orange-600/20 hover:bg-orange-700 transition-all flex items-center gap-2">
+                        <span class="material-symbols-outlined text-sm">person_add</span>
+                        Novo Usuário
+                    </button>
                     <div class="bg-slate-900 border border-slate-800 rounded-2xl px-6 py-4 text-center">
                         <p class="text-[10px] text-slate-500 font-black uppercase tracking-widest mb-1">Total Oficinas</p>
-                        <h2 id="total-workshops" class="text-2xl font-black">0</h2>
+                        <h2 id="total-workshops" class="text-2xl font-black text-white">0</h2>
                     </div>
                 </div>
             </header>
@@ -134,10 +138,30 @@
 
             <!-- Section: Monthly Billing (Cobranças) -->
             <div id="tab-billing" class="tab-content hidden">
-                <div class="flex justify-between items-center mb-8">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8">
                     <div>
                         <h2 class="text-xl font-black uppercase tracking-widest text-orange-500">Status de Pagamento</h2>
-                        <p id="current-billing-month" class="text-slate-500 font-bold uppercase text-[10px] tracking-widest mt-1">Ref: --/----</p>
+                        <div class="flex items-center gap-3 mt-1">
+                            <button onclick="MasterAdmin.changeBillingMonth(-1)" class="w-8 h-8 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center hover:bg-orange-600 transition-all">
+                                <span class="material-symbols-outlined text-sm">chevron_left</span>
+                            </button>
+                            <p id="current-billing-month" class="text-slate-100 font-black uppercase text-xs tracking-widest">--/----</p>
+                            <button onclick="MasterAdmin.changeBillingMonth(1)" class="w-8 h-8 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center hover:bg-orange-600 transition-all">
+                                <span class="material-symbols-outlined text-sm">chevron_right</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-wrap items-center gap-4">
+                        <div class="flex items-center gap-2 bg-slate-900 border border-slate-800 p-2 rounded-xl">
+                            <input type="date" id="billing-start-date" class="bg-transparent border-none text-[10px] text-slate-400 focus:ring-0 outline-none uppercase font-black">
+                            <span class="text-slate-700 text-[10px] font-black uppercase">Até</span>
+                            <input type="date" id="billing-end-date" class="bg-transparent border-none text-[10px] text-slate-400 focus:ring-0 outline-none uppercase font-black">
+                            <button onclick="MasterAdmin.applyDateFilter()" class="bg-orange-600 text-white p-2 rounded-lg hover:bg-orange-700 transition-all">
+                                <span class="material-symbols-outlined text-xs">filter_alt</span>
+                            </button>
+                        </div>
+                        <button onclick="MasterAdmin.clearFilters()" class="text-slate-500 hover:text-white text-[10px] font-black uppercase tracking-widest underline decoration-2 underline-offset-4">Limpar</button>
                     </div>
                 </div>
 
@@ -164,31 +188,82 @@
                     <div class="flex justify-between items-start mb-6">
                         <div>
                             <h2 id="modal-title" class="text-2xl font-black text-white">Workshop Name</h2>
-                            <p id="modal-subtitle" class="text-slate-500 text-[10px] font-black uppercase tracking-widest mt-1">Configurações Financeiras</p>
+                            <p id="modal-subtitle" class="text-slate-500 text-[10px] font-black uppercase tracking-widest mt-1">Configurações Financeiras & Acesso</p>
                         </div>
                         <button onclick="MasterAdmin.closeModal()" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-slate-800 transition-colors">
                             <span class="material-symbols-outlined">close</span>
                         </button>
                     </div>
 
+                    <!-- Workshop Details Summary -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                        <div class="bg-slate-950/30 p-4 rounded-2xl border border-slate-800/50 text-center">
+                            <p class="text-[9px] text-slate-500 font-black uppercase tracking-widest mb-1">Criação</p>
+                            <p id="modal-created-at" class="text-sm font-bold text-white">-</p>
+                        </div>
+                        <div class="bg-slate-950/30 p-4 rounded-2xl border border-slate-800/50 text-center">
+                            <p class="text-[9px] text-slate-500 font-black uppercase tracking-widest mb-1">Clientes</p>
+                            <p id="modal-stat-customers" class="text-sm font-bold text-orange-500">0</p>
+                        </div>
+                        <div class="bg-slate-950/30 p-4 rounded-2xl border border-slate-800/50 text-center">
+                            <p class="text-[9px] text-slate-500 font-black uppercase tracking-widest mb-1">Veículos</p>
+                            <p id="modal-stat-vehicles" class="text-sm font-bold text-blue-500">0</p>
+                        </div>
+                        <div class="bg-slate-950/30 p-4 rounded-2xl border border-slate-800/50 text-center">
+                            <p class="text-[9px] text-slate-500 font-black uppercase tracking-widest mb-1">Ordens (OS)</p>
+                            <p id="modal-stat-orders" class="text-sm font-bold text-emerald-500">0</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 border-b border-slate-800 pb-8">
+                        <div>
+                            <p class="text-[9px] text-slate-500 font-black uppercase tracking-widest mb-1">Proprietário</p>
+                            <p id="modal-owner-name" class="text-sm font-medium text-slate-200">-</p>
+                        </div>
+                        <div>
+                            <p class="text-[9px] text-slate-500 font-black uppercase tracking-widest mb-1">Email</p>
+                            <p id="modal-email" class="text-sm font-medium text-slate-200">-</p>
+                        </div>
+                        <div>
+                            <p class="text-[9px] text-slate-500 font-black uppercase tracking-widest mb-1">Telefone</p>
+                            <p id="modal-phone" class="text-sm font-medium text-slate-200">-</p>
+                        </div>
+                    </div>
+
                     <form id="payment-form" class="space-y-8">
                         <input type="hidden" id="modal-workshop-id">
                         
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label class="text-[10px] font-black text-slate-500 uppercase tracking-widest block">Status da Conta</label>
+                                <select id="modal-status" class="w-full bg-slate-950/50 border border-slate-800 rounded-xl px-4 py-3 text-white font-bold outline-none focus:border-orange-500 appearance-none">
+                                    <option value="trial">PERÍODO DE TESTE (7 DIAS)</option>
+                                    <option value="free">PLANO GRATUITO (SEM COBRANÇA)</option>
+                                    <option value="active">ATIVO / LIBERADO</option>
+                                    <option value="suspended">SUSPENSO / BLOQUEADO</option>
+                                </select>
+                            </div>
                             <div class="space-y-2">
                                 <label class="text-[10px] font-black text-slate-500 uppercase tracking-widest block">Valor Mensal (R$)</label>
                                 <input id="modal-plan-value" type="number" step="0.01" class="w-full bg-slate-950/50 border border-slate-800 rounded-xl px-4 py-3 text-white font-bold outline-none focus:border-orange-500">
                             </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="space-y-2">
-                                <label class="text-[10px] font-black text-slate-500 uppercase tracking-widest block">Dia Vencimento</label>
+                                <label class="text-[10px] font-black text-slate-500 uppercase tracking-widest block">Dia Vencimento Mensal</label>
                                 <select id="modal-due-day" class="w-full bg-slate-950/50 border border-slate-800 rounded-xl px-4 py-3 text-white font-bold outline-none focus:border-orange-500 appearance-none">
-                                    <option value="1">Dia 1</option><option value="5">Dia 5</option><option value="10">Dia 10</option>
-                                    <option value="15">Dia 15</option><option value="20">Dia 20</option><option value="25">Dia 25</option>
-                                    <option value="30">Dia 30</option>
+                                    <option value="1">Todo dia 01</option>
+                                    <option value="5">Todo dia 05</option>
+                                    <option value="10">Todo dia 10</option>
+                                    <option value="15">Todo dia 15</option>
+                                    <option value="20">Todo dia 20</option>
+                                    <option value="25">Todo dia 25</option>
+                                    <option value="30">Todo dia 30</option>
                                 </select>
                             </div>
                             <div class="space-y-2">
-                                <label class="text-[10px] font-black text-slate-500 uppercase tracking-widest block">Próxima Cobrança</label>
+                                <label class="text-[10px] font-black text-slate-500 uppercase tracking-widest block">Próxima Cobrança (Data)</label>
                                 <input id="modal-next-due" type="date" class="w-full bg-slate-950/50 border border-slate-800 rounded-xl px-4 py-3 text-white outline-none focus:border-orange-500">
                             </div>
                         </div>
@@ -218,6 +293,32 @@
                             <div id="modal-history" class="space-y-2 max-h-40 overflow-y-auto pr-2 no-scrollbar">
                             </div>
                         </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Modal: Novo Usuário (Manual) -->
+            <div id="new-user-modal" class="fixed inset-0 bg-slate-950/90 backdrop-blur-sm z-50 flex items-center justify-center p-6 hidden">
+                <div class="bg-slate-900 border border-slate-800 w-full max-w-lg rounded-3xl p-8 shadow-2xl">
+                    <div class="flex justify-between items-start mb-6">
+                        <h2 class="text-2xl font-black text-white uppercase tracking-tighter italic">Novo Registro</h2>
+                        <button onclick="MasterAdmin.closeNewUserModal()" class="text-slate-500 hover:text-white">
+                            <span class="material-symbols-outlined">close</span>
+                        </button>
+                    </div>
+                    <form id="new-user-form" class="space-y-4">
+                        <div>
+                            <label class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2 block">Nome da Oficina</label>
+                            <input id="new-workshop-name" type="text" required class="w-full bg-slate-950/50 border border-slate-800 rounded-xl px-4 py-3 text-white">
+                        </div>
+                        <div>
+                            <label class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2 block">Email do Responsável</label>
+                            <input id="new-workshop-email" type="email" required class="w-full bg-slate-950/50 border border-slate-800 rounded-xl px-4 py-3 text-white">
+                        </div>
+                        <div class="bg-blue-500/10 p-4 rounded-xl border border-blue-500/20 text-[10px] text-blue-400 font-bold uppercase leading-relaxed">
+                            <p>O usuário será criado inicialmente no status <strong>EM TESTE</strong>. Ao se cadastrar com este email, ele será automaticamente vinculado a este perfil.</p>
+                        </div>
+                        <button type="submit" class="w-full bg-orange-600 text-white font-black py-4 rounded-2xl text-xs uppercase tracking-widest shadow-xl shadow-orange-600/20 mt-4">Criar Perfil de Oficina</button>
                     </form>
                 </div>
             </div>

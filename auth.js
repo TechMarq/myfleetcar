@@ -42,7 +42,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         workshop_name: workshopName,
                         owner_name: ownerName,
                         phone: phone,
-                        email: email // We'll add this to the profiles table
+                        email: email,
+                        status: 'trial' // Define explicitamente o plano de teste ao criar a conta
                     }, { id: data.user.id });
                 }
 

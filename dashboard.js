@@ -69,7 +69,17 @@ const Dashboard = {
             if (metricFinished) metricFinished.textContent = doneOS.length;
             if (metricVehicles) metricVehicles.textContent = activeVehicles.size;
             if (metricAppointments) metricAppointments.textContent = validAppts.length;
-            if (metricDelayed) metricDelayed.textContent = delayedOS.length;
+            if (metricDelayed) {
+                metricDelayed.textContent = delayedOS.length;
+                const cardDelayed = document.getElementById('card-delayed');
+                if (cardDelayed) {
+                    if (delayedOS.length > 0) {
+                        cardDelayed.classList.add('animate-pulse-red');
+                    } else {
+                        cardDelayed.classList.remove('animate-pulse-red');
+                    }
+                }
+            }
         } catch (err) {
             console.error('Error loading metrics:', err);
         }

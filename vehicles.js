@@ -25,10 +25,19 @@ async function initClientProfile() {
 
     loadClientDetails(clientId);
     loadClientVehicles(clientId);
+    loadClientHistory(clientId);
 
     const vehicleForm = document.getElementById('vehicle-form');
     if (vehicleForm) {
         vehicleForm.addEventListener('submit', (e) => handleVehicleSubmit(e, clientId));
+    }
+
+    // Setup Create OS button
+    const btnCreateOS = document.getElementById('btn-create-os');
+    if (btnCreateOS) {
+        btnCreateOS.addEventListener('click', () => {
+            window.location.href = `nova-ordem.html?customer_id=${clientId}`;
+        });
     }
 }
 
@@ -319,3 +328,97 @@ window.removeTempVehicle = (id) => {
     tempVehicles = tempVehicles.filter(v => v.id !== id);
     window.renderVehicles();
 };
+
+/**
+ * Loads the client's service order history and updates performance indicators
+ */
+async function loadClientHistory(clientId) {
+    const tableBody = document.getElementById('client-orders-history');
+    if (!tableBody) return;
+
+    try {
+        const { data: orders, error } = await MyFleetCar.DB.select('service_orders', {
+            match: { customer_id: clientId },
+            select: '*, vehicles(brand, model, license_plate)',
+            order: { column: 'created_at', ascending: false }
+        });
+
+        if (error) throw error;
+
+        if (!orders || orders.length === 0) {
+            tableBody.innerHTML = '<tr><td colspan="6" class="px-6 py-20 text-center text-slate-400 text-xs italic">Nenhuma ordem de serviço encontrada.</td></tr>';
+            updateIndicators(0, 0, 0);
+            return;
+        }
+
+        // Calculate Indicators
+        // We consider "Spent" only for Completed orders.
+        // We consider "Visits" for all orders except Cancelled.
+        const completedOrders = orders.filter(o => ['Concluído', 'Finalizada', 'Completed'].includes(o.status));
+        const activeOrders = orders.filter(o => !['Cancelado', 'Cancelled', 'Excluída'].includes(o.status));
+
+        const totalSpent = completedOrders.reduce((acc, o) => acc + (parseFloat(o.total_amount) || 0), 0);
+        const totalVisits = activeOrders.length;
+        const avgTicket = totalVisits > 0 ? totalSpent / totalVisits : 0;
+
+        updateIndicators(totalSpent, totalVisits, avgTicket);
+
+        // Render Table
+        tableBody.innerHTML = orders.map(o => {
+            const date = new Date(o.created_at).toLocaleDateString('pt-BR');
+            const vehicle = o.vehicles ? `${o.vehicles.brand} ${o.vehicles.model} (${o.vehicles.license_plate})` : 'N/A';
+            const statusColor = o.status === 'Concluído' ? 'text-green-600 bg-green-50' : 
+                               o.status === 'Em Andamento' ? 'text-blue-600 bg-blue-50' : 
+                               o.status === 'Cancelado' ? 'text-red-600 bg-red-50' : 'text-slate-600 bg-slate-100';
+
+            return `
+                <tr class="hover:bg-slate-50 transition-colors cursor-pointer" onclick="window.location.href='detalhes-ordem.html?id=${o.id}'">
+                    <td class="px-6 py-4 text-xs font-medium text-slate-500">${date}</td>
+                    <td class="px-6 py-4">
+                        <div class="text-[10px] font-bold text-on-surface uppercase">${vehicle}</div>
+                    </td>
+                    <td class="px-6 py-4">
+                        <div class="text-xs text-slate-600 line-clamp-1">${o.description || 'Manutenção'}</div>
+                    </td>
+                    <td class="px-6 py-4">
+                        <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-widest ${statusColor}">${o.status}</span>
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                        <div class="text-sm font-black text-on-surface">R$ ${(o.total_amount || 0).toLocaleString('pt-BR', {minimumFractionDigits: 2})}</div>
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                        <span class="material-symbols-outlined text-slate-300">chevron_right</span>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+
+        // Update pagination info if applicable
+        const pagInfo = document.getElementById('pagination-info');
+        if (pagInfo) pagInfo.textContent = `Mostrando ${orders.length} de ${orders.length} registros`;
+
+    } catch (err) {
+        console.error('Error loading client history:', err);
+    }
+}
+
+function updateIndicators(total, visits, avg) {
+    const spentHeader = document.getElementById('client-total-spent');
+    const spentCard = document.getElementById('card-total-spent');
+    const visitsCard = document.getElementById('card-visits');
+    const avgCard = document.getElementById('card-avg-ticket');
+
+    const barSpent = document.getElementById('bar-total-spent');
+    const barVisits = document.getElementById('bar-visits');
+    const barAvg = document.getElementById('bar-avg-ticket');
+
+    if (spentHeader) spentHeader.textContent = 'R$ ' + total.toLocaleString('pt-BR', {minimumFractionDigits: 2});
+    if (spentCard) spentCard.textContent = 'R$ ' + total.toLocaleString('pt-BR', {minimumFractionDigits: 0});
+    if (visitsCard) visitsCard.innerHTML = `${visits} <span class="text-sm font-medium text-slate-400">Ordens</span>`;
+    if (avgCard) avgCard.textContent = 'R$ ' + avg.toLocaleString('pt-BR', {minimumFractionDigits: 0});
+
+    // Update Progress Bars (Relative scales)
+    if (barSpent) barSpent.style.width = total > 0 ? '80%' : '0%';
+    if (barVisits) barVisits.style.width = visits > 0 ? '60%' : '0%';
+    if (barAvg) barAvg.style.width = avg > 0 ? '70%' : '0%';
+}

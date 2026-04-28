@@ -191,7 +191,8 @@ function renderServiceOrdersTable(orders) {
                     <span class="text-xs font-medium text-slate-500">${new Date(order.entry_date || order.created_at).toLocaleDateString('pt-BR')}</span>
                 </td>
                 <td class="px-4 py-4 md:py-6 whitespace-nowrap">
-                    <span class="inline-flex items-center px-2 py-0.5 md:px-3 md:py-1 rounded-lg text-[9px] md:text-[10px] ${statusColors[order.status] || 'bg-slate-100 text-slate-600'} uppercase font-black tracking-widest">
+                    <span onclick='quickStatusUpdate(${JSON.stringify(order).replace(/"/g, "&quot;")})' 
+                        class="inline-flex items-center px-2 py-0.5 md:px-3 md:py-1 rounded-lg text-[9px] md:text-[10px] ${statusColors[order.status] || 'bg-slate-100 text-slate-600'} uppercase font-black tracking-widest cursor-pointer hover:brightness-110 transition-all">
                         ${order.status}
                     </span>
                     <div class="sm:hidden mt-1 text-[10px] font-black text-slate-900">R$ ${order.total_amount ? order.total_amount.toLocaleString('pt-BR', { minimumFractionDigits: 2 }) : '0,00'}</div>
@@ -222,6 +223,30 @@ function renderServiceOrdersTable(orders) {
 }
 
 /**
+ * Handles quick status transitions from the list view
+ */
+window.quickStatusUpdate = function(order) {
+    window.currentOrder = order;
+    const status = order.status;
+
+    if (status === 'Aberto') {
+        openModal('modal-approve');
+    } else if (status === 'Aprovado') {
+        if (confirm('Deseja iniciar o serviço desta OS?')) {
+            updateOrderStatus(order.id, 'Em Andamento');
+        }
+    } else if (status === 'Em Andamento') {
+        openModal('modal-complete');
+    } else if (status === 'Concluído') {
+        if (confirm('Deseja reabrir esta ordem de serviço?')) {
+            updateOrderStatus(order.id, 'Em Andamento');
+        }
+    } else {
+        alert('Esta OS está com status: ' + status);
+    }
+};
+
+/**
  * Initializes the New Order form by handling search and vehicle linkage
  */
 async function initNewOrderForm() {
@@ -229,6 +254,20 @@ async function initNewOrderForm() {
     const dateInput = document.getElementById('order-date');
     if (dateInput) {
         dateInput.value = new Date().toISOString().split('T')[0];
+    }
+
+    // Check for customer_id in URL to pre-select
+    const urlParams = new URLSearchParams(window.location.search);
+    const preSelectedCustomerId = urlParams.get('customer_id');
+    if (preSelectedCustomerId) {
+        setTimeout(async () => {
+            try {
+                const { data: customers } = await MyFleetCar.DB.select('customers', { match: { id: preSelectedCustomerId } });
+                if (customers && customers.length > 0) {
+                    window.selectCustomer(customers[0].id, customers[0].full_name);
+                }
+            } catch (err) { console.error('Error pre-selecting customer:', err); }
+        }, 100);
     }
 
     const searchInput = document.getElementById('customer-search');
@@ -438,7 +477,7 @@ async function handleNewOrder(e) {
         total_amount: Math.max(0, subtotalLabor - discount),
         labor_services: laborServices,
         entry_date: document.getElementById('order-date').value,
-        mileage: document.getElementById('order-km').value
+        mileage: parseInt(document.getElementById('order-km').value) || null
     };
 
     const btn = form.querySelector('button[type="submit"]');
@@ -695,10 +734,13 @@ async function updateOrderStatus(id, newStatus, extraData = {}) {
     try {
         const oldStatus = window.currentOrder.status;
 
-        const { error } = await MyFleetCar.DB.update('service_orders', {
-            status: newStatus,
-            ...extraData
-        }, { id });
+        // Separate OS data from Financial data to avoid "column not found" errors
+        const osUpdateData = { status: newStatus };
+        if (extraData.exit_date) osUpdateData.exit_date = extraData.exit_date;
+        if (extraData.mechanic_name) osUpdateData.mechanic_name = extraData.mechanic_name;
+        if (extraData.deadline_at) osUpdateData.deadline_at = extraData.deadline_at;
+
+        const { error } = await MyFleetCar.DB.update('service_orders', osUpdateData, { id });
 
         if (error) throw error;
 
@@ -747,6 +789,14 @@ async function updateOrderStatus(id, newStatus, extraData = {}) {
                 console.error('Transaction Error:', transRes.error);
                 alert('OS Concluída, mas houve um erro ao registrar financeiro: ' + transRes.error.message);
             }
+        } 
+        // If reopening (moving away from Concluído/Finalizada), remove the financial transaction
+        else if ((oldStatus === 'Concluído' || oldStatus === 'Finalizada') && newStatus !== 'Concluído' && newStatus !== 'Finalizada') {
+            const { data: { user } } = await MyFleetCar.Auth.getUser();
+            await MyFleetCar.DB.delete('financial_transactions', { 
+                workshop_id: user.id, 
+                service_order_id: id 
+            });
         }
 
         window.location.reload();
@@ -808,6 +858,7 @@ window.confirmApproval = async () => {
 window.confirmCompletion = async () => {
     const method = document.getElementById('complete-payment-method').value;
     const dueDate = document.getElementById('complete-due-date').value;
+    const paymentStatus = document.getElementById('complete-payment-status').value;
 
     if (!dueDate) {
         alert('Por favor, informe a data de vencimento ou pagamento.');
@@ -816,6 +867,7 @@ window.confirmCompletion = async () => {
 
     await updateOrderStatus(window.currentOrder.id, 'Concluído', {
         payment_method: method,
+        payment_status: paymentStatus,
         payment_due_date: dueDate,
         exit_date: new Date().toISOString()
     });

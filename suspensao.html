@@ -19,10 +19,18 @@
             </div>
         </div>
 
-        <h1 class="text-3xl font-black tracking-tight mb-4 text-slate-950">Acesso Suspenso</h1>
-        <p class="text-slate-600 mb-10 leading-relaxed">
+        <h1 id="block-title" class="text-3xl font-black tracking-tight mb-4 text-slate-950">Acesso Suspenso</h1>
+        <p id="block-desc" class="text-slate-600 mb-10 leading-relaxed">
             Identificamos uma pendência na sua subscrição ou o seu período de teste expirou. Para continuar utilizando o <strong>MyFleetCar</strong> e gerenciar sua oficina, entre em contato com nosso suporte.
         </p>
+
+        <script>
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('reason') === 'trial') {
+                document.getElementById('block-title').textContent = 'Período de Teste Encerrado';
+                document.getElementById('block-desc').innerHTML = 'Seus <strong>7 dias de teste grátis</strong> chegaram ao fim. Esperamos que tenha aproveitado a experiência! Para ativar seu acesso definitivo e continuar usando o sistema, entre em contato com nosso suporte abaixo.';
+            }
+        </script>
 
         <div class="space-y-4">
             <a href="https://wa.me/5524992716045?text=Olá, meu acesso ao MyFleetCar foi suspenso. Gostaria de regularizar." 

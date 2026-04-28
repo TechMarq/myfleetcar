@@ -307,12 +307,109 @@
             <span class="text-[10px] font-bold">Perfil</span>
         </button>
     </nav>
+    <!-- Modals for Quick Status Update -->
+    <!-- Modal: Aprovar e Vincular Mecânico -->
+    <div id="modal-approve" class="fixed inset-0 z-[100] hidden">
+        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"></div>
+        <div class="absolute inset-0 flex items-center justify-center p-4">
+            <div class="bg-white rounded-3xl w-full max-w-md shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
+                <div class="p-8">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-12 h-12 rounded-2xl bg-orange-50 text-orange-600 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-2xl">person_add</span>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-slate-900">Aprovar e Vincular</h3>
+                            <p class="text-sm text-slate-500">Designe um mecânico e defina um prazo.</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Mecânico Responsável</label>
+                            <select id="approve-mechanic" class="w-full bg-slate-50 border-none rounded-xl text-sm p-4 focus:ring-2 focus:ring-orange-500/20">
+                                <option value="">Selecione o mecânico...</option>
+                                <option value="Mecânico Geral">Mecânico Geral</option>
+                                <option value="Especialista em Suspensão">Especialista em Suspensão</option>
+                                <option value="Eletricista">Eletricista</option>
+                            </select>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Data de Entrega</label>
+                                <input type="date" id="approve-date" class="w-full bg-slate-50 border-none rounded-xl text-sm p-4 focus:ring-2 focus:ring-orange-500/20">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Horário</label>
+                                <input type="time" id="approve-time" class="w-full bg-slate-50 border-none rounded-xl text-sm p-4 focus:ring-2 focus:ring-orange-500/20">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-3 mt-8">
+                        <button onclick="closeModal('modal-approve')" class="flex-1 px-6 py-4 rounded-2xl text-sm font-bold text-slate-500 hover:bg-slate-50 transition-colors">Cancelar</button>
+                        <button onclick="confirmApproval()" class="flex-1 px-6 py-4 bg-orange-600 rounded-2xl text-sm font-bold text-white shadow-lg shadow-orange-600/20 hover:bg-orange-700 transition-colors">Confirmar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Concluir e Financeiro -->
+    <div id="modal-complete" class="fixed inset-0 z-[100] hidden">
+        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"></div>
+        <div class="absolute inset-0 flex items-center justify-center p-4">
+            <div class="bg-white rounded-3xl w-full max-w-md shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
+                <div class="p-8">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-12 h-12 rounded-2xl bg-green-50 text-green-600 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-2xl">check_circle</span>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-slate-900">Concluir Serviço</h3>
+                            <p class="text-sm text-slate-500">Informe os dados para fechamento financeiro.</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Forma de Pagamento</label>
+                            <select id="complete-payment-method" class="w-full bg-slate-50 border-none rounded-xl text-sm p-4 focus:ring-2 focus:ring-green-500/20">
+                                <option value="Pix">Pix</option>
+                                <option value="Cartão de Crédito">Cartão de Crédito</option>
+                                <option value="Faturado">Faturado (Mensal)</option>
+                                <option value="Dinheiro">Dinheiro</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Data de Vencimento</label>
+                            <input type="date" id="complete-due-date" class="w-full bg-slate-50 border-none rounded-xl text-sm p-4 focus:ring-2 focus:ring-green-500/20">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Status do Pagamento</label>
+                            <select id="complete-payment-status" class="w-full bg-slate-50 border-none rounded-xl text-sm p-4 focus:ring-2 focus:ring-green-500/20">
+                                <option value="Pago">Confirmar como já Pago</option>
+                                <option value="Pendente">Marcar como Pendente</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-3 mt-8">
+                        <button onclick="closeModal('modal-complete')" class="flex-1 px-6 py-4 rounded-2xl text-sm font-bold text-slate-500 hover:bg-slate-50 transition-colors">Cancelar</button>
+                        <button onclick="confirmCompletion()" class="flex-1 px-6 py-4 bg-green-600 rounded-2xl text-sm font-bold text-white shadow-lg shadow-green-600/20 hover:bg-green-700 transition-colors">Concluir e Salvar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Supabase & Navigation Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="supabase-config.js"></script>
     <script src="navigation.js"></script>
     <script src="service_orders.js"></script>
+    <script src="notifications.js"></script>
 </body>
 
 </html>
