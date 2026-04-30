@@ -1,339 +1,351 @@
 <!DOCTYPE html>
-
 <html lang="pt-BR">
-
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-        rel="stylesheet" />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
     <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
             theme: {
                 extend: {
-                    "colors": {
-                        "surface-bright": "#faf8ff",
-                        "inverse-primary": "#ffb693",
-                        "on-tertiary": "#ffffff",
-                        "on-surface": "#131b2e",
-                        "on-error-container": "#93000a",
-                        "tertiary": "#0062a1",
-                        "on-primary": "#ffffff",
-                        "surface-container-low": "#f2f3ff",
-                        "secondary-fixed": "#d5e3fc",
-                        "primary-fixed": "#ffdbcc",
-                        "on-secondary-fixed-variant": "#3a485b",
-                        "on-primary-fixed-variant": "#7a3000",
-                        "on-primary-fixed": "#351000",
-                        "outline-variant": "#e2bfb0",
-                        "surface-container-lowest": "#ffffff",
-                        "primary": "#a04100",
-                        "on-secondary": "#ffffff",
-                        "inverse-on-surface": "#eef0ff",
-                        "tertiary-fixed": "#d0e4ff",
-                        "error-container": "#ffdad6",
-                        "error": "#ba1a1a",
-                        "on-secondary-container": "#57657a",
-                        "inverse-surface": "#283044",
-                        "on-tertiary-fixed-variant": "#00497b",
-                        "surface-tint": "#a04100",
-                        "on-tertiary-fixed": "#001d35",
-                        "on-background": "#131b2e",
-                        "surface": "#faf8ff",
-                        "background": "#faf8ff",
-                        "on-tertiary-container": "#003357",
-                        "outline": "#8e7164",
-                        "on-error": "#ffffff",
-                        "secondary-fixed-dim": "#b9c7df",
-                        "tertiary-fixed-dim": "#9ccaff",
+                    colors: {
+                        primary: "#a04100",
                         "primary-container": "#ff6b00",
-                        "on-surface-variant": "#5a4136",
-                        "surface-dim": "#d2d9f4",
-                        "secondary": "#515f74",
-                        "on-secondary-fixed": "#0d1c2e",
-                        "surface-container-high": "#e2e7ff",
-                        "surface-container-highest": "#dae2fd",
-                        "tertiary-container": "#059eff",
-                        "surface-container": "#eaedff",
-                        "surface-variant": "#dae2fd",
-                        "on-primary-container": "#572000",
-                        "primary-fixed-dim": "#ffb693",
-                        "secondary-container": "#d5e3fc"
-                    },
-                    "borderRadius": {
-                        "DEFAULT": "0.125rem",
-                        "lg": "0.25rem",
-                        "xl": "0.5rem",
-                        "full": "0.75rem"
-                    },
-                    "fontFamily": {
-                        "headline": ["Inter"],
-                        "body": ["Inter"],
-                        "label": ["Inter"]
+                        "on-surface": "#131b2e",
+                        "surface-container-low": "#f2f3ff",
+                        "surface-container-lowest": "#ffffff"
                     }
-                },
-            },
+                }
+            }
         }
     </script>
     <style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-        }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .glass-effect { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); }
     </style>
 </head>
+<body class="bg-[#faf8ff] text-on-surface">
+    <div id="modal-overlay" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[60] hidden transition-all duration-300"></div>
 
-<body class="bg-surface text-on-surface">
-    <!-- Top Navigation Bar -->
-    <header
-        class="fixed top-0 right-0 w-full lg:w-[calc(100%-16rem)] z-40 z-40 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl border-b border-orange-100/15 dark:border-slate-800/50 shadow-sm">
-        <div class="flex justify-between items-center px-8 h-16 w-full">
-            <div class="flex items-center text-primary">
-                <h2 class="text-lg font-bold text-slate-900 dark:text-slate-50 mr-8 workshop-name-display">Estoque</h2>
-            </div>
-            <div class="flex items-center gap-4">
-                <div class="relative w-64 md:block hidden">
-                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">search</span>
-                    <input class="w-full pl-10 pr-4 py-2 bg-slate-100 dark:bg-slate-800 border-none rounded-full text-xs" placeholder="Buscar histórico..." type="text">
-                </div>
-                <button class="text-slate-500 hover:text-orange-500 transition-all active:scale-95 duration-200">
-                    <span class="material-symbols-outlined">notifications</span>
-                </button>
-            </div>
-        </div>
-
-        <!-- Inventory Module Sub-navigation -->
-        <nav class="flex px-8 border-t border-orange-100/5">
-            <a href="lista-estoque.html"
-                class="px-4 py-3 text-xs font-medium text-slate-500 hover:text-primary transition-colors">Lista de Itens</a>
-            <a href="movimentacao-estoque.html"
-                class="px-4 py-3 text-xs font-bold border-b-2 border-primary text-primary">Histórico de Movimentação</a>
-            <a href="categorias-estoque.html"
-                class="px-4 py-3 text-xs font-medium text-slate-500 hover:text-primary transition-colors">Categorias</a>
-        </nav>
-    </header>
-    <!-- Side Navigation Drawer -->
-    <aside
-        class="h-screen w-64 fixed left-0 top-0 -translate-x-full lg:translate-x-0 transition-transform duration-300 z-[100] sidebar-mobile bg-slate-50 dark:bg-slate-900 flex flex-col py-6 space-y-2 z-50 overflow-y-auto border-r border-orange-100/15">
+        <aside class="h-screen w-64 fixed left-0 top-0 -translate-x-full lg:translate-x-0 transition-transform duration-300 z-[100] sidebar-mobile bg-slate-50 dark:bg-slate-900 flex flex-col py-6 space-y-2 z-50 overflow-y-auto border-r border-orange-100/15">
         <div class="px-6 mb-8">
-            <h1 class="text-xl font-bold text-orange-600 workshop-name-display">MyFleetCar</h1>
+            <img src="img/mainlogohorizontalfull-myfleetcar.png" alt="MyFleetCar Logo" class="h-10 w-auto mb-2">
             <p class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Mechanical Excellence</p>
         </div>
-
         <nav class="flex-1 px-4 space-y-1">
-            <a class="flex items-center space-x-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:text-orange-50 transition-all active:scale-95 duration-200 transition-all"
-                href="home.html">
+            <a class="flex items-center space-x-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:text-orange-500 transition-all active:scale-95" href="home.html">
                 <span class="material-symbols-outlined">home</span>
                 <span class="text-sm">Home</span>
             </a>
-            <a class="flex items-center space-x-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:text-orange-50 transition-all active:scale-95 duration-200 transition-all"
-                href="lista-clientes.html">
+            <a class="flex items-center space-x-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:text-orange-500 transition-all active:scale-95" href="lista-clientes.html">
                 <span class="material-symbols-outlined">group</span>
                 <span class="text-sm">Clientes</span>
             </a>
-            <a class="flex items-center space-x-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:text-orange-50 transition-all active:scale-95 duration-200 transition-all"
-                href="lista-ordem.html">
+            <a class="flex items-center space-x-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:text-orange-500 transition-all active:scale-95" href="lista-ordem.html">
                 <span class="material-symbols-outlined">description</span>
-                <span class="text-sm">Ordens de Serviço</span>
+                <span class="text-sm">Ordens de ServiÃ§o</span>
             </a>
-
-            <a class="flex items-center space-x-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:text-orange-50 transition-all active:scale-95 duration-200 transition-all"
-                href="agendamento.html">
+            <a class="flex items-center space-x-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:text-orange-500 transition-all active:scale-95" href="agendamento.html">
                 <span class="material-symbols-outlined">calendar_today</span>
                 <span class="text-sm">Agendamento</span>
             </a>
-            <a class="flex items-center space-x-3 px-4 py-3 rounded-xl text-orange-600 dark:text-orange-400 border-r-4 border-orange-600 dark:border-orange-500 bg-orange-50/50 dark:bg-orange-950/10 font-bold active:scale-95 duration-200 transition-all"
-                href="lista-estoque.html">
+            <a class="flex items-center space-x-3 px-4 py-3 rounded-xl text-orange-600 dark:text-orange-400 border-r-4 border-orange-600 dark:border-orange-500 bg-orange-50/50 dark:bg-orange-950/10 font-bold active:scale-95 transition-all" href="lista-estoque.html">
                 <span class="material-symbols-outlined">inventory_2</span>
                 <span class="text-sm font-bold">Estoque</span>
             </a>
-            <a class="flex items-center space-x-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:text-orange-50 transition-all active:scale-95 duration-200 transition-all"
-                href="painel-financeiro.html">
+            <a class="flex items-center space-x-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:text-orange-500 transition-all active:scale-95" href="painel-financeiro.html">
                 <span class="material-symbols-outlined">payments</span>
                 <span class="text-sm font-medium">Financeiro</span>
             </a>
-            <a class="flex items-center space-x-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:text-orange-50 transition-all active:scale-95 duration-200 transition-all"
-                href="painel-configuracao.html">
+            <a class="flex items-center space-x-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:text-orange-500 transition-all active:scale-95" href="painel-configuracao.html">
                 <span class="material-symbols-outlined">settings</span>
-                <span class="text-sm font-medium">Configurações</span>
+                <span class="text-sm font-medium">ConfiguraÃ§Ãµes</span>
             </a>
         </nav>
         <div class="px-4 mt-auto">
             <div class="p-4 rounded-xl bg-surface-container-low flex items-center space-x-3 mb-2">
-                <img class="w-10 h-10 rounded-full object-cover"
-                    data-alt="professional male workshop manager portrait"
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhPLBS7s1ZuQnGXymXiuBJ9868nnRddz-gP3XAOrY68Jq9o0KixW-BUonODLYl3srJtQGdWkN5_hv6A6IF9R7-3N7IIY07p3v3-Hk3h336t834MZYCX-4YCqmBz9mCX8NOYAAALVVu-cIt2MMISgYj5kzscUNzzN_lS_KLNdiehWiGTqxXxzj1CPXQvQ7LDF2RhdjSvTpng9INFVDk-nm_joxt429ETmCldwckpOU2lyL4OxGroqrKIqhzHc42pIxKWLdFaqgNpd8" />
+                <img class="w-10 h-10 rounded-full object-cover shadow-sm workshop-logo-display" src="https://ui-avatars.com/api/?background=ff6b00&color=fff&name=User" />
                 <div>
-                    <p class="text-xs font-bold text-on-surface user-name-display">Usuário</p>
-                    <p class="text-[10px] text-slate-500">Workshop Manager</p>
+                    <p class="text-xs font-bold text-on-surface user-name-display">UsuÃ¡rio</p>
+                    <p class="text-[10px] text-slate-500 font-bold uppercase tracking-tighter workshop-name-display">Oficina</p>
                 </div>
             </div>
-            <a id="logout-btn"
-                class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-red-500 hover:bg-red-50 transition-all mb-4"
-                href="#">
+            <a id="logout-btn" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-red-500 hover:bg-red-50 transition-all mb-4" href="#">
                 <span class="material-symbols-outlined">logout</span>
                 <span class="text-sm font-bold">Sair</span>
             </a>
         </div>
     </aside>
-    <!-- Main Content Canvas -->
-    <main class="lg:ml-64 mt-28 p-8 min-h-screen">
-        <!-- Header & Stats -->
-        <div class="max-w-7xl mx-auto">
-            <div class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
-                <div>
-                    <nav
-                        class="flex items-center gap-2 text-xs font-bold text-slate-400 mb-2 tracking-widest uppercase">
-                        <span>Estoque</span>
-                        <span class="material-symbols-outlined text-[10px]">chevron_right</span>
-                        <span class="text-primary">Histórico de Movimentação</span>
-                    </nav>
-                    <h2 class="text-4xl font-black text-on-surface tracking-tighter">Histórico de Movimentação</h2>
-                </div>
-                <div class="flex gap-2">
-                    <button
-                        class="bg-surface-container-low text-on-surface-variant px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 hover:bg-surface-container-high transition-colors">
-                        <span class="material-symbols-outlined text-lg">file_download</span> Exportar PDF
-                    </button>
-                    <button
-                        class="bg-gradient-to-br from-primary to-primary-container text-white px-6 py-2.5 rounded-xl font-bold text-sm shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all">
-                        Nova Entrada
-                    </button>
-                </div>
+
+    <header class="fixed top-0 right-0 w-full lg:w-[calc(100%-16rem)] z-40 bg-white/80 backdrop-blur-md border-b border-orange-100/15 shadow-sm">
+        <div class="flex justify-between items-center px-8 h-16 w-full">
+            <div class="flex items-center gap-4 flex-1">
+                <h2 class="text-sm font-black text-on-surface uppercase tracking-tight">MovimentaÃ§Ã£o</h2>
             </div>
-            <!-- Bento Grid - Filters & Summary -->
-            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8">
-                <!-- Date Period Filter -->
-                <div class="lg:col-span-2 bg-surface-container-lowest p-6 rounded-xl shadow-sm flex flex-col gap-4">
-                    <div class="flex items-center justify-between">
-                        <h3 class="text-sm font-bold text-slate-500 uppercase tracking-wider">Período de Análise</h3>
-                        <span class="material-symbols-outlined text-slate-400">calendar_month</span>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <div class="flex-1">
-                            <label class="text-[10px] font-bold text-slate-400 block mb-1">DATA INICIAL</label>
-                            <input
-                                class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-container/20"
-                                type="date" value="" />
-                        </div>
-                        <div class="text-slate-300">
-                            <span class="material-symbols-outlined">trending_flat</span>
-                        </div>
-                        <div class="flex-1">
-                            <label class="text-[10px] font-bold text-slate-400 block mb-1">DATA FINAL</label>
-                            <input
-                                class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-container/20"
-                                type="date" value="" />
-                        </div>
-                    </div>
-                </div>
-                <!-- Type Filter -->
-                <div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm flex flex-col gap-4">
-                    <h3 class="text-sm font-bold text-slate-500 uppercase tracking-wider">Tipo de Fluxo</h3>
-                    <div class="space-y-2">
-                        <select
-                            class="w-full bg-surface-container-low border-none rounded-lg text-sm font-bold text-on-surface focus:ring-2 focus:ring-primary-container/20">
-                            <option>Todos os tipos</option>
-                            <option>Entradas (Fornecedores)</option>
-                            <option>Saídas (Ordens de Serviço)</option>
-                            <option>Saídas Manuais</option>
-                        </select>
-                        <div class="flex flex-wrap gap-2 pt-1">
-                            <span
-                                class="px-2 py-1 bg-tertiary-fixed text-on-tertiary-fixed text-[10px] font-bold rounded-md">EM
-                                TRÃ‚NSITO</span>
-                            <span
-                                class="px-2 py-1 bg-primary-fixed text-on-primary-fixed text-[10px] font-bold rounded-md">PENDENTE</span>
-                        </div>
-                    </div>
-                </div>
-                <!-- Rapid Stats Card -->
-                <div class="bg-on-surface p-6 rounded-xl shadow-xl text-white flex flex-col justify-between">
-                    <div class="flex justify-between items-start">
-                        <span class="material-symbols-outlined text-primary-container"
-                            style="font-variation-settings: 'FILL' 1;">package_2</span>
-                        <span class="text-[10px] font-bold text-slate-400 bg-white/10 px-2 py-1 rounded">ULT. 30
-                            DIAS</span>
+            <div class="flex items-center gap-4">
+                <button onclick="openMovementModal()" class="flex items-center gap-2 px-5 py-2 bg-primary text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-primary-container transition-all shadow-lg shadow-primary/20">
+                    <span class="material-symbols-outlined text-sm">add_circle</span>
+                    Novo LanÃ§amento
+                </button>
+            </div>
+        </div>
+
+                        <nav class="flex px-8 border-t border-orange-100/5 overflow-x-auto no-scrollbar whitespace-nowrap">
+            <a href="lista-estoque.html" class="px-4 py-3 text-xs font-medium text-slate-500 hover:text-primary transition-colors">Lista de Itens</a>
+            <a href="movimentacao-estoque.html" class="px-4 py-3 text-xs font-bold border-b-2 border-primary text-primary">HistÃ³rico de MovimentaÃ§Ã£o</a>
+            <a href="cadastro-produto-estoque.html" class="px-4 py-3 text-xs font-medium text-slate-500 hover:text-primary transition-colors">Novo Produto</a>
+            <a href="configuracoes-estoque.html" class="px-4 py-3 text-xs font-medium text-slate-500 hover:text-primary transition-colors">Cadastros Auxiliares</a>
+        </nav>
+    </header>
+
+    <main style="padding-top: 130px !important;" class="lg:ml-64  p-4 md:p-8 min-h-screen">
+        <div class="max-w-7xl mx-auto space-y-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4 group hover:border-emerald-200 transition-all">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-500 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <span class="material-symbols-outlined">south_west</span>
                     </div>
                     <div>
-                        <p id="total-movements-count" class="text-2xl font-black italic tracking-tighter">0</p>
-                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Movimentações Totais
-                        </p>
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Entradas (MÃªs)</p>
+                        <h3 id="stat-entries" class="text-xl font-black text-on-surface">0 itens</h3>
                     </div>
                 </div>
-
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4 group hover:border-red-200 transition-all">
+                    <div class="w-12 h-12 rounded-xl bg-red-50 text-red-500 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <span class="material-symbols-outlined">north_east</span>
+                    </div>
+                    <div>
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">SaÃ­das (MÃªs)</p>
+                        <h3 id="stat-exits" class="text-xl font-black text-on-surface">0 itens</h3>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4 group hover:border-green-200 transition-all">
+                    <div class="w-12 h-12 rounded-xl bg-green-50 text-green-500 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <span class="material-symbols-outlined">payments</span>
+                    </div>
+                    <div>
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Lucro Estimado (PerÃ­odo)</p>
+                        <h3 id="stat-profit" class="text-xl font-black text-slate-900 tracking-tighter">R$ 0,00</h3>
+                    </div>
+                </div>
             </div>
-            <!-- Movements Table -->
-            <div class="bg-surface-container-lowest rounded-2xl shadow-sm overflow-hidden border border-slate-100">
-                <div class="overflow-x-auto">
+
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 space-y-4">
+                <div class="flex flex-col md:flex-row gap-4">
+                    <div class="flex-1 relative">
+                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
+                        <input type="text" id="movement-search" oninput="applyMovementFilters()" placeholder="Buscar por produto, SKU ou motivo..." class="w-full pl-10 pr-4 py-3 bg-slate-50 border-none rounded-xl text-sm focus:ring-2 focus:ring-primary/20 transition-all">
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <select id="filter-type" onchange="applyMovementFilters()" class="bg-slate-50 border-none rounded-xl text-[10px] font-black uppercase tracking-widest text-slate-500 focus:ring-2 focus:ring-primary/20 px-4">
+                            <option value="all">Todos os tipos</option>
+                            <option value="Entrada">Entrada</option>
+                            <option value="SaÃ­da">SaÃ­da</option>
+                            <option value="Estorno">Estorno</option>
+                            <option value="Ajuste">Ajuste Manual</option>
+                        </select>
+                        
+                        <select id="filter-period" onchange="toggleDateRangeDisplay(); applyMovementFilters();" class="bg-slate-50 border-none rounded-xl text-[10px] font-black uppercase tracking-widest text-slate-500 focus:ring-2 focus:ring-primary/20 px-4">
+                            <option value="all">Todo o perÃ­odo</option>
+                            <option value="7days">Ãšltimos 7 dias</option>
+                            <option value="15days">Ãšltimos 15 dias</option>
+                            <option value="prevMonth">MÃªs Anterior</option>
+                            <option value="custom">Personalizado</option>
+                        </select>
+
+                        <div id="custom-date-range" class="hidden flex items-center gap-2">
+                            <input type="date" id="filter-date-start" onchange="applyMovementFilters()" class="bg-slate-50 border-none rounded-xl text-xs font-bold text-slate-500 focus:ring-2 focus:ring-primary/20 px-4 py-2">
+                            <span class="text-slate-300 text-xs">atÃ©</span>
+                            <input type="date" id="filter-date-end" onchange="applyMovementFilters()" class="bg-slate-50 border-none rounded-xl text-xs font-bold text-slate-500 focus:ring-2 focus:ring-primary/20 px-4 py-2">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+                <div class="overflow-x-auto no-scrollbar">
                     <table class="w-full text-left border-collapse">
                         <thead>
-                            <tr class="bg-surface-container-low/50">
-                                <th class="px-6 py-4 text-[10px] font-black text-slate-500 uppercase tracking-widest">
-                                    Data / Hora</th>
-                                <th class="px-6 py-4 text-[10px] font-black text-slate-500 uppercase tracking-widest">
-                                    Produto</th>
-                                <th class="px-6 py-4 text-[10px] font-black text-slate-500 uppercase tracking-widest">
-                                    Tipo</th>
-                                <th class="px-6 py-4 text-[10px] font-black text-slate-500 uppercase tracking-widest">
-                                    Origem / Destino</th>
-                                <th
-                                    class="px-6 py-4 text-[10px] font-black text-slate-500 uppercase tracking-widest text-right">
-                                    Qtd</th>
-                                <th class="px-6 py-4 text-[10px] font-black text-slate-500 uppercase tracking-widest">
-                                    Responsável</th>
-                                <th class="px-6 py-4"></th>
+                            <tr class="bg-slate-50/50 text-[10px] font-black uppercase tracking-widest text-slate-400 border-b border-slate-100">
+                                <th class="px-8 py-5">Data</th>
+                                <th class="px-8 py-5">Produto</th>
+                                <th class="px-8 py-5">Lote / Ref</th>
+                                <th class="px-8 py-5">Tipo</th>
+                                <th class="px-8 py-5 text-right">Quantidade</th>
+                                <th class="px-8 py-5 text-right">Vlr. UnitÃ¡rio</th>
+                                <th class="px-8 py-5 text-right text-primary">Lucro</th>
+                                <th class="px-8 py-5">Motivo / Fornecedor</th>
+                                <th class="px-8 py-5">ResponsÃ¡vel</th>
+                                <th class="px-8 py-5 text-right"></th>
                             </tr>
                         </thead>
-                        <tbody id="inventory-movements-list" class="divide-y divide-slate-50">
-                            <tr>
-                                <td colspan="7" class="px-6 py-20 text-center text-slate-400">
-                                    <div class="flex flex-col items-center gap-2">
-                                        <span class="material-symbols-outlined text-4xl opacity-20">history</span>
-                                        <p class="text-sm font-medium">Nenhuma movimentação de estoque encontrada.</p>
-                                    </div>
-                                </td>
-                            </tr>
+                        <tbody id="movements-list" class="divide-y divide-slate-50">
+                            <tr><td colspan="6" class="px-8 py-20 text-center text-slate-400 italic text-xs uppercase font-bold tracking-widest opacity-30">Carregando histÃ³rico...</td></tr>
                         </tbody>
-
                     </table>
-                </div>
-                <!-- Pagination -->
-                <div
-                    class="px-6 py-4 bg-surface-container-low/30 flex items-center justify-between border-t border-slate-50">
-                    <span id="pagination-info" class="text-xs font-bold text-slate-400 uppercase tracking-widest">Mostrando 0-0 de 0
-                        registros</span>
-
-                    <div class="flex gap-2">
-                        <button
-                            class="p-2 bg-white rounded-lg shadow-sm text-slate-400 hover:text-primary transition-colors border border-slate-100 active:scale-95">
-                            <span class="material-symbols-outlined text-sm">chevron_left</span>
-                        </button>
-                        <button
-                            class="px-3 py-1 bg-primary text-white rounded-lg shadow-md shadow-primary/20 text-xs font-black">1</button>
-                        <button
-                            class="p-2 bg-white rounded-lg shadow-sm text-slate-400 hover:text-primary transition-colors border border-slate-100 active:scale-95">
-                            <span class="material-symbols-outlined text-sm">chevron_right</span>
-                        </button>
-                    </div>
                 </div>
             </div>
         </div>
     </main>
-    <!-- Floating Action Button - Mobile Context -->
-    <button
-        class="md:hidden fixed bottom-6 right-6 w-14 h-14 bg-gradient-to-br from-primary to-primary-container rounded-full shadow-2xl flex items-center justify-center text-white z-50">
-        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add</span>
-    </button>
-</body>
 
+    <div id="movement-modal" class="fixed inset-0 z-[70] hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-4xl rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <!-- Header -->
+            <div class="px-8 py-6 bg-slate-50 border-b border-slate-100 flex justify-between items-center shrink-0">
+                <div>
+                    <div class="flex items-center gap-3">
+                        <h2 class="text-lg font-black text-on-surface">Novo LanÃ§amento</h2>
+                        <span id="mv-batch-display" class="px-3 py-1 bg-orange-100 text-orange-600 rounded-lg text-[10px] font-black uppercase">LOTE: #000000</span>
+                    </div>
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">MovimentaÃ§Ã£o em lote de produtos</p>
+                </div>
+                <button onclick="closeMovementModal()" class="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center text-slate-400 hover:text-red-500 transition-colors"><span class="material-symbols-outlined text-lg">close</span></button>
+            </div>
+
+            <div class="flex-1 overflow-y-auto p-8 space-y-8">
+                <!-- Global Config -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 bg-slate-50/50 p-6 rounded-2xl border border-slate-100">
+                    <div class="space-y-1">
+                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Tipo de OperaÃ§Ã£o</label>
+                        <select id="mv-type" onchange="toggleMovementFields()" class="w-full bg-white border border-slate-200 rounded-xl py-3 px-4 text-sm font-bold focus:ring-2 focus:ring-primary/20 transition-all">
+                            <option value="Entrada">Entrada (+)</option>
+                            <option value="SaÃ­da">SaÃ­da (-)</option>
+                        </select>
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Data / CompetÃªncia</label>
+                        <input type="date" id="mv-date" class="w-full bg-white border border-slate-200 rounded-xl py-3 px-4 text-sm font-bold focus:ring-2 focus:ring-primary/20 transition-all">
+                    </div>
+                    
+                    <!-- Entry Only -->
+                    <div id="mv-entry-group" class="md:col-span-2 grid grid-cols-2 gap-4">
+                        <div class="space-y-1">
+                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">NÂº Nota Fiscal / Ref</label>
+                            <input type="text" id="mv-invoice" placeholder="000.000" class="w-full bg-white border border-slate-200 rounded-xl py-3 px-4 text-sm font-bold focus:ring-2 focus:ring-primary/20 transition-all">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Fornecedor</label>
+                            <div class="flex gap-2">
+                                <select id="mv-supplier" class="flex-1 bg-white border border-slate-200 rounded-xl py-3 px-4 text-sm font-bold focus:ring-2 focus:ring-primary/20 transition-all">
+                                    <option value="">Selecione o fornecedor...</option>
+                                </select>
+                                <button onclick="quickAddSupplier()" class="bg-primary text-white px-3 rounded-xl hover:bg-primary-container transition-all">
+                                    <span class="material-symbols-outlined text-sm">add</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Exit Only -->
+                    <div id="mv-exit-group" class="hidden md:col-span-2 grid grid-cols-2 gap-4">
+                        <div class="space-y-1">
+                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Vincular a OS?</label>
+                            <select id="mv-link-os" onchange="toggleOSSelection()" class="w-full bg-white border border-slate-200 rounded-xl py-3 px-4 text-sm font-bold focus:ring-2 focus:ring-primary/20 transition-all">
+                                <option value="nÃ£o">NÃ£o</option>
+                                <option value="sim">Sim</option>
+                            </select>
+                        </div>
+                        <div id="mv-os-select-container" class="space-y-1 hidden">
+                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Selecione a OS</label>
+                            <select id="mv-os-id" class="w-full bg-white border border-slate-200 rounded-xl py-3 px-4 text-sm font-bold focus:ring-2 focus:ring-primary/20 transition-all">
+                                <option value="">Carregando OS...</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Picker -->
+                <div class="space-y-4">
+                    <h3 class="text-xs font-black text-on-surface uppercase tracking-widest flex items-center gap-2">
+                        <span class="w-6 h-6 rounded-lg bg-primary text-white flex items-center justify-center text-[10px]">1</span>
+                        Adicionar Produtos ao Lote
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-end bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
+                        <div class="md:col-span-5 space-y-1">
+                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Buscar Produto</label>
+                            <div class="relative">
+                                <select id="picker-product" onchange="updatePickerStock()" class="w-full bg-slate-50 border-none rounded-xl py-3 px-4 text-sm font-bold focus:ring-2 focus:ring-primary/20 transition-all">
+                                    <option value="">Selecione o produto...</option>
+                                </select>
+                                <div id="picker-stock-info" class="absolute right-3 top-1/2 -translate-y-1/2 text-[9px] font-black text-slate-400 uppercase">Estoque: 0</div>
+                            </div>
+                        </div>
+                        <div class="md:col-span-2 space-y-1">
+                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Qtd</label>
+                            <input type="number" id="picker-qty" min="1" value="1" class="w-full bg-slate-50 border-none rounded-xl py-3 px-4 text-sm font-bold focus:ring-2 focus:ring-primary/20 transition-all">
+                        </div>
+                        <div class="md:col-span-2 space-y-1">
+                            <label id="picker-price-label" class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Vlr. Custo UN</label>
+                            <input type="text" id="picker-price" placeholder="0,00" class="w-full bg-slate-50 border-none rounded-xl py-3 px-4 text-sm font-bold focus:ring-2 focus:ring-primary/20 transition-all">
+                        </div>
+                        <div id="picker-sale-group" class="md:col-span-2 space-y-1">
+                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Vlr. Venda UN</label>
+                            <input type="text" id="picker-sale" placeholder="0,00" class="w-full bg-slate-50 border-none rounded-xl py-3 px-4 text-sm font-bold focus:ring-2 focus:ring-primary/20 transition-all">
+                        </div>
+                        <div class="md:col-span-1">
+                            <button onclick="addProductToBatch()" class="w-full aspect-square bg-primary text-white rounded-xl flex items-center justify-center hover:bg-primary-container transition-all shadow-lg shadow-primary/20 active:scale-95">
+                                <span class="material-symbols-outlined">add</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Batch List -->
+                <div class="space-y-4">
+                    <h3 class="text-xs font-black text-on-surface uppercase tracking-widest flex items-center gap-2">
+                        <span class="w-6 h-6 rounded-lg bg-primary text-white flex items-center justify-center text-[10px]">2</span>
+                        Itens do Lote
+                    </h3>
+                    <div class="bg-white rounded-2xl border border-slate-100 overflow-hidden shadow-sm">
+                        <table class="w-full text-left text-xs border-collapse">
+                            <thead class="bg-slate-50/50 text-[9px] font-black uppercase tracking-widest text-slate-400 border-b border-slate-100">
+                                <tr>
+                                    <th class="px-6 py-4">Produto</th>
+                                    <th class="px-6 py-4 text-center">Qtd</th>
+                                    <th class="px-6 py-4 text-right">UnitÃ¡rio</th>
+                                    <th class="px-6 py-4 text-right">Subtotal</th>
+                                    <th class="px-6 py-4"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="batch-items-list">
+                                <tr><td colspan="5" class="px-6 py-12 text-center text-slate-400 italic">Nenhum produto adicionado ao lote.</td></tr>
+                            </tbody>
+                            <tfoot class="bg-slate-50/30 border-t border-slate-100 font-black">
+                                <tr>
+                                    <td colspan="3" class="px-6 py-4 text-right uppercase tracking-widest text-slate-400 text-[10px]">Total do Lote:</td>
+                                    <td id="batch-total-value" class="px-6 py-4 text-right text-sm text-on-surface">R$ 0,00</td>
+                                    <td></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Action -->
+            <div class="px-8 py-6 bg-slate-50 border-t border-slate-100 flex justify-end gap-3 shrink-0">
+                <button onclick="closeMovementModal()" class="px-6 py-3 text-xs font-black text-slate-500 uppercase tracking-widest hover:bg-white rounded-xl transition-all">Cancelar</button>
+                <button id="submit-batch-btn" onclick="submitBatchMovements()" class="px-10 py-3 bg-primary text-white text-xs font-black uppercase tracking-widest rounded-xl hover:bg-primary-container transition-all shadow-xl shadow-primary/20 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed">Finalizar Lote</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="navigation.js"></script>
+    <script src="inventory.js"></script>
+</body>
 </html>
+
+
+
+
+
+
+
+
+
+

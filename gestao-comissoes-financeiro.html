@@ -224,6 +224,27 @@
                 <p class="text-[10px] font-bold uppercase tracking-widest">Consultando banco de dados...</p>
             </div>
         </div>
+
+        <!-- Section: Receipts Box (Recibos Gerados) -->
+        <div id="receipts-box-section" class="mt-12 hidden">
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-blue-500 text-white flex items-center justify-center shadow-lg shadow-blue-500/20">
+                        <span class="material-symbols-outlined">receipt_long</span>
+                    </div>
+                    <div>
+                        <h2 class="text-sm font-black text-on-surface uppercase tracking-tight">Caixa de Recibos Gerados</h2>
+                        <p class="text-[10px] text-slate-500">Recibos aguardando assinatura e pagamento final.</p>
+                    </div>
+                </div>
+                <div id="receipts-stats" class="text-right">
+                    <!-- Stats injected via JS -->
+                </div>
+            </div>
+            <div id="receipts-list-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Receipts injected via JS -->
+            </div>
+        </div>
     </main>
 
     <!-- Bulk Actions Bar para Comissões -->
@@ -239,10 +260,45 @@
                 <span class="material-symbols-outlined text-lg md:text-xl">payments</span>
                 <span class="text-[9px] md:text-[10px] font-black uppercase tracking-tighter">Pagar Selecionados</span>
             </button>
+            <div class="h-4 w-[1px] bg-white/10 hidden md:block"></div>
+            <button onclick="generateCommissionReceipt()" class="flex items-center gap-2 hover:text-blue-400 transition-colors">
+                <span class="material-symbols-outlined text-lg md:text-xl">receipt_long</span>
+                <span class="text-[9px] md:text-[10px] font-black uppercase tracking-tighter">Gerar Recibo</span>
+            </button>
         </div>
         <button onclick="clearCommissionSelection()" class="text-white/40 hover:text-white transition-colors">
             <span class="material-symbols-outlined text-lg">close</span>
         </button>
+    </div>
+
+    <!-- Modal para Visualização de Recibo -->
+    <div id="receipt-modal" class="fixed inset-0 z-[110] hidden flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden animate-in fade-in zoom-in duration-300">
+            <div class="px-8 py-6 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center">
+                        <span class="material-symbols-outlined">receipt_long</span>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-black text-on-surface">Visualizar Recibo</h3>
+                        <p id="receipt-modal-number" class="text-xs text-slate-500 font-bold uppercase tracking-widest">RP0000</p>
+                    </div>
+                </div>
+                <button onclick="closeReceiptModal()" class="p-2 hover:bg-slate-200 rounded-full transition-colors">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <div id="receipt-modal-content" class="p-8 max-h-[70vh] overflow-y-auto">
+                <!-- Content injected via JS -->
+            </div>
+            <div class="px-8 py-4 bg-slate-50 border-t border-slate-100 flex justify-end gap-3">
+                <button onclick="closeReceiptModal()" class="px-6 py-2 text-sm font-bold text-slate-500 hover:text-slate-700">Fechar</button>
+                <button id="btn-print-receipt" class="px-6 py-2 bg-slate-900 text-white rounded-xl text-sm font-black uppercase tracking-widest hover:bg-slate-800 transition-all flex items-center gap-2">
+                    <span class="material-symbols-outlined text-lg">print</span>
+                    Imprimir PDF
+                </button>
+            </div>
+        </div>
     </div>
 
     <!-- Dependencies -->

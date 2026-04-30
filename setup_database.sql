@@ -159,3 +159,93 @@ DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
 CREATE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
   FOR EACH ROW EXECUTE PROCEDURE public.handle_new_user();
+
+-- 9. TABELAS AUXILIARES E MOVIMENTAÇÃO
+CREATE TABLE IF NOT EXISTS inventory_categories (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  workshop_id UUID REFERENCES profiles(id) ON DELETE CASCADE NOT NULL,
+  name TEXT NOT NULL,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS inventory_units (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  workshop_id UUID REFERENCES profiles(id) ON DELETE CASCADE NOT NULL,
+  name TEXT NOT NULL,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS vehicle_models (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  workshop_id UUID REFERENCES profiles(id) ON DELETE CASCADE NOT NULL,
+  name TEXT NOT NULL,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS inventory_movements (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  workshop_id UUID REFERENCES profiles(id) ON DELETE CASCADE NOT NULL,
+  product_id UUID REFERENCES inventory(id) ON DELETE CASCADE NOT NULL,
+  type TEXT NOT NULL, -- Entrada, Saída
+  quantity INTEGER NOT NULL,
+  unit_cost NUMERIC DEFAULT 0,
+  unit_sale NUMERIC DEFAULT 0,
+  batch_id TEXT,
+  invoice_number TEXT,
+  supplier TEXT,
+  service_order_id UUID REFERENCES service_orders(id) ON DELETE SET NULL,
+  reason TEXT,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS staff (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  workshop_id UUID REFERENCES profiles(id) ON DELETE CASCADE NOT NULL,
+  name TEXT NOT NULL,
+  role TEXT DEFAULT 'Mecânico',
+  phone TEXT,
+  email TEXT,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS service_order_history (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  workshop_id UUID REFERENCES profiles(id) ON DELETE CASCADE NOT NULL,
+  service_order_id UUID REFERENCES service_orders(id) ON DELETE CASCADE NOT NULL,
+  type TEXT NOT NULL,
+  description TEXT,
+  old_value TEXT,
+  new_value TEXT,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- 10. SEGURANÇA ADICIONAL (RLS)
+ALTER TABLE inventory_categories ENABLE ROW LEVEL SECURITY;
+ALTER TABLE inventory_units ENABLE ROW LEVEL SECURITY;
+ALTER TABLE vehicle_models ENABLE ROW LEVEL SECURITY;
+ALTER TABLE inventory_movements ENABLE ROW LEVEL SECURITY;
+ALTER TABLE staff ENABLE ROW LEVEL SECURITY;
+ALTER TABLE service_order_history ENABLE ROW LEVEL SECURITY;
+
+DO $$ 
+BEGIN
+    -- Políticas para as novas tabelas
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Workshop access categories') THEN
+        CREATE POLICY "Workshop access categories" ON inventory_categories FOR ALL USING (workshop_id = auth.uid());
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Workshop access units') THEN
+        CREATE POLICY "Workshop access units" ON inventory_units FOR ALL USING (workshop_id = auth.uid());
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Workshop access vehicle_models') THEN
+        CREATE POLICY "Workshop access vehicle_models" ON vehicle_models FOR ALL USING (workshop_id = auth.uid());
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Workshop access movements') THEN
+        CREATE POLICY "Workshop access movements" ON inventory_movements FOR ALL USING (workshop_id = auth.uid());
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Workshop access staff') THEN
+        CREATE POLICY "Workshop access staff" ON staff FOR ALL USING (workshop_id = auth.uid());
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Workshop access history') THEN
+        CREATE POLICY "Workshop access history" ON service_order_history FOR ALL USING (workshop_id = auth.uid());
+    END IF;
+END $$;

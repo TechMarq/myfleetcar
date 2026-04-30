@@ -3,14 +3,20 @@
  */
 
 const Financial = {
+    parseDate(dateStr) {
+        if (!dateStr) return new Date();
+        if (typeof dateStr !== 'string') return new Date(dateStr);
+        return new Date(dateStr.includes('T') ? dateStr : dateStr + 'T12:00:00');
+    },
+
     async initDashboard() {
         try {
             const { data: { user } } = await MyFleetCar.Auth.getUser();
             if (!user) return;
 
             const now = new Date();
-            const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split('T')[0];
-            const lastDayOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).toISOString().split('T')[0];
+            const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
+            const lastDayOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).toISOString();
 
             // 1. Fetch ALL financial transactions for the workshop
             const { data: allTransactions } = await MyFleetCar.DB.select('financial_transactions', {
@@ -42,7 +48,12 @@ const Financial = {
                 match: { workshop_id: user.id }
             });
 
-            this.renderMetrics(orders, currentMonthTransactions || [], staff || []);
+            // 4. Fetch Commission Receipts
+            const { data: receipts } = await MyFleetCar.DB.select('commission_receipts', {
+                match: { workshop_id: user.id }
+            });
+
+            this.renderMetrics(orders, currentMonthTransactions || [], staff || [], receipts || []);
             this.renderRecentTransactions(user.id);
             this.renderChart(allTransactions || []);
             this.renderOperationalInsights(allTransactions || []);
@@ -52,7 +63,7 @@ const Financial = {
         }
     },
 
-    renderMetrics(orders, transactions, staff) {
+    renderMetrics(orders, transactions, staff, receipts = []) {
         // 1. Calculate Revenue from Transactions
         const grossRevenue = transactions
             .filter(t => t.type === 'Receita' && t.status === 'Pago')
@@ -70,7 +81,7 @@ const Financial = {
             .reduce((acc, t) => acc + (t.amount || 0), 0);
 
         // 3. Calculate Commissions
-        const { totalCommissions, employeeCommissions } = this.calculateCommissions(orders, transactions, staff);
+        const { totalCommissions, employeeCommissions } = this.calculateCommissions(orders, transactions, staff, receipts);
 
         // 4. Final Metrics
         // Mensal Líquido = Receitas Pagas - Despesas Pagas (Ignora comissões não pagas para não duplicar deduções)
@@ -99,8 +110,8 @@ const Financial = {
         // Labels (Optional update)
         const labels = document.querySelectorAll('.grid p.font-bold.uppercase');
         if (labels.length >= 5) {
-            labels[0].textContent = 'Mensal Bruto';
-            labels[1].textContent = 'Mensal Previsto';
+            labels[0].textContent = 'Mensal Recebido';
+            labels[1].textContent = 'Mensal Aberto';
             labels[2].textContent = 'Mensal Líquido';
             labels[3].textContent = 'Comissões (Dívida)';
             labels[4].textContent = 'Resumo OS';
@@ -149,6 +160,9 @@ const Financial = {
                     return sName === mName || mName.includes(sName) || sName.includes(mName);
                 });
 
+                // SKIP parts for commission calculation
+                if (item.type === 'part') return;
+
                 if (employee && (employee.compensation_type || '').toLowerCase().includes('comis')) {
                     const rate = (parseFloat(employee.commission_percent) || 0) / 100;
 
@@ -178,15 +192,29 @@ const Financial = {
                         };
                     }
 
+                    // Handle Supabase returning arrays or objects for joined data
+                    const rawCustomer = o.customers;
+                    const rawVehicle = o.vehicles;
+                    
+                    const customer = Array.isArray(rawCustomer) ? rawCustomer[0] : rawCustomer;
+                    const vehicle = Array.isArray(rawVehicle) ? rawVehicle[0] : rawVehicle;
+
+                    const vehicleInfo = vehicle ? `${vehicle.brand} ${vehicle.model} (${vehicle.license_plate})` : 'N/A';
+                    const customerName = customer ? customer.full_name : 'N/A';
+                    const finishedAt = o.finished_at || o.exit_date || o.created_at;
+
                     const commissionRecord = {
                         os_id: o.id,
                         os_number: o.os_number || o.id.toString().substring(0, 8),
-                        item_name: itemName,
-                        total_os: itemPrice * itemQty,
+                        item_name: itemName || 'Serviço',
+                        total_os: (itemPrice * itemQty) || 0,
                         rate: (rate * 100).toFixed(0) + '%',
-                        amount: commissionAmount,
+                        amount: commissionAmount || 0,
                         status: isCommissionPaid ? 'Pago' : 'Pendente',
-                        paid_transaction_id: paidTrans ? paidTrans.id : null
+                        paid_transaction_id: paidTrans ? paidTrans.id : null,
+                        customer_name: customerName,
+                        vehicle_info: vehicleInfo,
+                        finished_at: finishedAt
                     };
 
                     employeeCommissions[employee.id].items.push(commissionRecord);
@@ -199,7 +227,94 @@ const Financial = {
             });
         });
 
+        // 2. Cross-reference with Receipts
+        const receipts = arguments[3] || [];
+        receipts.forEach(receipt => {
+            if (receipt.status === 'Pago') return; // Already accounted for if paid (will be in financial_transactions)
+            
+            let items = receipt.items_json || [];
+            if (typeof items === 'string') try { items = JSON.parse(items); } catch(e) { items = []; }
+            
+            items.forEach(item => {
+                const empId = receipt.employee_id;
+                if (!employeeCommissions[empId]) return;
+                
+                // Standardize property access (handle both camelCase from JS and snake_case from potential DB legacy)
+                const itemOsId = item.osId || item.os_id;
+                const itemServiceName = item.serviceName || item.item_name;
+
+                // Find the matching item in employeeCommissions and update its status
+                const existingItem = employeeCommissions[empId].items.find(ei => 
+                    ei.os_id === itemOsId && ei.item_name === itemServiceName
+                );
+                
+                if (existingItem && existingItem.status === 'Pendente') {
+                    existingItem.status = 'RECIBO';
+                    existingItem.receipt_number = receipt.receipt_number;
+                    existingItem.receipt_id = receipt.id;
+                }
+            });
+        });
+
         return { totalCommissions, employeeCommissions };
+    },
+
+    renderReceipts(receipts, staff) {
+        const section = document.getElementById('receipts-box-section');
+        const grid = document.getElementById('receipts-list-grid');
+        const stats = document.getElementById('receipts-stats');
+        if (!section || !grid) return;
+
+        const openReceipts = receipts.filter(r => r.status === 'Aberto');
+        
+        if (openReceipts.length === 0) {
+            section.classList.add('hidden');
+            return;
+        }
+
+        section.classList.remove('hidden');
+
+        const totalAmount = openReceipts.reduce((sum, r) => sum + (parseFloat(r.amount) || 0), 0);
+        if (stats) {
+            stats.innerHTML = `
+                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-none">Total em Aberto</p>
+                <p class="text-lg font-black text-blue-600">R$ ${totalAmount.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
+            `;
+        }
+
+        grid.innerHTML = openReceipts.map(r => {
+            const employee = staff.find(s => s.id === r.employee_id);
+            const empName = employee ? employee.name : 'Funcionário';
+            const date = new Date(r.created_at).toLocaleDateString('pt-BR');
+            
+            return `
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-md transition-all group border-l-4 border-l-blue-500">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <p class="text-[10px] font-black text-blue-600 uppercase tracking-widest">${r.receipt_number}</p>
+                            <h3 class="text-sm font-black text-on-surface mt-1">${empName}</h3>
+                            <p class="text-[10px] text-slate-400 font-medium">${date}</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-sm font-black text-on-surface">R$ ${parseFloat(r.amount).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
+                            <span class="px-2 py-0.5 bg-blue-50 text-blue-600 text-[8px] font-black uppercase tracking-widest rounded-full">Aberto</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center gap-2 mt-6 pt-4 border-t border-slate-50">
+                        <button onclick="viewReceipt('${r.id}')" class="flex-1 py-2 bg-slate-50 text-slate-600 text-[10px] font-black uppercase tracking-widest rounded-lg hover:bg-slate-100 transition-all">
+                            Visualizar
+                        </button>
+                        <button onclick="payReceipt('${r.id}')" class="flex-1 py-2 bg-blue-600 text-white text-[10px] font-black uppercase tracking-widest rounded-lg hover:bg-blue-700 transition-all shadow-sm shadow-blue-200">
+                            Pagar
+                        </button>
+                        <button onclick="deleteReceipt('${r.id}')" class="p-2 text-slate-300 hover:text-red-500 transition-colors">
+                            <span class="material-symbols-outlined text-lg">delete</span>
+                        </button>
+                    </div>
+                </div>
+            `;
+        }).join('');
     },
 
     async initCommissionsPage() {
@@ -224,14 +339,20 @@ const Financial = {
             let orders = [];
             if (linkedOsIds.length > 0) {
                 const { data: osData } = await MyFleetCar.DB.select('service_orders', {
+                    select: '*, customers(*), vehicles(*)',
                     in: { id: linkedOsIds }
                 });
                 orders = osData || [];
             }
 
-            const { employeeCommissions } = this.calculateCommissions(orders, allTransactions || [], staff || []);
+            const { data: receipts } = await MyFleetCar.DB.select('commission_receipts', {
+                match: { workshop_id: user.id }
+            });
+
+            const { employeeCommissions } = this.calculateCommissions(orders, allTransactions || [], staff || [], receipts || []);
 
             this.renderEmployeeCommissions(employeeCommissions);
+            this.renderReceipts(receipts || [], staff || []);
         } catch (err) {
             alert('Erro detectado na página de comissões: ' + err.message);
             console.error('Commissions Page Error:', err);
@@ -296,7 +417,19 @@ const Financial = {
                         </thead>
                         <tbody class="divide-y divide-slate-50">
                             ${emp.items.map(item => `
-                                <tr class="hover:bg-slate-50/30 transition-colors text-[10px] md:text-xs" data-os="${item.os_id}" data-amount="${item.amount}" data-emp="${emp.name}" data-empid="${emp.id}" data-ref="OS #${item.os_number}">
+                                <tr class="hover:bg-slate-50/30 transition-colors text-[10px] md:text-xs" 
+                                    data-os="${item.os_id}" 
+                                    data-amount="${item.amount}" 
+                                    data-emp="${emp.name}" 
+                                    data-empid="${emp.id}" 
+                                    data-ref="OS #${item.os_number}"
+                                    data-customer="${item.customer_name || 'N/A'}"
+                                    data-vehicle="${item.vehicle_info || 'N/A'}"
+                                    data-finished="${item.finished_at || ''}"
+                                    data-total-os="${item.total_os || 0}"
+                                    data-rate="${item.rate || '0%'}"
+                                    data-service="${item.item_name || 'Serviço'}"
+                                >
                                     <td class="px-2 md:px-4 py-3 md:py-4 w-10 md:w-12 text-center">
                                         ${item.status === 'Pendente' ? `
                                             <input type="checkbox" onchange="toggleCommissionSelection(this)" class="commission-checkbox-${emp.id} commission-checkbox rounded border-slate-300 text-primary focus:ring-primary scale-75 md:scale-100">
@@ -316,8 +449,10 @@ const Financial = {
                                         <p class="font-black text-on-surface">R$ ${item.amount.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
                                     </td>
                                     <td class="px-4 md:px-6 py-3 md:py-4 text-center">
-                                        <span class="px-2 md:px-3 py-0.5 md:py-1 rounded-full text-[8px] md:text-[10px] font-black uppercase tracking-widest ${item.status === 'Pago' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700'}">
-                                            ${item.status}
+                                        <span class="px-2 md:px-3 py-0.5 md:py-1 rounded-lg text-[8px] md:text-[10px] font-black uppercase tracking-widest 
+                                            ${item.status === 'Pago' ? 'bg-green-100 text-green-700' : 
+                                              item.status === 'RECIBO' ? 'bg-blue-600 text-white shadow-sm' : 'bg-orange-100 text-orange-700'}">
+                                            ${item.status === 'RECIBO' ? `RECIBO ${item.receipt_number}` : item.status}
                                         </span>
                                     </td>
                                     <td class="px-4 md:px-8 py-3 md:py-4 text-right">
@@ -325,6 +460,11 @@ const Financial = {
                                             <button onclick="Financial.payCommission('${emp.id}', '${emp.name}', '${item.os_id}', ${item.amount}, 'OS #${item.os_number}', '${item.item_name}')" 
                                                 class="px-2 md:px-4 py-1.5 md:py-2 bg-primary text-white text-[8px] md:text-[10px] font-black uppercase tracking-widest rounded-lg hover:bg-primary-container transition-all shadow-sm">
                                                 Pagar
+                                            </button>
+                                        ` : item.status === 'RECIBO' ? `
+                                            <button onclick="viewReceipt('${item.receipt_id}')" 
+                                                class="px-2 md:px-4 py-1.5 md:py-2 bg-blue-50 text-blue-600 text-[8px] md:text-[10px] font-black uppercase tracking-widest rounded-lg hover:bg-blue-100 transition-all">
+                                                Ver Recibo
                                             </button>
                                         ` : `
                                             <div class="flex items-center justify-end gap-1 md:gap-2 group/undo">
@@ -379,7 +519,7 @@ const Financial = {
                 category: 'Comissão',
                 amount: amount,
                 payment_method: 'Transferência',
-                due_date: new Date().toISOString().split('T')[0],
+                due_date: new Date().toISOString(),
                 status: 'Pago',
                 description: `Comissão ${osRef} (${itemName}) - Beneficiário: ${employeeName}`
             };
@@ -512,7 +652,7 @@ const Financial = {
             filtered = filtered.filter(t => t.status === filter);
         } else if (filter === 'Atrasado') {
             const now = new Date();
-            filtered = filtered.filter(t => t.status !== 'Pago' && new Date(t.due_date || t.created_at) < now);
+            filtered = filtered.filter(t => t.status !== 'Pago' && this.parseDate(t.due_date || t.created_at) < now);
         }
 
         // 2. Date Range Filter
@@ -565,11 +705,12 @@ const Financial = {
 
         listContainer.innerHTML = transactions.map(t => {
             const order = orders.find(o => o.id === t.service_order_id);
-            const customer = order?.customers;
+            const rawCustomer = order?.customers;
+            const customer = Array.isArray(rawCustomer) ? rawCustomer[0] : rawCustomer;
             const customerName = customer?.full_name || 'N/A';
             const customerPhone = customer?.phone || '';
 
-            const transDate = new Date(t.due_date || t.created_at);
+            const transDate = this.parseDate(t.due_date || t.created_at);
             const isOverdue = t.status !== 'Pago' && transDate < new Date();
 
             const statusStyle = t.status === 'Pago'
@@ -743,7 +884,7 @@ const Financial = {
             filtered = filtered.filter(t => t.status === filter);
         } else if (filter === 'Atrasado') {
             const now = new Date();
-            filtered = filtered.filter(t => t.status !== 'Pago' && new Date(t.due_date || t.created_at) < now);
+            filtered = filtered.filter(t => t.status !== 'Pago' && this.parseDate(t.due_date || t.created_at) < now);
         }
 
         if (dateStart) filtered = filtered.filter(t => (t.due_date || t.created_at) >= dateStart);
@@ -784,7 +925,7 @@ const Financial = {
         }
 
         listContainer.innerHTML = transactions.map(t => {
-            const transDate = new Date(t.due_date);
+            const transDate = this.parseDate(t.due_date || t.created_at);
             const isOverdue = t.status !== 'Pago' && transDate < new Date();
             const statusStyle = t.status === 'Pago' ? 'bg-slate-100 text-slate-500' : (isOverdue ? 'bg-red-100 text-red-700' : 'bg-orange-100 text-orange-700');
             const statusLabel = t.status === 'Pago' ? 'Pago' : (isOverdue ? 'Atrasado' : 'Pendente');
@@ -868,7 +1009,7 @@ const Financial = {
         const totalPaid = currentMonth.filter(t => t.status === 'Pago').reduce((acc, t) => acc + parseFloat(t.amount || 0), 0);
         const totalPending = currentMonth.filter(t => t.status === 'Pendente').reduce((acc, t) => acc + parseFloat(t.amount || 0), 0);
 
-        const totalOverdue = transactions.filter(t => t.status !== 'Pago' && new Date(t.due_date || t.created_at) < now).reduce((acc, t) => acc + parseFloat(t.amount || 0), 0);
+        const totalOverdue = transactions.filter(t => t.status !== 'Pago' && this.parseDate(t.due_date || t.created_at) < now).reduce((acc, t) => acc + parseFloat(t.amount || 0), 0);
 
         // Update Summary using specific IDs
         const summaryPaid = document.getElementById('expense-summary-paid') || document.querySelectorAll('h3.font-black')[0];
@@ -904,7 +1045,7 @@ const Financial = {
         transactions.forEach(t => {
             const dateStr = t.due_date || t.created_at;
             if (!dateStr) return;
-            const date = new Date(dateStr);
+            const date = this.parseDate(dateStr);
             const mIdx = months.findIndex(m => m.year === date.getFullYear() && m.month === date.getMonth());
             if (mIdx !== -1) {
                 if (t.type === 'Receita' && t.status === 'Pago') months[mIdx].revenue += (t.amount || 0);
@@ -976,11 +1117,13 @@ const Financial = {
 
         // Use all available orders with customer data
         orders.forEach(o => {
-            if (!o.customers) return;
-            const cid = o.customers.id;
+            const rawCustomer = o.customers;
+            const customer = Array.isArray(rawCustomer) ? rawCustomer[0] : rawCustomer;
+            if (!customer) return;
+            const cid = customer.id;
             if (!customerStats[cid]) {
                 customerStats[cid] = {
-                    name: o.customers.full_name,
+                    name: customer.full_name,
                     servicesCount: 0,
                     totalValue: 0,
                     paidOnTime: 0,
@@ -1047,7 +1190,7 @@ const Financial = {
         ninetyDaysAgo.setDate(now.getDate() - 90);
 
         const recentExpenses = expenses.filter(t => {
-            const date = new Date(t.due_date || t.created_at);
+            const date = this.parseDate(t.due_date || t.created_at);
             return date >= ninetyDaysAgo;
         });
 
@@ -1108,14 +1251,21 @@ window.toggleSelectAllCommissions = (headerCheckbox, empId) => {
 
 window.toggleCommissionSelection = (cb) => {
     const tr = cb.closest('tr');
-    const key = tr.dataset.empid + '-' + tr.dataset.os;
+    // The key must be unique per service item. Using employee + os + service name to avoid collisions.
+    const key = `${tr.dataset.empid}-${tr.dataset.os}-${tr.dataset.service}`;
     if (cb.checked) {
         window.selectedCommissions.set(key, {
             employeeId: tr.dataset.empid,
             employeeName: tr.dataset.emp,
             osId: tr.dataset.os,
             amount: parseFloat(tr.dataset.amount),
-            osRef: tr.dataset.ref
+            osRef: tr.dataset.ref,
+            customerName: tr.dataset.customer,
+            vehicleInfo: tr.dataset.vehicle,
+            finishedAt: tr.dataset.finished,
+            totalOs: parseFloat(tr.dataset.totalOs),
+            rate: tr.dataset.rate,
+            serviceName: tr.dataset.service
         });
     } else {
         window.selectedCommissions.delete(key);
@@ -1159,7 +1309,7 @@ window.bulkPayCommissions = async () => {
                 category: 'Comissão',
                 amount: item.amount,
                 payment_method: 'Transferência',
-                due_date: new Date().toISOString().split('T')[0],
+                due_date: new Date().toISOString(),
                 status: 'Pago',
                 description: `Comissão ${item.osRef} - Beneficiário: ${item.employeeName}`
             };
@@ -1177,6 +1327,311 @@ window.bulkPayCommissions = async () => {
         }
     } catch (err) {
         alert('Erro ao registrar pagamentos em lote: ' + err.message);
+    }
+};
+
+window.generateCommissionReceipt = async () => {
+    const items = Array.from(window.selectedCommissions.values());
+    if (items.length === 0) return;
+
+    // Check if all selected items are from the same employee
+    const firstEmpId = items[0].employeeId;
+    const sameEmployee = items.every(item => item.employeeId === firstEmpId);
+    
+    if (!sameEmployee) {
+        alert('Para gerar um recibo, todos os itens selecionados devem pertencer ao mesmo funcionário.');
+        return;
+    }
+
+    const totalAmount = items.reduce((sum, item) => sum + item.amount, 0);
+    const empName = items[0].employeeName;
+
+    if (!confirm(`Deseja gerar um recibo de R$ ${totalAmount.toLocaleString('pt-BR', { minimumFractionDigits: 2 })} para ${empName}?`)) return;
+
+    const af = window.MyFleetCar || MyFleetCar;
+    try {
+        const { data: { user } } = await af.Auth.getUser();
+        if (!user) return;
+
+        // 1. Get last receipt number to increment
+        const { data: lastReceipt } = await af.DB.select('commission_receipts', {
+            match: { workshop_id: user.id },
+            order: { column: 'receipt_number', ascending: false },
+            limit: 1
+        });
+
+        let nextNum = 1;
+        if (lastReceipt && lastReceipt.length > 0) {
+            const lastNumStr = lastReceipt[0].receipt_number.replace('RP', '');
+            nextNum = parseInt(lastNumStr) + 1;
+        }
+        const receiptNumber = 'RP' + nextNum.toString().padStart(4, '0');
+
+        // 2. Insert receipt
+        const newReceipt = {
+            workshop_id: user.id,
+            employee_id: firstEmpId,
+            receipt_number: receiptNumber,
+            amount: totalAmount,
+            status: 'Aberto',
+            items_json: items // Store full items info
+        };
+
+        const { error } = await af.DB.insert('commission_receipts', newReceipt);
+        if (error) throw error;
+
+        alert(`Recibo ${receiptNumber} gerado com sucesso!`);
+        window.clearCommissionSelection();
+        if (af.Financial) af.Financial.initCommissionsPage();
+    } catch (err) {
+        console.error('Error generating receipt:', err);
+        alert('Erro ao gerar recibo. Verifique se a tabela commission_receipts existe no banco de dados.');
+    }
+};
+
+window.viewReceipt = async (receiptId) => {
+    const af = window.MyFleetCar || MyFleetCar;
+    try {
+        const { data: receipts, error } = await af.DB.select('commission_receipts', {
+            match: { id: receiptId }
+        });
+        if (error) throw error;
+        const receipt = receipts[0];
+        if (!receipt) throw new Error('Recibo não encontrado');
+
+        const { data: staffList } = await af.DB.select('staff', {
+            match: { id: receipt.employee_id }
+        });
+        const staff = staffList ? staffList[0] : null;
+
+        const modal = document.getElementById('receipt-modal');
+        const numberDisplay = document.getElementById('receipt-modal-number');
+        const content = document.getElementById('receipt-modal-content');
+        const printBtn = document.getElementById('btn-print-receipt');
+
+        numberDisplay.textContent = receipt.receipt_number;
+        
+        let items = receipt.items_json || [];
+        if (typeof items === 'string') try { items = JSON.parse(items); } catch(e) {}
+
+        content.innerHTML = `
+            <div class="space-y-6">
+                <div class="flex justify-between border-b pb-4">
+                    <div>
+                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Funcionário</p>
+                        <p class="text-lg font-black text-on-surface">${staff ? staff.name : 'N/A'}</p>
+                        <p class="text-xs text-slate-500">${staff ? staff.role : ''}</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Data de Emissão</p>
+                        <p class="text-sm font-bold text-on-surface">${new Date(receipt.created_at).toLocaleDateString('pt-BR')}</p>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-3">Detalhamento dos Serviços</p>
+                    <div class="bg-slate-50 rounded-xl overflow-hidden border border-slate-100">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-[9px] md:text-xs">
+                                <thead>
+                                    <tr class="bg-slate-100/50 text-[9px] font-bold uppercase text-slate-500">
+                                        <th class="px-3 py-2">OS</th>
+                                        <th class="px-3 py-2">Cliente / Veículo</th>
+                                        <th class="px-3 py-2 text-center">Concluído</th>
+                                        <th class="px-3 py-2">Item do Serviço</th>
+                                        <th class="px-3 py-2 text-right">Valor Cobrado</th>
+                                        <th class="px-3 py-2 text-center">%</th>
+                                        <th class="px-3 py-2 text-right">Comissão</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-200">
+                                    ${items.map(it => `
+                                        <tr>
+                                            <td class="px-3 py-3 font-bold text-on-surface">
+                                                ${it.osRef || 'OS #' + it.osId}
+                                            </td>
+                                            <td class="px-3 py-3">
+                                                <p class="font-medium">${it.customerName || 'N/A'}</p>
+                                                <p class="text-[8px] text-slate-500">${it.vehicleInfo || 'N/A'}</p>
+                                            </td>
+                                            <td class="px-3 py-3 text-center text-slate-500">
+                                                ${it.finishedAt ? this.parseDate(it.finishedAt).toLocaleDateString('pt-BR') : '-'}
+                                            </td>
+                                            <td class="px-3 py-3">
+                                                <p class="font-bold text-primary">${it.serviceName || it.item_name || 'Serviço'}</p>
+                                            </td>
+                                            <td class="px-3 py-3 text-right">R$ ${parseFloat(it.totalOs || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</td>
+                                            <td class="px-3 py-3 text-center">${it.rate || '-'}</td>
+                                            <td class="px-3 py-3 text-right font-bold text-on-surface">R$ ${parseFloat(it.amount || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                                <tfoot>
+                                    <tr class="bg-slate-100 font-black">
+                                        <td colspan="6" class="px-3 py-3 text-right uppercase tracking-widest text-[9px]">Total a Pagar</td>
+                                        <td class="px-3 py-3 text-right text-sm">R$ ${parseFloat(receipt.amount).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-8 text-center">
+                    <div class="w-64 h-[1px] bg-slate-300 mx-auto mb-2"></div>
+                    <p class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Assinatura do Funcionário</p>
+                </div>
+            </div>
+        `;
+
+        printBtn.onclick = () => {
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <html>
+                <head>
+                    <title>Recibo ${receipt.receipt_number}</title>
+                    <style>
+                        body { font-family: sans-serif; padding: 40px; color: #333; font-size: 12px; }
+                        .header { display: flex; justify-content: space-between; border-bottom: 2px solid #000; padding-bottom: 20px; margin-bottom: 30px; }
+                        h1 { margin: 0; font-size: 20px; }
+                        .receipt-info { text-align: right; }
+                        .details { width: 100%; border-collapse: collapse; margin-bottom: 40px; }
+                        .details th, .details td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+                        .details th { background-color: #f5f5f5; font-size: 10px; text-transform: uppercase; }
+                        .total { text-align: right; font-size: 16px; font-weight: bold; margin-bottom: 60px; }
+                        .footer { display: flex; justify-content: space-around; margin-top: 40px; }
+                        .signature { border-top: 1px solid #000; width: 250px; text-align: center; padding-top: 10px; font-size: 11px; }
+                        p { margin: 5px 0; }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <div>
+                            <h1>RECIBO DE PAGAMENTO DE COMISSÃO</h1>
+                            <p><strong>Emissor:</strong> MyFleetCar SaaS</p>
+                            <p><strong>Funcionário:</strong> ${staff ? staff.name : 'N/A'}</p>
+                        </div>
+                        <div class="receipt-info">
+                            <p><strong>Número:</strong> ${receipt.receipt_number}</p>
+                            <p><strong>Data de Emissão:</strong> ${new Date(receipt.created_at).toLocaleDateString('pt-BR')}</p>
+                        </div>
+                    </div>
+                    <p>Declaramos para os devidos fins que o funcionário acima citado faz jus ao recebimento de <strong>R$ ${parseFloat(receipt.amount).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</strong> referente às comissões detalhadas abaixo:</p>
+                    <table class="details">
+                        <thead>
+                            <tr>
+                                <th>OS</th>
+                                <th>Cliente / Veículo</th>
+                                <th>Data Conc.</th>
+                                <th>Item do Serviço</th>
+                                <th>Vlr. Serviço</th>
+                                <th>%</th>
+                                <th style="text-align: right">Vlr. Comissão</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${items.map(it => `
+                                <tr>
+                                    <td>${it.osRef || 'OS #' + it.osId}</td>
+                                    <td>${it.customerName || 'N/A'}<br><small>${it.vehicleInfo || 'N/A'}</small></td>
+                                    <td>${it.finishedAt ? this.parseDate(it.finishedAt).toLocaleDateString('pt-BR') : '-'}</td>
+                                    <td><strong>${it.serviceName || it.item_name || 'Serviço'}</strong></td>
+                                    <td>R$ ${parseFloat(it.totalOs || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</td>
+                                    <td>${it.rate || '-'}</td>
+                                    <td style="text-align: right">R$ ${parseFloat(it.amount || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                    <div class="total">VALOR TOTAL DO RECIBO: R$ ${parseFloat(receipt.amount).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</div>
+                    <p style="margin-top: 30px;">Por ser verdade, firmo o presente para que produza seus efeitos legais.</p>
+                    <div class="footer">
+                        <div class="signature" style="margin-top: 50px;">
+                            <p>${staff ? staff.name : 'ASSINATURA DO FUNCIONÁRIO'}</p>
+                            <p>Beneficiário</p>
+                        </div>
+                    </div>
+                    <script>window.onload = function() { window.print(); }</script>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+        };
+
+        modal.classList.remove('hidden');
+    } catch (err) {
+        alert('Erro ao carregar recibo: ' + err.message);
+    }
+};
+
+window.closeReceiptModal = () => {
+    document.getElementById('receipt-modal').classList.add('hidden');
+};
+
+window.payReceipt = async (receiptId) => {
+    if (!confirm('Deseja marcar este recibo como PAGO? Isso registrará as despesas individuais e liquidará as comissões.')) return;
+
+    const af = window.MyFleetCar || MyFleetCar;
+    try {
+        const { data: { user } } = await af.Auth.getUser();
+        if (!user) return;
+
+        const { data: receipts } = await af.DB.select('commission_receipts', {
+            match: { id: receiptId }
+        });
+        const receipt = receipts ? receipts[0] : null;
+        if (!receipt) return;
+
+        const { data: staffList } = await af.DB.select('staff', {
+            match: { id: receipt.employee_id }
+        });
+        const staff = staffList ? staffList[0] : null;
+
+        let items = receipt.items_json || [];
+        if (typeof items === 'string') try { items = JSON.parse(items); } catch(e) {}
+
+        // 1. Create financial transactions for each item (to follow existing logic)
+        for (const item of items) {
+            const serviceOrderId = item.osId || item.os_id;
+            const serviceName = item.serviceName || item.item_name || 'Serviço';
+            const osRef = item.osRef || 'OS';
+
+            const newExpense = {
+                workshop_id: user.id,
+                service_order_id: serviceOrderId,
+                type: 'Despesa',
+                category: 'Comissão',
+                amount: item.amount,
+                payment_method: 'Transferência',
+                due_date: new Date().toISOString(),
+                status: 'Pago',
+                description: `Comissão ${osRef} (${serviceName}) - Beneficiário: ${staff.name} (Ref: ${receipt.receipt_number})`
+            };
+            await af.DB.insert('financial_transactions', newExpense);
+        }
+
+        // 2. Update receipt status to 'Pago' (or delete it if preferred, but 'Pago' is better for history)
+        await af.DB.update('commission_receipts', { status: 'Pago' }, { id: receiptId });
+
+        alert('Recibo liquidado com sucesso!');
+        if (af.Financial) af.Financial.initCommissionsPage();
+    } catch (err) {
+        console.error('Error paying receipt:', err);
+        alert('Erro ao liquidar recibo.');
+    }
+};
+
+window.deleteReceipt = async (receiptId) => {
+    if (!confirm('Deseja excluir este recibo? Os serviços voltarão a ficar disponíveis para novo pagamento ou recibo.')) return;
+
+    const af = window.MyFleetCar || MyFleetCar;
+    try {
+        const { error } = await af.DB.delete('commission_receipts', { id: receiptId });
+        if (error) throw error;
+        alert('Recibo excluído com sucesso.');
+        if (af.Financial) af.Financial.initCommissionsPage();
+    } catch (err) {
+        alert('Erro ao excluir recibo.');
     }
 };
 

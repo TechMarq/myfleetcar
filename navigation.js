@@ -20,21 +20,24 @@ function setupSidebar() {
 
     sidebarLinks.forEach(link => {
         const href = link.getAttribute('href');
-        
-        const isDeactivated = href && (href.includes('agendamento') || href.includes('estoque'));
+        if (!href) return;
+
+        const isDeactivated = href.includes('agendamento');
         
         if (isDeactivated) {
             link.classList.add('opacity-40', 'grayscale', 'cursor-not-allowed', 'pointer-events-none', 'select-none');
             link.title = "Módulo Em Breve";
             link.removeAttribute('href');
             link.onclick = (e) => { e.preventDefault(); return false; };
-            // Clean up original hover effects if possible or just rely on pointer-events-none
             link.classList.remove('hover:text-orange-50', 'active:scale-95');
-            return; // Don't apply active state to deactivated links
+            return;
         }
-        // Active state logic
-        if (href && href !== '#' && currentPath.includes(href)) {
-            link.classList.add('text-orange-600', 'dark:text-orange-400', 'border-r-4', 'border-orange-600', 'dark:border-orange-500', 'bg-orange-50/50', 'dark:bg-orange-950/10', 'font-semibold');
+
+        // Active state logic - better matching
+        const page = currentPath.split('/').pop() || 'home.html';
+        if (href === page || (page === '' && href === 'home.html')) {
+            link.classList.add('text-orange-600', 'dark:text-orange-400', 'border-r-4', 'border-orange-600', 'dark:border-orange-500', 'bg-orange-50/50', 'dark:bg-orange-950/10', 'font-bold');
+            link.classList.remove('text-slate-600', 'dark:text-slate-400');
         }
     });
 }
@@ -359,8 +362,8 @@ function applyGlobalResponsiveFixes() {
         const bottomBar = document.createElement('nav');
         bottomBar.className = 'bottom-app-bar lg:hidden';
         
-        const currentPath = window.location.pathname;
-        const isActive = (path) => currentPath.includes(path) ? 'active' : '';
+        const page = currentPath.split('/').pop() || 'home.html';
+        const isActive = (path) => page.includes(path) ? 'active' : '';
 
         bottomBar.innerHTML = `
             <a href="home.html" class="bottom-bar-item ${isActive('home.html')}">
@@ -368,13 +371,12 @@ function applyGlobalResponsiveFixes() {
                 <span>Início</span>
             </a>
             <a href="lista-ordem.html" class="bottom-bar-item ${isActive('lista-ordem')}">
-                <span class="material-symbols-outlined">build</span>
+                <span class="material-symbols-outlined">description</span>
                 <span>Ordens</span>
             </a>
-            <a href="nova-ordem.html" class="bottom-bar-item fab-button">
-                <div class="fab-circle">
-                    <span class="material-symbols-outlined pb">add</span>
-                </div>
+            <a href="lista-estoque.html" class="bottom-bar-item ${isActive('lista-estoque')}">
+                <span class="material-symbols-outlined">inventory_2</span>
+                <span>Estoque</span>
             </a>
             <a href="lista-clientes.html" class="bottom-bar-item ${isActive('lista-clientes')}">
                 <span class="material-symbols-outlined">group</span>
@@ -382,17 +384,21 @@ function applyGlobalResponsiveFixes() {
             </a>
             <button id="mobile-menu-btn" class="bottom-bar-item">
                 <span class="material-symbols-outlined">apps</span>
-                <span>Módulos</span>
+                <span>Mais</span>
             </button>
         `;
         
         document.body.appendChild(bottomBar);
 
         // Bind Menu Button
-        document.getElementById('mobile-menu-btn').addEventListener('click', (e) => {
-            e.stopPropagation();
-            toggleMenu();
-        });
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        if (menuBtn) {
+            menuBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                toggleMenu();
+            });
+        }
     }
 }
 

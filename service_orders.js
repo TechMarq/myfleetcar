@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 2. Load Order Details if on the details page
     if (document.querySelector('.order-id-display')) {
         loadOrderDetails();
+        setupOSItemInventorySearch();
     }
 
     // 3. Handle New Order Form if on the registration page
@@ -188,7 +189,7 @@ function renderServiceOrdersTable(orders) {
                     <span class="text-xs font-semibold text-slate-500">${order.mechanic_name || '--'}</span>
                 </td>
                 <td class="hidden sm:table-cell px-4 py-6 whitespace-nowrap">
-                    <span class="text-xs font-medium text-slate-500">${new Date(order.entry_date || order.created_at).toLocaleDateString('pt-BR')}</span>
+                    <span class="text-xs font-medium text-slate-500">${new Date((order.entry_date || order.created_at).includes('T') ? (order.entry_date || order.created_at) : (order.entry_date || order.created_at) + 'T12:00:00').toLocaleDateString('pt-BR')}</span>
                 </td>
                 <td class="px-4 py-4 md:py-6 whitespace-nowrap">
                     <span onclick='quickStatusUpdate(${JSON.stringify(order).replace(/"/g, "&quot;")})' 
@@ -526,7 +527,7 @@ async function loadOrderDetails() {
 
         // Update displays
         document.querySelector('.order-id-display').textContent = o.os_number || `#${o.id.toString().slice(-6).toUpperCase()}`;
-        document.querySelector('.order-date-display').textContent = new Date(o.entry_date || o.created_at).toLocaleDateString('pt-BR');
+        document.querySelector('.order-date-display').textContent = new Date((o.entry_date || o.created_at).includes('T') ? (o.entry_date || o.created_at) : (o.entry_date || o.created_at) + 'T12:00:00').toLocaleDateString('pt-BR');
 
         const statusBadge = document.getElementById('order-status-badge');
         if (statusBadge) {
@@ -766,7 +767,7 @@ async function updateOrderStatus(id, newStatus, extraData = {}) {
                 category: 'Serviço Automotivo',
                 amount: totalAmount,
                 payment_method: extraData.payment_method,
-                due_date: extraData.payment_due_date || new Date().toISOString().split('T')[0],
+                due_date: extraData.payment_due_date ? new Date(extraData.payment_due_date + 'T12:00:00').toISOString() : new Date().toISOString(),
                 status: extraData.payment_status || 'Pendente',
                 description: `OS ${window.currentOrder.os_number || id}`
             };
@@ -807,18 +808,20 @@ async function updateOrderStatus(id, newStatus, extraData = {}) {
 }
 
 window.confirmCompletion = async () => {
-    const paymentMethod = document.getElementById('complete-payment-method').value;
+    const method = document.getElementById('complete-payment-method').value;
     const dueDate = document.getElementById('complete-due-date').value;
+    const paymentStatus = document.getElementById('complete-payment-status').value;
 
-    if (!paymentMethod) {
-        alert('Por favor, selecione uma forma de pagamento.');
+    if (!dueDate) {
+        alert('Por favor, informe a data de vencimento ou pagamento.');
         return;
     }
 
     await updateOrderStatus(window.currentOrder.id, 'Concluído', {
-        payment_method: paymentMethod,
-        payment_status: document.getElementById('complete-payment-status').value,
-        payment_due_date: dueDate || new Date().toISOString().split('T')[0]
+        payment_method: method,
+        payment_status: paymentStatus,
+        payment_due_date: dueDate,
+        exit_date: new Date().toISOString()
     });
 };
 
@@ -855,23 +858,6 @@ window.confirmApproval = async () => {
     });
 };
 
-window.confirmCompletion = async () => {
-    const method = document.getElementById('complete-payment-method').value;
-    const dueDate = document.getElementById('complete-due-date').value;
-    const paymentStatus = document.getElementById('complete-payment-status').value;
-
-    if (!dueDate) {
-        alert('Por favor, informe a data de vencimento ou pagamento.');
-        return;
-    }
-
-    await updateOrderStatus(window.currentOrder.id, 'Concluído', {
-        payment_method: method,
-        payment_status: paymentStatus,
-        payment_due_date: dueDate,
-        exit_date: new Date().toISOString()
-    });
-};
 
 /**
  * Dynamically loads mechanics into the approval modal
@@ -956,12 +942,15 @@ function renderOrderItems(order) {
             const subtotal = (item.price || 0) * (item.qty || 1);
             const itemMechanic = item.mechanic_name || order.mechanic_name || 'Nenhum';
             const description = item.name || item.description || 'Sem Descrição';
+            const itemTypeLabel = item.type === 'part' ? 'PEÇA' : 'SERVIÇO';
+            const itemTypeColor = item.type === 'part' ? 'text-blue-500' : 'text-slate-400';
 
             return `
                 <tr class="hover:bg-slate-50 transition-colors">
                     <td class="px-4 md:px-6 py-4">
                         <div class="flex flex-col">
-                            <span class="text-xs md:text-sm font-bold text-slate-700">${description}</span>
+                            <span class="text-xs md:text-sm font-bold text-slate-700 uppercase tracking-tight">${description}</span>
+                            ${item.extra_info ? `<span class="text-[9px] text-slate-400 font-medium italic">${item.extra_info.replace('\n', ' ')}</span>` : ''}
                             <div class="sm:hidden flex items-center gap-2 mt-1 text-[9px] font-bold text-slate-400">
                                 <span>Qtd: ${item.qty}</span>
                                 <span>•</span>
@@ -969,12 +958,7 @@ function renderOrderItems(order) {
                             </div>
                         </div>
                     </td>
-                    <td class="hidden md:table-cell px-6 py-4">
-                        <select onchange="updateItemMechanic(${index}, this.value)" ${order.status === 'Concluído' ? 'disabled' : ''} class="bg-transparent border-none text-[10px] font-bold text-slate-500 uppercase focus:ring-0 cursor-pointer disabled:cursor-not-allowed">
-                            <option value="">${itemMechanic} (Padrão)</option>
-                            ${(staff || []).map(s => `<option value="${s.name}" ${item.mechanic_name === s.name ? 'selected' : ''}>${s.name}</option>`).join('')}
-                        </select>
-                    </td>
+                    <td class="hidden md:table-cell px-6 py-4 text-xs font-black ${itemTypeColor} tracking-widest">${itemTypeLabel}</td>
                     <td class="hidden sm:table-cell px-6 py-4 text-center">
                         <span class="text-xs font-bold text-slate-600">${item.qty}</span>
                     </td>
@@ -999,21 +983,171 @@ function renderOrderItems(order) {
 /**
  * Logic for adding/updating items
  */
+/**
+ * Logic for adding/updating items
+ */
+let currentItemType = 'service';
+
+window.setItemType = function(type) {
+    currentItemType = type;
+    const btnService = document.getElementById('btn-type-service');
+    const btnPart = document.getElementById('btn-type-part');
+    const searchContainer = document.getElementById('part-search-container');
+    
+    if (type === 'service') {
+        btnService.classList.add('bg-white', 'shadow-sm', 'text-primary');
+        btnService.classList.remove('text-slate-500');
+        btnPart.classList.remove('bg-white', 'shadow-sm', 'text-primary');
+        btnPart.classList.add('text-slate-500');
+        if (searchContainer) searchContainer.classList.add('hidden');
+        document.getElementById('item-description').value = '';
+        document.getElementById('item-description').readOnly = false;
+        document.getElementById('item-price').value = '';
+    } else {
+        btnPart.classList.add('bg-white', 'shadow-sm', 'text-primary');
+        btnPart.classList.remove('text-slate-500');
+        btnService.classList.remove('bg-white', 'shadow-sm', 'text-primary');
+        btnService.classList.add('text-slate-500');
+        if (searchContainer) searchContainer.classList.remove('hidden');
+        document.getElementById('item-description').readOnly = true;
+    }
+};
+
+async function setupOSItemInventorySearch() {
+    const searchInput = document.getElementById('os-item-inventory-search');
+    const resultsContainer = document.getElementById('os-item-inventory-results');
+    if (!searchInput) return;
+
+    let searchTimeout;
+    searchInput.addEventListener('input', (e) => {
+        const term = e.target.value.trim();
+        clearTimeout(searchTimeout);
+        if (!term) {
+            resultsContainer.classList.add('hidden');
+            return;
+        }
+
+        searchTimeout = setTimeout(async () => {
+            try {
+                const { data: products } = await MyFleetCar.DB.select('inventory', {
+                    or: `name.ilike.%${term}%,sku.ilike.%${term}%,barcode.ilike.%${term}%`,
+                    limit: 5
+                });
+
+                if (products && products.length > 0) {
+                    resultsContainer.innerHTML = products.map(p => `
+                        <div class="p-3 border-b border-slate-50 hover:bg-orange-50 cursor-pointer transition-colors" 
+                             onclick="selectOSProduct('${p.id}', '${p.name.replace(/'/g, "\\'")}', ${p.sale_price}, ${p.quantity}, '${p.reference_code || ''}', '${(p.vehicle_models || '').replace(/'/g, "\\'")}')">
+                            <div class="flex justify-between items-center">
+                                <div class="text-sm font-bold text-on-surface">${p.name}</div>
+                                <div class="text-[10px] px-1.5 py-0.5 rounded ${p.quantity <= 0 ? 'bg-red-50 text-red-500' : 'bg-slate-100 text-slate-500'}">Estoque: ${p.quantity}</div>
+                            </div>
+                            <div class="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-1">
+                                <span class="bg-slate-100 px-1 rounded">REF: ${p.reference_code || 'S/ REF'}</span>
+                                <span class="ml-2 text-slate-400">APL: ${p.vehicle_models || 'Universal'}</span>
+                            </div>
+                            <div class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">${p.brand || 'Sem Marca'} | R$ ${p.sale_price.toLocaleString('pt-BR')}</div>
+                        </div>
+                    `).join('');
+                    resultsContainer.classList.remove('hidden');
+                } else {
+                    resultsContainer.innerHTML = '<div class="p-4 text-xs text-slate-400 text-center italic">Produto não encontrado.</div>';
+                    resultsContainer.classList.remove('hidden');
+                }
+            } catch (err) { console.error(err); }
+        }, 300);
+    });
+
+    window.selectOSProduct = (id, name, price, stock, refCode, application) => {
+        if (stock <= 0) {
+            if (!confirm('Este produto está sem estoque. Deseja continuar assim mesmo?')) return;
+        }
+        document.getElementById('item-description').value = name + (refCode ? ` [${refCode}]` : '');
+        // We can also store refCode/app in hidden fields if we want to save them separately in the JSON
+        const extraInfo = application ? `\nAPL: ${application}` : '';
+        document.getElementById('item-description').dataset.extra = extraInfo;
+        
+        document.getElementById('item-price').value = price;
+        document.getElementById('selected-product-id').value = id;
+        document.getElementById('os-item-inventory-search').value = name;
+        resultsContainer.classList.add('hidden');
+    };
+
+    document.addEventListener('click', (e) => {
+        if (!searchInput.contains(e.target) && !resultsContainer.contains(e.target)) {
+            resultsContainer.classList.add('hidden');
+        }
+    });
+}
+
 window.addNewItem = async function () {
     if (window.currentOrder.status === 'Concluído') return;
     const desc = document.getElementById('item-description').value;
     const qty = parseFloat(document.getElementById('item-qty').value);
     const price = parseFloat(document.getElementById('item-price').value);
     const mech = document.getElementById('item-mechanic').value;
+    const productId = document.getElementById('selected-product-id')?.value;
 
     if (!desc || isNaN(qty) || isNaN(price)) return;
 
-    const newItem = { name: desc, qty, price, mechanic_name: mech || null };
-    const updatedServices = [...(window.currentOrder.labor_services || []), newItem];
+    const newItem = { 
+        name: desc, 
+        qty, 
+        price, 
+        mechanic_name: mech || null,
+        type: currentItemType,
+        product_id: currentItemType === 'part' ? productId : null,
+        extra_info: document.getElementById('item-description').dataset.extra || ''
+    };
 
     try {
-        await MyFleetCar.DB.update('service_orders', { labor_services: updatedServices }, { id: window.currentOrder.id });
-        await addHistoryEntry(window.currentOrder.id, 'Item', `Adicionado item: ${desc}`);
+        const { data: { user } } = await MyFleetCar.Auth.getUser();
+        
+        // If it's a part, handle inventory deduction
+        if (currentItemType === 'part' && productId) {
+            // 1. Get current stock
+            const { data: inv } = await MyFleetCar.DB.select('inventory', { match: { id: productId } });
+            if (inv && inv[0]) {
+                const currentQty = inv[0].quantity || 0;
+                const newQty = currentQty - qty;
+
+                // 2. Generate Batch ID
+                const batchId = `OS-${window.currentOrder.os_number || window.currentOrder.id}-${Date.now().toString().slice(-6)}`;
+
+                // 3. Record Movement (Saída)
+                await MyFleetCar.DB.insert('inventory_movements', {
+                    workshop_id: user.id,
+                    product_id: productId,
+                    type: 'Saída',
+                    quantity: qty,
+                    unit_cost: inv[0].purchase_price || 0,
+                    unit_sale: price,
+                    batch_id: batchId,
+                    reason: `Consumo na OS ${window.currentOrder.os_number || window.currentOrder.id}`,
+                    service_order_id: window.currentOrder.id,
+                    created_at: new Date().toISOString()
+                });
+
+                // 4. Update Inventory
+                await MyFleetCar.DB.update('inventory', { quantity: newQty }, { id: productId });
+            }
+        }
+
+        const updatedServices = [...(window.currentOrder.labor_services || []), newItem];
+        
+        // Recalculate Total
+        const additional = window.currentOrder.additional_charges || 0;
+        const discount = window.currentOrder.discount_amount || 0;
+        const noCharge = window.currentOrder.no_charge || false;
+        const baseTotal = updatedServices.reduce((acc, s) => acc + (s.price * s.qty), 0);
+        let finalTotal = noCharge ? 0 : Math.max(0, baseTotal + additional - discount);
+
+        await MyFleetCar.DB.update('service_orders', { 
+            labor_services: updatedServices,
+            total_amount: finalTotal
+        }, { id: window.currentOrder.id });
+        
+        await addHistoryEntry(window.currentOrder.id, 'Item', `Adicionado ${currentItemType === 'part' ? 'peça' : 'serviço'}: ${desc}`);
         window.location.reload();
     } catch (err) {
         console.error(err);
@@ -1029,7 +1163,48 @@ window.removeItemFromOS = async function (index) {
     const itemDesc = removedItem.name || removedItem.description;
 
     try {
-        await MyFleetCar.DB.update('service_orders', { labor_services: updated }, { id: window.currentOrder.id });
+        const { data: { user } } = await MyFleetCar.Auth.getUser();
+
+        // If it was a part, return stock
+        if (removedItem.type === 'part' && removedItem.product_id) {
+            const { data: inv } = await MyFleetCar.DB.select('inventory', { match: { id: removedItem.product_id } });
+            if (inv && inv[0]) {
+                const currentQty = inv[0].quantity || 0;
+                const newQty = currentQty + (removedItem.qty || 1);
+
+                // 2. Generate Batch ID for Estorno
+                const batchId = `EST-${window.currentOrder.os_number || window.currentOrder.id}-${Date.now().toString().slice(-6)}`;
+
+                // 3. Record Movement (Estorno)
+                await MyFleetCar.DB.insert('inventory_movements', {
+                    workshop_id: user.id,
+                    product_id: removedItem.product_id,
+                    type: 'Estorno',
+                    quantity: removedItem.qty || 1,
+                    unit_cost: inv[0].purchase_price || 0,
+                    batch_id: batchId,
+                    reason: `Remoção do item da OS ${window.currentOrder.os_number || window.currentOrder.id}`,
+                    service_order_id: window.currentOrder.id,
+                    created_at: new Date().toISOString()
+                });
+
+                // 4. Update Inventory
+                await MyFleetCar.DB.update('inventory', { quantity: newQty }, { id: removedItem.product_id });
+            }
+        }
+
+        // Recalculate Total
+        const additional = window.currentOrder.additional_charges || 0;
+        const discount = window.currentOrder.discount_amount || 0;
+        const noCharge = window.currentOrder.no_charge || false;
+        const baseTotal = updated.reduce((acc, s) => acc + (s.price * s.qty), 0);
+        let finalTotal = noCharge ? 0 : Math.max(0, baseTotal + additional - discount);
+
+        await MyFleetCar.DB.update('service_orders', { 
+            labor_services: updated,
+            total_amount: finalTotal
+        }, { id: window.currentOrder.id });
+        
         await addHistoryEntry(window.currentOrder.id, 'Item', `Removido item: ${itemDesc}`);
         window.location.reload();
     } catch (err) {

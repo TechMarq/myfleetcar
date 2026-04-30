@@ -123,6 +123,17 @@ const DB = {
                 request = request.in(col, val);
             }
         }
+        if (query.neq) {
+            for (const [col, val] of Object.entries(query.neq)) {
+                request = request.neq(col, val);
+            }
+        }
+        if (query.filter) {
+            // Support for complex filters if passed directly
+            for (const [col, cond] of Object.entries(query.filter)) {
+                if (cond.neq) request = request.neq(col, cond.neq);
+            }
+        }
         if (query.order) request = request.order(query.order.column, { ascending: query.order.ascending });
         if (query.limit) request = request.limit(query.limit);
 
