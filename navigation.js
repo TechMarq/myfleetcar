@@ -396,10 +396,11 @@ function applyGlobalResponsiveFixes() {
         }
         
         @media (max-width: 768px) {
-            /* Fix tables escaping viewport and transform into cards */
+            /* Fix tables escaping viewport and transform into ultra-compact cards */
             table {
                 border: none !important;
                 background: transparent !important;
+                width: 100% !important;
             }
             thead {
                 display: none;
@@ -410,11 +411,11 @@ function applyGlobalResponsiveFixes() {
             }
             tr {
                 display: block;
-                margin-bottom: 1.5rem;
+                margin-bottom: 0.5rem;
                 background: white;
-                border-radius: 1.25rem;
-                padding: 0.75rem;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+                border-radius: 0.75rem;
+                padding: 0.4rem 0.6rem;
+                box-shadow: 0 1px 4px rgba(0,0,0,0.02);
                 border: 1px solid #f1f5f9 !important;
                 overflow: hidden;
             }
@@ -427,10 +428,14 @@ function applyGlobalResponsiveFixes() {
                 justify-content: space-between !important;
                 align-items: center !important;
                 border: none !important;
-                padding: 0.6rem 0.5rem !important;
+                padding: 0.15rem 0 !important;
                 width: 100% !important;
                 text-align: right !important;
-                min-height: 2.5rem;
+                min-height: 1.25rem;
+            }
+            /* Respect hidden classes */
+            td.hidden, td.hidden-mobile {
+                display: none !important;
             }
             td:not(:last-child) {
                 border-bottom: 1px solid #f8fafc !important;
@@ -440,22 +445,295 @@ function applyGlobalResponsiveFixes() {
             }
             td:before {
                 content: attr(data-label);
-                font-size: 0.6rem;
+                font-size: 0.55rem;
                 font-weight: 800;
                 text-transform: uppercase;
-                letter-spacing: 0.05em;
+                letter-spacing: 0.02em;
                 color: #94a3b8;
                 text-align: left;
-                margin-right: 1rem;
+                margin-right: 0.5rem;
             }
+            
+            /* Smaller text for values in mobile */
+            td > * {
+                font-size: 0.75rem !important;
+            }
+            td span, td div {
+                font-size: 0.75rem !important;
+            }            /* Modern Card Table Override - Ultra Compact for 4+ visibility */
+            .modern-card-table tr {
+                display: grid !important;
+                grid-template-areas: 
+                    "ordem status"
+                    "info info"
+                    "mecanico datas"
+                    "actions actions";
+                grid-template-columns: 1fr 1fr;
+                gap: 0.35rem !important;
+                padding: 0.6rem 0.8rem !important;
+                border-radius: 1rem !important;
+                margin-bottom: 0.5rem !important;
+                position: relative;
+            }
+
+            .modern-card-table td {
+                display: block !important;
+                text-align: left !important;
+                padding: 0 !important;
+                border: none !important;
+                min-height: auto !important;
+                width: 100% !important;
+            }
+
+            .modern-card-table td:before {
+                display: none !important;
+            }
+
+            .modern-card-table td[data-label="Ordem"] { 
+                grid-area: ordem; 
+            }
+            .modern-card-table td[data-label="Ordem"] span {
+                font-size: 0.7rem !important;
+            }
+            
+            .modern-card-table td[data-label="Status"] { 
+                grid-area: status; 
+                display: flex !important;
+                flex-direction: row;
+                justify-content: flex-end !important;
+                align-items: center !important;
+                gap: 6px;
+            }
+
+            .modern-card-table td[data-label="Veículo / Cliente"] { 
+                grid-area: info; 
+                margin-top: -2px;
+            }
+            
+            .modern-card-table td[data-label="Veículo / Cliente"] .text-xs,
+            .modern-card-table td[data-label="Veículo / Cliente"] .text-sm {
+                font-size: 0.85rem !important;
+                font-weight: 900 !important;
+            }
+            .modern-card-table td[data-label="Veículo / Cliente"] .text-[9px],
+            .modern-card-table td[data-label="Veículo / Cliente"] .text-[10px] {
+                font-size: 0.65rem !important;
+            }
+
+            .modern-card-table td[data-label="Responsável"] {
+                grid-area: mecanico;
+            }
+            .modern-card-table td[data-label="Responsável"] span {
+                font-size: 0.65rem !important;
+            }
+
+            .modern-card-table td[data-label="Datas"] {
+                grid-area: datas;
+                display: flex !important;
+                flex-direction: column;
+                align-items: flex-end !important;
+            }
+            .modern-card-table td[data-label="Datas"] span {
+                font-size: 0.65rem !important;
+            }
+
+            .modern-card-table td[data-label="Ações"] { 
+                grid-area: actions; 
+                padding-top: 0.4rem !important;
+                border-top: 1px solid #f1f5f9 !important;
+                margin-top: 0.15rem;
+                display: flex !important;
+                justify-content: space-between !important;
+                align-items: center !important;
+            }
+            .dark .modern-card-table td[data-label="Ações"] { border-top-color: #334155 !important; }
+
+            .modern-card-table td[data-label="Ações"] .flex {
+                gap: 0.75rem !important;
+            }
+
+            .modern-card-table td[data-label="Ações"] .material-symbols-outlined {
+                font-size: 18px !important;
+            }
+
+            .modern-card-table .mobile-price-tag {
+                font-size: 0.8rem !important;
+                font-weight: 900 !important;
+            }
+
+            /* Specific Grid for Inventory Cards */
+            .modern-card-inventory tr {
+                display: grid !important;
+                grid-template-areas: 
+                    "prod stock"
+                    "app app"
+                    "prices prices";
+                grid-template-columns: 1fr auto;
+                gap: 0.35rem !important;
+                padding: 0.65rem 0.85rem !important;
+                border-radius: 1rem !important;
+                margin-bottom: 0.6rem !important;
+            }
+
+            .modern-card-inventory td[data-label="Produto & Marca"] { 
+                grid-area: prod; 
+                overflow: hidden;
+            }
+            .modern-card-inventory td[data-label="Produto & Marca"] .text-sm {
+                font-size: 0.85rem !important;
+                font-weight: 900 !important;
+                display: block;
+            }
+            .modern-card-inventory td[data-label="Produto & Marca"] .text-[10px] {
+                font-size: 0.65rem !important;
+                display: block;
+                margin-top: -2px;
+            }
+
+            .modern-card-inventory td[data-label="Estoque"] { 
+                grid-area: stock; 
+                display: flex !important;
+                flex-direction: column;
+                align-items: flex-end !important;
+                justify-content: center;
+            }
+            .modern-card-inventory td[data-label="Estoque"] .text-sm {
+                font-size: 0.85rem !important;
+                font-weight: 900 !important;
+            }
+
+            .modern-card-inventory td[data-label="Aplicação"] { 
+                grid-area: app; 
+                margin-top: -2px;
+            }
+            .modern-card-inventory td[data-label="Aplicação"] span {
+                font-size: 0.7rem !important;
+                font-weight: 600 !important;
+                color: #64748b;
+            }
+
+            .modern-card-inventory td[data-label="Vlr. Venda"],
+            .modern-card-inventory td[data-label="Vlr. Custo"] {
+                grid-area: prices;
+                display: inline-block !important;
+                width: auto !important;
+                margin-top: 0.25rem;
+                padding-top: 0.4rem !important;
+                border-top: 1px solid #f8fafc !important;
+            }
+            .modern-card-inventory td[data-label="Vlr. Venda"] {
+                text-align: right !important;
+                float: right;
+                width: 50% !important;
+            }
+            .modern-card-inventory td[data-label="Vlr. Custo"] {
+                text-align: left !important;
+                float: left;
+                width: 50% !important;
+            }
+            .dark .modern-card-inventory td { border-top-color: #334155 !important; }
+
+            .modern-card-inventory td[data-label="Vlr. Venda"] span {
+                font-size: 0.8rem !important;
+                font-weight: 900 !important;
+            }
+            .modern-card-inventory td[data-label="Vlr. Custo"] span {
+                font-size: 0.7rem !important;
+                font-weight: 700 !important;
+            }
+
+            /* Specific Grid for Movement History Cards */
+            .modern-card-movements tr {
+                display: grid !important;
+                grid-template-areas: 
+                    "data tipo"
+                    "prod prod"
+                    "qtd valores";
+                grid-template-columns: 1fr auto;
+                gap: 0.3rem !important;
+                padding: 0.6rem 0.8rem !important;
+                border-radius: 1rem !important;
+                margin-bottom: 0.5rem !important;
+            }
+
+            .modern-card-movements td[data-label="Data"] { 
+                grid-area: data; 
+                font-size: 0.65rem !important;
+                color: #94a3b8;
+                font-weight: 700;
+            }
+
+            .modern-card-movements td[data-label="Tipo"] { 
+                grid-area: tipo; 
+                display: flex !important;
+                justify-content: flex-end !important;
+            }
+
+            .modern-card-movements td[data-label="Produto"] { 
+                grid-area: prod; 
+                margin-top: -2px;
+            }
+            .modern-card-movements td[data-label="Produto"] .text-xs {
+                font-size: 0.85rem !important;
+                font-weight: 900 !important;
+            }
+            .modern-card-movements td[data-label="Produto"] .text-[9px] {
+                font-size: 0.65rem !important;
+            }
+
+            .modern-card-movements td[data-label="Quantidade"] { 
+                grid-area: qtd; 
+                display: flex !important;
+                align-items: center !important;
+                font-size: 0.85rem !important;
+                font-weight: 900 !important;
+            }
+            .modern-card-movements td[data-label="Quantidade"]:before {
+                content: "Qtd: ";
+                display: inline !important;
+                font-size: 0.65rem !important;
+                color: #94a3b8;
+                margin-right: 4px;
+            }
+
+            .modern-card-movements td[data-label="Vlr. Unitário"],
+            .modern-card-movements td[data-label="Lucro"] {
+                grid-area: valores;
+                display: flex !important;
+                flex-direction: column;
+                align-items: flex-end !important;
+                justify-content: center;
+            }
+            .modern-card-movements td[data-label="Vlr. Unitário"] {
+                font-size: 0.75rem !important;
+                font-weight: 800 !important;
+            }
+            .modern-card-movements td[data-label="Lucro"] {
+                font-size: 0.65rem !important;
+                font-weight: 700 !important;
+                margin-top: -2px;
+            }
+
+            /* Hide less critical info on very small screens to maintain 4+ visibility */
+            .modern-card-movements td[data-label="Lote / Ref"],
+            .modern-card-movements td[data-label="Responsável"],
+            .modern-card-movements td[data-label="Motivo"] {
+                display: none !important;
+            }
+        }   }
             
             /* Clean up spaces */
             main {
-                padding-top: 5rem !important;
-                padding-bottom: 6rem !important;
-                padding-left: 1rem !important;
-                padding-right: 1rem !important;
+                padding-top: 4.5rem !important;
+                padding-bottom: 5.5rem !important;
+                padding-left: 0.75rem !important;
+                padding-right: 0.75rem !important;
                 margin-left: 0 !important;
+            }
+            
+            /* Compact Header */
+            header h2, h1 {
+                font-size: 1.1rem !important;
             }
 
             /* Responsive Grid */

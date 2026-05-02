@@ -118,6 +118,52 @@ function applyServiceOrderFilters() {
     renderServiceOrdersTable(filtered);
 }
 
+/**
+ * Sets quick date filters (7, 15 days, last month)
+ */
+window.setDateFilter = function(days) {
+    const end = new Date();
+    const start = new Date();
+    
+    if (days === 'last_month') {
+        // First day of last month to last day of last month
+        start.setMonth(start.getMonth() - 1);
+        start.setDate(1);
+        
+        const lastDay = new Date();
+        lastDay.setDate(0); // This sets it to the last day of the previous month
+        
+        document.getElementById('filter-date-start').value = start.toISOString().split('T')[0];
+        document.getElementById('filter-date-end').value = lastDay.toISOString().split('T')[0];
+    } else {
+        start.setDate(start.getDate() - days);
+        document.getElementById('filter-date-start').value = start.toISOString().split('T')[0];
+        document.getElementById('filter-date-end').value = end.toISOString().split('T')[0];
+    }
+    
+    // Close dropdown by blurring the button if focused
+    document.activeElement.blur();
+    
+    applyServiceOrderFilters();
+};
+
+/**
+ * Resets all filters
+ */
+window.resetFilters = function() {
+    const search = document.getElementById('service-order-search');
+    const status = document.getElementById('service-order-status-filter');
+    const start = document.getElementById('filter-date-start');
+    const end = document.getElementById('filter-date-end');
+
+    if (search) search.value = '';
+    if (status) status.value = '';
+    if (start) start.value = '';
+    if (end) end.value = '';
+
+    applyServiceOrderFilters();
+};
+
 function renderServiceOrdersTable(orders) {
     const listContainer = document.getElementById('service-orders-list');
     const paginationInfo = document.getElementById('pagination-info');
@@ -159,16 +205,19 @@ function renderServiceOrdersTable(orders) {
 
         const osLabel = order.os_number || '#' + order.id.toString().slice(-6).toUpperCase();
         
-        // WhatsApp Share logic - simplified to call a global function
-        const shareLink = `javascript:shareOSViaWhatsApp(${JSON.stringify(order).replace(/"/g, '&quot;')})`;
+        // Date formatting
+        const entryDate = order.entry_date || order.created_at;
+        const exitDate = order.exit_date;
+        const formattedEntry = new Date(entryDate.includes('T') ? entryDate : entryDate + 'T12:00:00').toLocaleDateString('pt-BR');
+        const formattedExit = exitDate ? new Date(exitDate.includes('T') ? exitDate : exitDate + 'T12:00:00').toLocaleDateString('pt-BR') : '--';
 
         return `
-            <tr class="hover:bg-slate-50/50 transition-all group">
+            <tr class="hover:bg-slate-50 transition-all group cursor-pointer" onclick="window.location.href='detalhes-ordem.html?id=${order.id}'">
                 <td class="px-4 md:px-8 py-4 md:py-6 whitespace-nowrap" data-label="Ordem">
-                    <a href="detalhes-ordem.html?id=${order.id}" class="flex flex-col hover:text-orange-600 transition-colors">
+                    <div class="flex flex-col">
                         <span class="text-xs md:text-sm font-black text-slate-900">${osLabel}</span>
                         <span class="text-[9px] text-slate-400 font-bold uppercase tracking-tighter">Ver Detalhes</span>
-                    </a>
+                    </div>
                 </td>
                 <td class="px-4 py-4 md:py-6" data-label="Veículo / Cliente">
                     <div class="flex flex-col">
@@ -185,33 +234,48 @@ function renderServiceOrdersTable(orders) {
                         </div>
                     </div>
                 </td>
-                <td class="hidden md:table-cell px-4 py-6 whitespace-nowrap" data-label="Responsável">
+                <td class="px-4 py-4 md:py-6 whitespace-nowrap" data-label="Responsável">
                     <span class="text-xs font-semibold text-slate-500">${order.mechanic_name || '--'}</span>
                 </td>
-                <td class="hidden sm:table-cell px-4 py-6 whitespace-nowrap" data-label="Entrada">
-                    <span class="text-xs font-medium text-slate-500">${new Date((order.entry_date || order.created_at).includes('T') ? (order.entry_date || order.created_at) : (order.entry_date || order.created_at) + 'T12:00:00').toLocaleDateString('pt-BR')}</span>
+                <td class="px-4 py-4 md:py-6 whitespace-nowrap" data-label="Datas">
+                    <div class="flex flex-col">
+                        <div class="flex items-center gap-1 text-slate-600">
+                            <span class="text-[8px] font-black uppercase text-slate-400 w-6">Abr:</span>
+                            <span class="text-[10px] md:text-xs font-bold">${formattedEntry}</span>
+                        </div>
+                        <div class="flex items-center gap-1 text-slate-500">
+                            <span class="text-[8px] font-black uppercase text-slate-400 w-6">Con:</span>
+                            <span class="text-[10px] md:text-xs font-medium">${formattedExit}</span>
+                        </div>
+                    </div>
                 </td>
                 <td class="px-4 py-4 md:py-6 whitespace-nowrap" data-label="Status">
-                    <span onclick='quickStatusUpdate(${JSON.stringify(order).replace(/"/g, "&quot;")})' 
+                    <span onclick='event.stopPropagation(); quickStatusUpdate(${JSON.stringify(order).replace(/"/g, "&quot;")})' 
                         class="inline-flex items-center px-2 py-0.5 md:px-3 md:py-1 rounded-lg text-[9px] md:text-[10px] ${statusColors[order.status] || 'bg-slate-100 text-slate-600'} uppercase font-black tracking-widest cursor-pointer hover:brightness-110 transition-all">
                         ${order.status}
                     </span>
-                    <div class="sm:hidden mt-1 text-[10px] font-black text-slate-900">R$ ${order.total_amount ? order.total_amount.toLocaleString('pt-BR', { minimumFractionDigits: 2 }) : '0,00'}</div>
                 </td>
                 <td class="hidden sm:table-cell px-4 py-6 whitespace-nowrap text-right" data-label="Valor">
                     <span class="text-xs md:text-sm font-black text-slate-900">R$ ${order.total_amount ? order.total_amount.toLocaleString('pt-BR', { minimumFractionDigits: 2 }) : '0,00'}</span>
                 </td>
-                <td class="px-4 md:px-8 py-4 md:py-6 whitespace-nowrap text-right">
-                    <div class="flex items-center justify-end gap-1 md:gap-2">
-                        <button onclick='shareOSViaWhatsApp(${JSON.stringify(order).replace(/"/g, "&quot;")})' class="p-1.5 md:p-2 text-slate-400 hover:text-green-500 transition-colors" title="Compartilhar via WhatsApp">
-                            <span class="material-symbols-outlined text-lg">share</span>
-                        </button>
-                        <button onclick='downloadPDF("${order.id}")' class="p-1.5 md:p-2 text-slate-400 hover:text-blue-500 transition-colors" title="Gerar PDF">
-                            <span class="material-symbols-outlined text-lg">picture_as_pdf</span>
-                        </button>
-                        <a href="detalhes-ordem.html?id=${order.id}" class="p-1.5 md:p-2 text-slate-400 hover:text-orange-500 transition-colors" title="Visualizar OS">
-                            <span class="material-symbols-outlined text-lg">visibility</span>
-                        </a>
+                <td class="px-4 md:px-8 py-4 md:py-6 whitespace-nowrap text-right" data-label="Ações">
+                    <div class="flex items-center justify-between w-full">
+                        <!-- Mobile Price Tag (hidden on desktop) -->
+                        <div class="sm:hidden mobile-price-tag">
+                            R$ ${order.total_amount ? order.total_amount.toLocaleString('pt-BR', { minimumFractionDigits: 2 }) : '0,00'}
+                        </div>
+                        
+                        <div class="flex items-center gap-1 md:gap-3">
+                            <button onclick='event.stopPropagation(); shareOSViaWhatsApp(${JSON.stringify(order).replace(/"/g, "&quot;")})' class="p-2 md:p-2.5 text-slate-400 hover:text-green-500 transition-colors" title="Compartilhar via WhatsApp">
+                                <span class="material-symbols-outlined text-[24px]">share</span>
+                            </button>
+                            <button onclick='event.stopPropagation(); downloadPDF("${order.id}")' class="p-2 md:p-2.5 text-slate-400 hover:text-blue-500 transition-colors" title="Gerar PDF">
+                                <span class="material-symbols-outlined text-[24px]">picture_as_pdf</span>
+                            </button>
+                            <a href="detalhes-ordem.html?id=${order.id}" onclick="event.stopPropagation()" class="p-2 md:p-2.5 text-slate-400 hover:text-orange-500 transition-colors" title="Visualizar OS">
+                                <span class="material-symbols-outlined text-[24px]">visibility</span>
+                            </a>
+                        </div>
                     </div>
                 </td>
             </tr>

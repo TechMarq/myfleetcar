@@ -141,7 +141,7 @@ function renderInventory(products) {
                     <span class="text-[10px] font-black text-slate-400 uppercase tracking-tighter">${p.brand || 'S/ Marca'} - Ref: ${p.reference_code || '---'}</span>
                 </div>
             </td>
-            <td class="px-6 py-4" data-label="Aplicação">
+            <td class="hidden md:table-cell px-6 py-4" data-label="Aplicação">
                 <span class="text-xs font-medium text-slate-500 line-clamp-1">${p.vehicle_models || 'Universal'}</span>
             </td>
             <td class="px-6 py-4 text-center" data-label="Estoque">
@@ -150,7 +150,7 @@ function renderInventory(products) {
                     <span class="text-[9px] font-bold text-slate-400 uppercase">Mín: ${p.min_quantity || 0}</span>
                 </div>
             </td>
-            <td class="px-6 py-4 text-right" data-label="Vlr. Custo">
+            <td class="hidden-mobile px-6 py-4 text-right" data-label="Vlr. Custo">
                 <span class="text-[11px] font-bold text-slate-400 italic">R$ ${(p.purchase_price || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
             </td>
             <td class="px-6 py-4 text-right" data-label="Vlr. Venda">

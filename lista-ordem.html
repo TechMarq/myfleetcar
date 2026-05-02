@@ -197,17 +197,17 @@
                 </div>
             </div>
             <!-- Bento Filter Bar (Ultra Compact) -->
-            <div class="bg-surface-container-low p-3 md:p-3 rounded-2xl mb-6 md:mb-8 flex flex-col gap-3">
+            <div class="bg-surface-container-low p-2 md:p-3 rounded-2xl mb-4 md:mb-8 flex flex-col gap-2">
                 <div class="relative w-full">
                     <span
-                        class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">search</span>
+                        class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[18px]">search</span>
                     <input id="service-order-search"
-                        class="w-full pl-11 pr-4 py-3 bg-surface-container-lowest border-none rounded-xl text-xs md:text-sm font-bold focus:ring-2 focus:ring-primary-container/20 placeholder:text-slate-400"
-                        placeholder="Buscar placa, cliente ou serviço..." type="text" />
+                        class="w-full pl-10 pr-4 py-2 bg-surface-container-lowest border-none rounded-xl text-[11px] font-bold focus:ring-2 focus:ring-primary-container/20 placeholder:text-slate-400"
+                        placeholder="Placa, cliente ou serviço..." type="text" />
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
                     <select id="service-order-status-filter"
-                        class="bg-surface-container-lowest border-none rounded-xl text-[10px] font-black uppercase tracking-widest py-3 px-4 focus:ring-2 focus:ring-primary-container/20 text-slate-500">
+                        class="col-span-2 md:col-span-1 bg-surface-container-lowest border-none rounded-xl text-[9px] font-black uppercase tracking-widest py-2 px-3 focus:ring-2 focus:ring-primary-container/20 text-slate-500">
                         <option value="">Status: Todos</option>
                         <option value="Aberto">Status: Aberta</option>
                         <option value="Em Andamento">Status: Em Andamento</option>
@@ -216,34 +216,59 @@
                         <option value="Cancelado">Status: Cancelada</option>
                     </select>
                     
-                    <div class="grid grid-cols-2 gap-2 bg-surface-container-lowest rounded-xl p-1 md:px-4 md:py-0 border-none">
-                        <div class="flex flex-col px-3 py-1.5">
-                            <span class="text-[8px] uppercase text-slate-400 font-black">De</span>
-                            <input id="filter-date-start" class="bg-transparent border-none p-0 text-[10px] font-black focus:ring-0 text-slate-600" type="date" />
+                    <div class="grid grid-cols-2 gap-2 bg-surface-container-lowest rounded-xl p-1 border-none">
+                        <div class="flex flex-col px-2 py-1">
+                            <span class="text-[7px] uppercase text-slate-400 font-black">De</span>
+                            <input id="filter-date-start" class="bg-transparent border-none p-0 text-[9px] font-black focus:ring-0 text-slate-600" type="date" />
                         </div>
-                        <div class="flex flex-col px-3 py-1.5 border-l border-slate-100">
-                            <span class="text-[8px] uppercase text-slate-400 font-black">Até</span>
-                            <input id="filter-date-end" class="bg-transparent border-none p-0 text-[10px] font-black focus:ring-0 text-slate-600" type="date" />
+                        <div class="flex flex-col px-2 py-1 border-l border-slate-100">
+                            <span class="text-[7px] uppercase text-slate-400 font-black">Até</span>
+                            <input id="filter-date-end" class="bg-transparent border-none p-0 text-[9px] font-black focus:ring-0 text-slate-600" type="date" />
                         </div>
                     </div>
 
-                    <button
-                        class="bg-surface-container-highest text-on-surface-variant h-full py-3 rounded-xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-surface-container-high transition-colors">
-                        <span class="material-symbols-outlined text-[18px]">filter_list</span>
-                        Filtros Avançados
-                    </button>
+                    <div class="relative group">
+                        <button id="filter-dropdown-btn"
+                            class="w-full h-full bg-surface-container-highest text-on-surface-variant py-2 rounded-xl text-[9px] font-black uppercase tracking-widest flex items-center justify-center gap-1 hover:bg-surface-container-high transition-colors">
+                            <span class="material-symbols-outlined text-[16px]">filter_list</span>
+                            Filtros
+                        </button>
+                        <!-- Quick Filters Dropdown -->
+                        <div id="filter-menu" class="absolute right-0 top-full mt-2 w-48 bg-white dark:bg-slate-800 rounded-2xl shadow-2xl border border-slate-100 dark:border-slate-700 p-2 z-[60] hidden group-focus-within:block hover:block">
+                            <div class="px-3 py-2 border-b border-slate-50 dark:border-slate-700/50 mb-1">
+                                <span class="text-[8px] font-black text-slate-400 uppercase tracking-widest">Períodos Rápidos</span>
+                            </div>
+                            <button onclick="setDateFilter(7)" class="w-full text-left px-4 py-2.5 text-[10px] font-bold text-slate-600 dark:text-slate-300 hover:bg-orange-50 hover:text-orange-600 rounded-xl transition-all flex items-center justify-between group/item">
+                                7 Dias
+                                <span class="material-symbols-outlined text-sm opacity-0 group-hover/item:opacity-100">chevron_right</span>
+                            </button>
+                            <button onclick="setDateFilter(15)" class="w-full text-left px-4 py-2.5 text-[10px] font-bold text-slate-600 dark:text-slate-300 hover:bg-orange-50 hover:text-orange-600 rounded-xl transition-all flex items-center justify-between group/item">
+                                15 Dias
+                                <span class="material-symbols-outlined text-sm opacity-0 group-hover/item:opacity-100">chevron_right</span>
+                            </button>
+                            <button onclick="setDateFilter('last_month')" class="w-full text-left px-4 py-2.5 text-[10px] font-bold text-slate-600 dark:text-slate-300 hover:bg-orange-50 hover:text-orange-600 rounded-xl transition-all flex items-center justify-between group/item">
+                                Mês Anterior
+                                <span class="material-symbols-outlined text-sm opacity-0 group-hover/item:opacity-100">chevron_right</span>
+                            </button>
+                            <div class="mt-2 pt-2 border-t border-slate-50 dark:border-slate-700/50">
+                                <button onclick="resetFilters()" class="w-full text-center py-2 text-[9px] font-black text-slate-400 hover:text-red-500 uppercase tracking-widest transition-all">
+                                    Limpar Filtros
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <!-- Precision List (Table Alternative) -->
             <div class="bg-surface-container-low rounded-[2rem] overflow-hidden">
                 <div class="overflow-x-auto">
-                    <table class="w-full text-left border-separate border-spacing-0">
+                    <table class="w-full text-left border-separate border-spacing-0 modern-card-table">
                         <thead>
                             <tr class="text-[10px] md:text-xs text-slate-400 font-bold uppercase tracking-widest border-b border-slate-50">
                                 <th class="px-4 md:px-8 py-6">Ordem</th>
                                 <th class="px-4 py-6">Veículo / Cliente</th>
                                 <th class="hidden md:table-cell px-4 py-6">Responsável</th>
-                                <th class="hidden sm:table-cell px-4 py-6">Entrada</th>
+                                <th class="hidden sm:table-cell px-4 py-6">Datas</th>
                                 <th class="px-4 py-6">Status</th>
                                 <th class="hidden sm:table-cell px-4 py-6 text-right">Valor</th>
                                 <th class="px-4 md:px-8 py-6 text-right">Ações</th>

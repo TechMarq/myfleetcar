@@ -288,28 +288,31 @@ const Financial = {
             const date = new Date(r.created_at).toLocaleDateString('pt-BR');
             
             return `
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-md transition-all group border-l-4 border-l-blue-500">
-                    <div class="flex justify-between items-start mb-4">
-                        <div>
-                            <p class="text-[10px] font-black text-blue-600 uppercase tracking-widest">${r.receipt_number}</p>
-                            <h3 class="text-sm font-black text-on-surface mt-1">${empName}</h3>
-                            <p class="text-[10px] text-slate-400 font-medium">${date}</p>
-                        </div>
-                        <div class="text-right">
-                            <p class="text-sm font-black text-on-surface">R$ ${parseFloat(r.amount).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
-                            <span class="px-2 py-0.5 bg-blue-50 text-blue-600 text-[8px] font-black uppercase tracking-widest rounded-full">Aberto</span>
+                <div class="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-slate-100 hover:shadow-xl hover:shadow-blue-500/5 transition-all group border-l-8 border-l-blue-500 flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-start mb-6">
+                            <div>
+                                <span class="px-3 py-1 bg-blue-50 text-blue-600 text-[9px] font-black uppercase tracking-widest rounded-full mb-2 inline-block">Aguardando Pagamento</span>
+                                <h3 class="text-base md:text-lg font-black text-on-surface tracking-tight">${empName}</h3>
+                                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">${r.receipt_number} • ${date}</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-xl md:text-2xl font-black text-on-surface tracking-tighter">R$ ${parseFloat(r.amount).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
+                            </div>
                         </div>
                     </div>
                     
-                    <div class="flex items-center gap-2 mt-6 pt-4 border-t border-slate-50">
-                        <button onclick="viewReceipt('${r.id}')" class="flex-1 py-2 bg-slate-50 text-slate-600 text-[10px] font-black uppercase tracking-widest rounded-lg hover:bg-slate-100 transition-all">
+                    <div class="flex items-center gap-3 mt-4">
+                        <button onclick="viewReceipt('${r.id}')" class="flex-1 py-3 bg-slate-900 text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-slate-800 transition-all shadow-lg shadow-slate-200 active:scale-95 flex items-center justify-center gap-2">
+                            <span class="material-symbols-outlined text-sm">visibility</span>
                             Visualizar
                         </button>
-                        <button onclick="payReceipt('${r.id}')" class="flex-1 py-2 bg-blue-600 text-white text-[10px] font-black uppercase tracking-widest rounded-lg hover:bg-blue-700 transition-all shadow-sm shadow-blue-200">
+                        <button onclick="payReceipt('${r.id}')" class="flex-1 py-3 bg-blue-600 text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-blue-700 transition-all shadow-lg shadow-blue-200 active:scale-95 flex items-center justify-center gap-2">
+                            <span class="material-symbols-outlined text-sm">payments</span>
                             Pagar
                         </button>
-                        <button onclick="deleteReceipt('${r.id}')" class="p-2 text-slate-300 hover:text-red-500 transition-colors">
-                            <span class="material-symbols-outlined text-lg">delete</span>
+                        <button onclick="deleteReceipt('${r.id}')" class="p-3 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all" title="Excluir Recibo">
+                            <span class="material-symbols-outlined">delete</span>
                         </button>
                     </div>
                 </div>
@@ -377,24 +380,29 @@ const Financial = {
         grid.innerHTML = employees.map(emp => `
             <div class="col-span-full bg-surface-container-lowest rounded-2xl shadow-sm border border-outline-variant/10 overflow-hidden mb-4 md:mb-8">
                 <!-- Employee Header -->
-                <div class="px-4 md:px-8 py-4 md:py-6 bg-slate-50/50 border-b border-slate-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                    <div class="flex items-center gap-3 md:gap-4">
-                        <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-primary text-white flex items-center justify-center font-black text-lg md:text-xl shadow-md shadow-primary/20">
+                <div class="px-6 md:px-8 py-6 md:py-8 bg-gradient-to-r from-slate-50 to-white border-b border-slate-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+                    <div class="flex items-center gap-4 md:gap-6">
+                        <div class="w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-slate-900 text-white flex items-center justify-center font-black text-xl md:text-2xl shadow-xl shadow-slate-200">
                             ${emp.name.charAt(0)}
                         </div>
                         <div>
-                            <h3 class="text-base md:text-lg font-black text-on-surface leading-tight">${emp.name}</h3>
-                            <p class="text-[9px] md:text-[10px] text-slate-400 font-bold uppercase tracking-widest">${emp.items.length} Serviços</p>
+                            <h3 class="text-lg md:text-xl font-black text-on-surface leading-tight tracking-tight">${emp.name}</h3>
+                            <div class="flex items-center gap-2 mt-1">
+                                <span class="px-2 py-0.5 bg-slate-100 text-slate-500 text-[9px] md:text-[10px] font-bold uppercase tracking-widest rounded-md">${emp.items.length} Serviços</span>
+                                <span class="w-1 h-1 bg-slate-300 rounded-full"></span>
+                                <span class="text-[10px] text-slate-400 font-medium">Competência: ${new Date().toLocaleDateString('pt-BR', {month: 'long', year: 'numeric'})}</span>
+                            </div>
                         </div>
                     </div>
-                    <div class="flex w-full md:w-auto justify-between md:justify-end gap-4 md:gap-8 border-t md:border-t-0 border-slate-100 pt-3 md:pt-0">
+                    <div class="flex w-full md:w-auto justify-between md:justify-end gap-6 md:gap-12 bg-white md:bg-transparent p-4 md:p-0 rounded-2xl border border-slate-50 md:border-0 shadow-sm md:shadow-none">
                         <div class="text-left md:text-right">
-                            <p class="text-[8px] md:text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-none">Total Pago</p>
-                            <p class="text-sm md:text-lg font-black text-slate-400">R$ ${emp.total_paid.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
+                            <p class="text-[9px] md:text-[10px] text-slate-400 font-black uppercase tracking-widest leading-none mb-1">Total Pago</p>
+                            <p class="text-base md:text-xl font-black text-slate-400">R$ ${emp.total_paid.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
                         </div>
+                        <div class="h-10 w-[1px] bg-slate-100 hidden md:block"></div>
                         <div class="text-right">
-                            <p class="text-[8px] md:text-[10px] text-primary font-bold uppercase tracking-widest leading-none">A Receber</p>
-                            <p class="text-base md:text-xl font-black text-primary">R$ ${emp.total_pending.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
+                            <p class="text-[9px] md:text-[10px] text-primary font-black uppercase tracking-widest leading-none mb-1">Saldo a Receber</p>
+                            <p class="text-xl md:text-3xl font-black text-primary tracking-tighter">R$ ${emp.total_pending.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
                         </div>
                     </div>
                 </div>
@@ -403,21 +411,21 @@ const Financial = {
                 <div class="overflow-x-auto no-scrollbar">
                     <table class="w-full text-left border-collapse">
                         <thead>
-                            <tr class="bg-slate-50/30 text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-400 border-b border-slate-100">
-                                <th class="px-2 md:px-4 py-3 md:py-4 text-center w-10 md:w-12">
-                                    <input type="checkbox" onclick="toggleSelectAllCommissions(this, '${emp.id}')" class="rounded border-slate-300 text-primary focus:ring-primary scale-75 md:scale-100">
+                            <tr class="bg-slate-50/30 text-[10px] font-black uppercase tracking-widest text-slate-400 border-b border-slate-100">
+                                <th class="px-2 md:px-4 py-4 text-center w-10 md:w-12">
+                                    <input type="checkbox" onclick="toggleSelectAllCommissions(this, '${emp.id}')" class="rounded border-slate-300 text-primary focus:ring-primary scale-90">
                                 </th>
-                                <th class="px-4 md:px-8 py-3 md:py-4">OS / Serviço</th>
-                                <th class="px-6 py-4 hidden md:table-cell">Valor Serviço</th>
-                                <th class="px-6 py-4 hidden md:table-cell">Comissão (%)</th>
-                                <th class="px-4 md:px-6 py-3 md:py-4">Valor Comissão</th>
-                                <th class="px-4 md:px-6 py-3 md:py-4 text-center">Status</th>
-                                <th class="px-4 md:px-8 py-3 md:py-4 text-right">Ação</th>
+                                <th class="px-4 md:px-6 py-4">OS & Cliente</th>
+                                <th class="px-4 md:px-6 py-4 hidden sm:table-cell">Veículo & Serviço</th>
+                                <th class="px-4 md:px-6 py-4 text-right">Valor & Taxa</th>
+                                <th class="px-4 md:px-6 py-4 text-right">Comissão Líquida</th>
+                                <th class="px-4 md:px-6 py-4 text-center">Status</th>
+                                <th class="px-4 md:px-8 py-4 text-right">Ação</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-50">
                             ${emp.items.map(item => `
-                                <tr class="hover:bg-slate-50/30 transition-colors text-[10px] md:text-xs" 
+                                <tr class="hover:bg-slate-50/30 transition-colors text-[11px] md:text-sm" 
                                     data-os="${item.os_id}" 
                                     data-amount="${item.amount}" 
                                     data-emp="${emp.name}" 
@@ -430,50 +438,58 @@ const Financial = {
                                     data-rate="${item.rate || '0%'}"
                                     data-service="${item.item_name || 'Serviço'}"
                                 >
-                                    <td class="px-2 md:px-4 py-3 md:py-4 w-10 md:w-12 text-center">
+                                    <td class="px-2 md:px-4 py-4 w-10 md:w-12 text-center" data-label="Sel.">
                                         ${item.status === 'Pendente' ? `
-                                            <input type="checkbox" onchange="toggleCommissionSelection(this)" class="commission-checkbox-${emp.id} commission-checkbox rounded border-slate-300 text-primary focus:ring-primary scale-75 md:scale-100">
+                                            <input type="checkbox" onchange="toggleCommissionSelection(this)" class="commission-checkbox-${emp.id} commission-checkbox rounded border-slate-300 text-primary focus:ring-primary scale-90">
                                         ` : ''}
                                     </td>
-                                    <td class="px-4 md:px-8 py-3 md:py-4">
-                                        <p class="font-bold text-on-surface">#${item.os_number}</p>
-                                        <p class="text-[9px] md:text-[10px] text-slate-500 font-medium truncate max-w-[100px] md:max-w-none">${item.item_name}</p>
+                                    <td class="px-4 md:px-6 py-4" data-label="OS & Cliente">
+                                        <div class="flex flex-col">
+                                            <span class="font-black text-on-surface text-xs md:text-sm">#${item.os_number}</span>
+                                            <span class="text-[9px] md:text-[10px] text-slate-500 font-bold uppercase truncate max-w-[150px] md:max-w-none">${item.customer_name || 'N/A'}</span>
+                                        </div>
                                     </td>
-                                    <td class="px-6 py-4 hidden md:table-cell">
-                                        <p class="font-medium text-slate-600">R$ ${item.total_os.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
+                                    <td class="px-4 md:px-6 py-4 hidden sm:table-cell" data-label="Veículo & Serviço">
+                                        <div class="flex flex-col">
+                                            <span class="font-bold text-on-surface text-[10px] md:text-xs truncate max-w-[180px] md:max-w-none">${item.item_name}</span>
+                                            <span class="text-[9px] md:text-[10px] text-slate-400 font-medium truncate max-w-[150px] md:max-w-none">${item.vehicle_info || 'N/A'}</span>
+                                        </div>
                                     </td>
-                                    <td class="px-6 py-4 hidden md:table-cell">
-                                        <p class="font-medium text-slate-600">${item.rate}</p>
+                                    <td class="px-4 md:px-6 py-4 text-right" data-label="Base/Taxa">
+                                        <div class="flex flex-col">
+                                            <span class="font-bold text-slate-600 text-[10px] md:text-xs">R$ ${item.total_os.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+                                            <span class="text-[9px] md:text-[10px] text-primary font-black uppercase tracking-widest">${item.rate}</span>
+                                        </div>
                                     </td>
-                                    <td class="px-4 md:px-6 py-3 md:py-4">
-                                        <p class="font-black text-on-surface">R$ ${item.amount.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
+                                    <td class="px-4 md:px-6 py-4 text-right" data-label="Comissão">
+                                        <span class="font-black text-on-surface text-sm md:text-base">R$ ${item.amount.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
                                     </td>
-                                    <td class="px-4 md:px-6 py-3 md:py-4 text-center">
-                                        <span class="px-2 md:px-3 py-0.5 md:py-1 rounded-lg text-[8px] md:text-[10px] font-black uppercase tracking-widest 
+                                    <td class="px-4 md:px-6 py-4 text-center" data-label="Status">
+                                        <span class="inline-flex px-2 md:px-3 py-1 rounded-lg text-[8px] md:text-[10px] font-black uppercase tracking-widest 
                                             ${item.status === 'Pago' ? 'bg-green-100 text-green-700' : 
                                               item.status === 'RECIBO' ? 'bg-blue-600 text-white shadow-sm' : 'bg-orange-100 text-orange-700'}">
                                             ${item.status === 'RECIBO' ? `RECIBO ${item.receipt_number}` : item.status}
                                         </span>
                                     </td>
-                                    <td class="px-4 md:px-8 py-3 md:py-4 text-right">
+                                    <td class="px-4 md:px-8 py-4 text-right" data-label="Ação">
                                         ${item.status === 'Pendente' ? `
                                             <button onclick="Financial.payCommission('${emp.id}', '${emp.name}', '${item.os_id}', ${item.amount}, 'OS #${item.os_number}', '${item.item_name}')" 
-                                                class="px-2 md:px-4 py-1.5 md:py-2 bg-primary text-white text-[8px] md:text-[10px] font-black uppercase tracking-widest rounded-lg hover:bg-primary-container transition-all shadow-sm">
+                                                class="px-4 py-2 bg-primary text-white text-[9px] md:text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-primary-container transition-all shadow-md shadow-primary/10 active:scale-95">
                                                 Pagar
                                             </button>
                                         ` : item.status === 'RECIBO' ? `
                                             <button onclick="viewReceipt('${item.receipt_id}')" 
-                                                class="px-2 md:px-4 py-1.5 md:py-2 bg-blue-50 text-blue-600 text-[8px] md:text-[10px] font-black uppercase tracking-widest rounded-lg hover:bg-blue-100 transition-all">
+                                                class="px-3 py-2 bg-blue-50 text-blue-600 text-[9px] md:text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-blue-100 transition-all border border-blue-100 active:scale-95">
                                                 Ver Recibo
                                             </button>
                                         ` : `
-                                            <div class="flex items-center justify-end gap-1 md:gap-2 group/undo">
-                                                <div class="flex items-center text-green-600 gap-1 font-black text-[8px] md:text-[10px] uppercase tracking-widest">
-                                                    <span class="material-symbols-outlined text-xs md:text-sm">check_circle</span>
+                                            <div class="flex items-center justify-end gap-2 group/undo">
+                                                <div class="flex items-center text-green-600 gap-1 font-black text-[9px] md:text-[10px] uppercase tracking-widest">
+                                                    <span class="material-symbols-outlined text-sm md:text-base">check_circle</span>
                                                     <span class="hidden md:inline">Liquidado</span>
                                                 </div>
-                                                <button onclick="Financial.undoCommission('${item.paid_transaction_id}')" class="opacity-100 md:opacity-50 hover:opacity-100 p-1 bg-orange-50 text-orange-600 rounded md:opacity-0 md:group-hover/undo:opacity-100 transition-all shadow-sm" title="Reverter Pagamento">
-                                                    <span class="material-symbols-outlined text-[14px] md:text-[16px]">undo</span>
+                                                <button onclick="Financial.undoCommission('${item.paid_transaction_id}')" class="p-1.5 bg-orange-50 text-orange-600 rounded-lg hover:bg-orange-100 transition-all shadow-sm active:scale-95" title="Reverter Pagamento">
+                                                    <span class="material-symbols-outlined text-base">undo</span>
                                                 </button>
                                             </div>
                                         `}
@@ -1455,7 +1471,7 @@ window.viewReceipt = async (receiptId) => {
                                                 <p class="text-[8px] text-slate-500">${it.vehicleInfo || 'N/A'}</p>
                                             </td>
                                             <td class="px-3 py-3 text-center text-slate-500">
-                                                ${it.finishedAt ? this.parseDate(it.finishedAt).toLocaleDateString('pt-BR') : '-'}
+                                                ${it.finishedAt ? Financial.parseDate(it.finishedAt).toLocaleDateString('pt-BR') : '-'}
                                             </td>
                                             <td class="px-3 py-3">
                                                 <p class="font-bold text-primary">${it.serviceName || it.item_name || 'Serviço'}</p>
@@ -1534,7 +1550,7 @@ window.viewReceipt = async (receiptId) => {
                                 <tr>
                                     <td>${it.osRef || 'OS #' + it.osId}</td>
                                     <td>${it.customerName || 'N/A'}<br><small>${it.vehicleInfo || 'N/A'}</small></td>
-                                    <td>${it.finishedAt ? this.parseDate(it.finishedAt).toLocaleDateString('pt-BR') : '-'}</td>
+                                    <td>${it.finishedAt ? Financial.parseDate(it.finishedAt).toLocaleDateString('pt-BR') : '-'}</td>
                                     <td><strong>${it.serviceName || it.item_name || 'Serviço'}</strong></td>
                                     <td>R$ ${parseFloat(it.totalOs || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</td>
                                     <td>${it.rate || '-'}</td>
