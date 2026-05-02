@@ -135,25 +135,25 @@ function renderInventory(products) {
         row.className = 'border-b border-slate-50 hover:bg-slate-50/50 transition-colors group cursor-pointer';
         row.onclick = () => openProductDetailModal(p.id);
         row.innerHTML = `
-            <td class="px-6 py-4">
+            <td class="px-6 py-4" data-label="Produto & Marca">
                 <div class="flex flex-col hover:translate-x-1 transition-transform">
                     <span class="text-sm font-bold text-on-surface line-clamp-1 group-hover:text-primary transition-colors">${p.name}</span>
                     <span class="text-[10px] font-black text-slate-400 uppercase tracking-tighter">${p.brand || 'S/ Marca'} - Ref: ${p.reference_code || '---'}</span>
                 </div>
             </td>
-            <td class="px-6 py-4">
+            <td class="px-6 py-4" data-label="Aplicação">
                 <span class="text-xs font-medium text-slate-500 line-clamp-1">${p.vehicle_models || 'Universal'}</span>
             </td>
-            <td class="px-6 py-4 text-center">
+            <td class="px-6 py-4 text-center" data-label="Estoque">
                 <div class="flex flex-col items-center">
                     <span class="text-sm font-black ${isLowStock ? 'text-red-600' : 'text-on-surface'}">${p.quantity || 0} ${p.unit_of_measure || 'UN'}</span>
                     <span class="text-[9px] font-bold text-slate-400 uppercase">Mín: ${p.min_quantity || 0}</span>
                 </div>
             </td>
-            <td class="px-6 py-4 text-right">
+            <td class="px-6 py-4 text-right" data-label="Vlr. Custo">
                 <span class="text-[11px] font-bold text-slate-400 italic">R$ ${(p.purchase_price || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
             </td>
-            <td class="px-6 py-4 text-right">
+            <td class="px-6 py-4 text-right" data-label="Vlr. Venda">
                 <span class="text-sm font-black text-on-surface">R$ ${(p.sale_price || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
             </td>
         `;
@@ -291,41 +291,40 @@ function renderMovements(movements) {
         }
         
         const profit = mv.type === 'Saída' ? (mv.quantity * ((mv.unit_sale || 0) - (mv.unit_cost || 0))) : 0;
-        
         return `
         <tr class="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
-            <td class="px-6 py-4 text-xs font-medium text-slate-500">
+            <td class="px-6 py-4 text-xs font-medium text-slate-500" data-label="Data">
                 ${new Date(mv.created_at.includes('T') ? mv.created_at : mv.created_at + 'T12:00:00').toLocaleDateString('pt-BR')}
             </td>
-            <td class="px-6 py-4">
+            <td class="px-6 py-4" data-label="Produto">
                 <div class="flex flex-col">
                     <span class="text-xs font-bold text-slate-900">${mv.inventory?.name || 'Item Excluído'}</span>
                     <span class="text-[9px] font-mono text-slate-400 uppercase tracking-widest">${mv.inventory?.sku || '---'}</span>
                 </div>
             </td>
-            <td class="px-6 py-4">
+            <td class="px-6 py-4" data-label="Lote / Ref">
                 <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
                     ${mv.batch_id || mv.invoice_number || '---'}
                 </span>
             </td>
-            <td class="px-6 py-4">
+            <td class="px-6 py-4" data-label="Tipo">
                 <span class="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${typeClass}">
                     ${displayType}
                 </span>
             </td>
-            <td class="px-6 py-4 text-right text-sm font-black text-slate-900">
+            <td class="px-6 py-4 text-right text-sm font-black text-slate-900" data-label="Quantidade">
                 ${mv.quantity}
             </td>
-            <td class="px-6 py-4 text-right text-xs font-bold text-slate-600">
+            <td class="px-6 py-4 text-right text-xs font-bold text-slate-600" data-label="Vlr. Unitário">
                 R$ ${(mv.type === 'Saída' ? (mv.unit_sale || 0) : (mv.unit_cost || 0)).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
             </td>
-            <td class="px-6 py-4 text-right text-xs font-bold ${profit > 0 ? 'text-green-600' : 'text-slate-400'}">
+            <td class="px-6 py-4 text-right text-xs font-bold ${profit > 0 ? 'text-green-600' : 'text-slate-400'}" data-label="Lucro">
                 ${profit > 0 ? `R$ ${profit.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}` : '---'}
             </td>
-            <td class="px-6 py-4 text-xs text-slate-500 italic max-w-xs truncate">
+            <td class="px-6 py-4 text-xs text-slate-500 italic max-w-xs truncate" data-label="Motivo">
                 ${mv.supplier ? `[${mv.supplier}] ` : ''}${mv.reason || ''}
             </td>
-            <td class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-tighter">
+            <td class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-tighter" data-label="Responsável">
                 Sistema
             </td>
             <td class="px-6 py-4 text-right">

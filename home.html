@@ -162,7 +162,7 @@
                 <span class="text-sm font-medium">Configurações</span>
             </a>
         </nav>
-        <div class="px-4 mt-auto">
+        <div class="px-4 mt-auto pb-20 lg:pb-0">
             <div class="p-4 rounded-xl bg-surface-container-low flex items-center space-x-3 mb-2">
                 <img class="w-10 h-10 rounded-full object-cover" data-alt="professional male workshop manager portrait"
                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhPLBS7s1ZuQnGXymXiuBJ9868nnRddz-gP3XAOrY68Jq9o0KixW-BUonODLYl3srJtQGdWkN5_hv6A6IF9R7-3N7IIY07p3v3-Hk3h336t834MZYCX-4YCqmBz9mCX8NOYAAALVVu-cIt2MMISgYj5kzscUNzzN_lS_KLNdiehWiGTqxXxzj1CPXQvQ7LDF2RhdjSvTpng9INFVDk-nm_joxt429ETmCldwckpOU2lyL4OxGroqrKIqhzHc42pIxKWLdFaqgNpd8" />
@@ -184,17 +184,20 @@
         <header class="w-full sticky top-0 z-40 bg-white/80 backdrop-blur-xl border-b border-orange-100/15 shadow-sm">
             <div class="flex justify-between items-center px-4 md:px-8 h-16 w-full">
                 <div class="flex items-center space-x-2 md:space-x-4">
+                    <button id="mobile-menu-btn" class="lg:hidden p-2 text-slate-500 hover:bg-slate-50 rounded-lg">
+                        <span class="material-symbols-outlined">menu</span>
+                    </button>
                     <h2 class="text-sm md:text-lg font-bold text-on-surface truncate max-w-[100px] md:max-w-none">
                         Dashboard</h2>
-                    <div class="h-4 w-[1px] bg-slate-200"></div>
-                    <p class="text-[10px] md:text-sm text-slate-500 truncate max-w-[80px] md:max-w-none">Olá, <span
+                    <div class="hidden xs:block h-4 w-[1px] bg-slate-200"></div>
+                    <p class="hidden xs:block text-[10px] md:text-sm text-slate-500 truncate max-w-[80px] md:max-w-none">Olá, <span
                             class="user-name-display font-medium">Usuário</span>.</p>
                 </div>
                 <div class="flex items-center gap-2 md:gap-6">
                     <button class="relative text-slate-500 hover:text-primary transition-colors p-2">
                         <span class="material-symbols-outlined text-[20px] md:text-[24px]">notifications</span>
                         <span
-                            class="absolute top-1.5 right-1.5 w-2 h-2 bg-primary rounded-full border-2 border-white"></span>
+                            class="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-primary rounded-full border border-white"></span>
                     </button>
                     <button onclick="window.location.href='nova-ordem.html'"
                         class="kinetic-gradient text-white px-3 md:px-5 py-2 md:py-2.5 rounded-xl text-[10px] md:text-sm font-bold flex items-center gap-1 md:gap-2 active:scale-95 duration-200 shadow-lg shadow-orange-500/20">
@@ -208,92 +211,92 @@
         <!-- Content -->
         <div class="p-4 md:p-8 space-y-6 md:space-y-8">
             <!-- Metric Cards Grid -->
-            <section class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4 md:gap-6">
+            <section class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3 md:gap-6">
                 <!-- Card: Receita Mensal -->
                 <div onclick="window.location.href='gestao-receita-financeiro.html'"
-                    class="bg-surface-container-lowest p-4 md:p-6 rounded-xl shadow-sm border border-outline-variant/5 hover:border-primary/20 transition-all cursor-pointer">
+                    class="bg-surface-container-lowest p-3 md:p-6 rounded-xl shadow-sm border border-outline-variant/5 hover:border-primary/20 transition-all cursor-pointer">
                     <div class="flex justify-between items-start mb-2 md:mb-4">
-                        <div class="p-1.5 md:p-2 bg-orange-50 text-orange-600 rounded-lg">
+                        <div class="p-1.5 md:p-2 bg-orange-50 text-orange-600 rounded-lg shrink-0">
                             <span class="material-symbols-outlined text-[18px] md:text-[24px]">monetization_on</span>
                         </div>
                         <span
-                            class="text-[8px] md:text-[10px] font-bold text-slate-400 bg-slate-50 px-1.5 py-0.5 rounded">0%</span>
+                            class="hidden xs:block text-[8px] md:text-[10px] font-bold text-slate-400 bg-slate-50 px-1.5 py-0.5 rounded">0%</span>
                     </div>
-                    <p class="text-slate-500 text-[10px] font-medium uppercase tracking-wider mb-0.5">Receita Mensal</p>
-                    <h3 id="metric-revenue-month" class="text-base md:text-xl font-black text-on-surface">R$ 0,00</h3>
+                    <p class="text-slate-500 text-[8px] md:text-[10px] font-medium uppercase tracking-wider mb-0.5">Receita Mensal</p>
+                    <h3 id="metric-revenue-month" class="text-sm md:text-xl font-black text-on-surface truncate">R$ 0,00</h3>
                 </div>
                 <!-- Card: OS Abertas -->
                 <div onclick="window.location.href='lista-ordem.html'"
-                    class="bg-surface-container-lowest p-4 md:p-6 rounded-xl shadow-sm border border-outline-variant/5 hover:border-primary/20 transition-all cursor-pointer">
+                    class="bg-surface-container-lowest p-3 md:p-6 rounded-xl shadow-sm border border-outline-variant/5 hover:border-primary/20 transition-all cursor-pointer">
                     <div class="flex justify-between items-start mb-2 md:mb-4">
-                        <div class="p-1.5 md:p-2 bg-blue-50 text-blue-600 rounded-lg">
+                        <div class="p-1.5 md:p-2 bg-blue-50 text-blue-600 rounded-lg shrink-0">
                             <span class="material-symbols-outlined text-[18px] md:text-[24px]">pending_actions</span>
                         </div>
                     </div>
-                    <p class="text-slate-500 text-[10px] font-medium uppercase tracking-wider mb-0.5">OS Abertas</p>
-                    <h3 id="metric-os-open" class="text-base md:text-xl font-black text-on-surface">0</h3>
+                    <p class="text-slate-500 text-[8px] md:text-[10px] font-medium uppercase tracking-wider mb-0.5">OS Abertas</p>
+                    <h3 id="metric-os-open" class="text-sm md:text-xl font-black text-on-surface">0</h3>
                 </div>
                 <!-- Card: OS Finalizadas -->
                 <div onclick="window.location.href='lista-ordem.html'"
-                    class="bg-surface-container-lowest p-4 md:p-6 rounded-xl shadow-sm border border-outline-variant/5 hover:border-primary/20 transition-all cursor-pointer">
+                    class="bg-surface-container-lowest p-3 md:p-6 rounded-xl shadow-sm border border-outline-variant/5 hover:border-primary/20 transition-all cursor-pointer">
                     <div class="flex justify-between items-start mb-2 md:mb-4">
-                        <div class="p-1.5 md:p-2 bg-emerald-50 text-emerald-600 rounded-lg">
+                        <div class="p-1.5 md:p-2 bg-emerald-50 text-emerald-600 rounded-lg shrink-0">
                             <span class="material-symbols-outlined text-[18px] md:text-[24px]">task_alt</span>
                         </div>
                     </div>
-                    <p class="text-slate-500 text-[10px] font-medium uppercase tracking-wider mb-0.5">Finalizadas</p>
-                    <h3 id="metric-os-finished" class="text-base md:text-xl font-black text-on-surface">0</h3>
+                    <p class="text-slate-500 text-[8px] md:text-[10px] font-medium uppercase tracking-wider mb-0.5">Finalizadas</p>
+                    <h3 id="metric-os-finished" class="text-sm md:text-xl font-black text-on-surface">0</h3>
                 </div>
                 <!-- Card: Veículos em Serviço -->
                 <div onclick="window.location.href='lista-ordem.html'"
-                    class="bg-surface-container-lowest p-4 md:p-6 rounded-xl shadow-sm border border-outline-variant/5 hover:border-primary/20 transition-all cursor-pointer">
+                    class="bg-surface-container-lowest p-3 md:p-6 rounded-xl shadow-sm border border-outline-variant/5 hover:border-primary/20 transition-all cursor-pointer">
                     <div class="flex justify-between items-start mb-2 md:mb-4">
-                        <div class="p-1.5 md:p-2 bg-slate-100 text-slate-700 rounded-lg">
+                        <div class="p-1.5 md:p-2 bg-slate-100 text-slate-700 rounded-lg shrink-0">
                             <span class="material-symbols-outlined text-[18px] md:text-[24px]">directions_car</span>
                         </div>
                     </div>
-                    <p class="text-slate-500 text-[10px] font-medium uppercase tracking-wider mb-0.5">Em Serviço</p>
-                    <h3 id="metric-active-vehicles" class="text-base md:text-xl font-black text-on-surface">0</h3>
+                    <p class="text-slate-500 text-[8px] md:text-[10px] font-medium uppercase tracking-wider mb-0.5">Em Serviço</p>
+                    <h3 id="metric-active-vehicles" class="text-sm md:text-xl font-black text-on-surface">0</h3>
                 </div>
                 <!-- Card: Agendamentos -->
                 <div onclick="window.location.href='agendamento.html'"
-                    class="bg-surface-container-lowest p-4 md:p-6 rounded-xl shadow-sm border border-outline-variant/5 hover:border-primary/20 transition-all cursor-pointer">
+                    class="bg-surface-container-lowest p-3 md:p-6 rounded-xl shadow-sm border border-outline-variant/5 hover:border-primary/20 transition-all cursor-pointer">
                     <div class="flex justify-between items-start mb-2 md:mb-4">
-                        <div class="p-1.5 md:p-2 bg-purple-50 text-purple-600 rounded-lg">
+                        <div class="p-1.5 md:p-2 bg-purple-50 text-purple-600 rounded-lg shrink-0">
                             <span class="material-symbols-outlined text-[18px] md:text-[24px]">event</span>
                         </div>
                     </div>
-                    <p class="text-slate-500 text-[10px] font-medium uppercase tracking-wider mb-0.5">Agendamentos</p>
-                    <h3 id="metric-appointments-today" class="text-base md:text-xl font-black text-on-surface">0</h3>
+                    <p class="text-slate-500 text-[8px] md:text-[10px] font-medium uppercase tracking-wider mb-0.5">Agendamentos</p>
+                    <h3 id="metric-appointments-today" class="text-sm md:text-xl font-black text-on-surface">0</h3>
                 </div>
                 <!-- Card: Alertas -->
                 <div id="card-delayed" onclick="window.location.href='lista-ordem.html'"
-                    class="bg-red-50 p-4 md:p-6 rounded-xl shadow-sm border border-red-100 hover:border-red-300 transition-all cursor-pointer">
+                    class="bg-red-50 p-3 md:p-6 rounded-xl shadow-sm border border-red-100 hover:border-red-300 transition-all cursor-pointer">
                     <div class="flex justify-between items-start mb-2 md:mb-4">
-                        <div class="p-1.5 md:p-2 bg-white text-red-600 rounded-lg">
+                        <div class="p-1.5 md:p-2 bg-white text-red-600 rounded-lg shrink-0">
                             <span class="material-symbols-outlined text-[18px] md:text-[24px]">warning</span>
                         </div>
                     </div>
-                    <p class="text-red-500 text-[10px] font-medium uppercase tracking-wider mb-0.5">Atrasadas</p>
-                    <h3 id="metric-delayed-services" class="text-base md:text-xl font-black text-red-700">0</h3>
+                    <p class="text-red-500 text-[8px] md:text-[10px] font-medium uppercase tracking-wider mb-0.5">Atrasadas</p>
+                    <h3 id="metric-delayed-services" class="text-sm md:text-xl font-black text-red-700">0</h3>
                 </div>
             </section>
             <!-- Bento Layout Content -->
-            <div class="grid grid-cols-12 gap-8">
+            <div class="grid grid-cols-12 gap-4 md:gap-8">
                 <!-- Main Chart Area -->
-                <div class="col-span-12 lg:col-span-8 space-y-8">
-                    <div class="bg-surface-container-lowest p-8 rounded-2xl shadow-sm border border-outline-variant/5">
-                        <div class="flex justify-between items-center mb-10">
+                <div class="col-span-12 lg:col-span-8 space-y-6 md:space-y-8">
+                    <div class="bg-surface-container-lowest p-4 md:p-8 rounded-2xl shadow-sm border border-outline-variant/5">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 md:mb-10 gap-4">
                             <div>
-                                <h4 class="text-lg font-bold text-on-surface">Receita Semanal</h4>
-                                <p class="text-sm text-slate-500">Comparativo de faturamento diário</p>
+                                <h4 class="text-base md:text-lg font-bold text-on-surface">Receita Semanal</h4>
+                                <p class="text-xs md:text-sm text-slate-500">Comparativo de faturamento diário</p>
                             </div>
-                            <div class="flex space-x-2">
+                            <div class="flex space-x-2 bg-slate-50 p-1 rounded-xl">
                                 <button
-                                    class="px-4 py-2 text-xs font-bold rounded-lg bg-surface-container-low text-on-surface hover:bg-surface-container-high transition-colors">7
+                                    class="px-4 py-2 text-[10px] font-bold rounded-lg bg-white text-on-surface shadow-sm transition-all">7
                                     Dias</button>
                                 <button
-                                    class="px-4 py-2 text-xs font-bold rounded-lg text-slate-400 hover:bg-surface-container-low transition-colors">30
+                                    class="px-4 py-2 text-[10px] font-bold rounded-lg text-slate-400 hover:bg-white/50 transition-colors">30
                                     Dias</button>
                             </div>
                         </div>

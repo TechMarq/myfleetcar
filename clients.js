@@ -122,8 +122,6 @@ function renderClientRows(clients, searchTerm = '') {
     }
 
     listContainer.innerHTML = clients.map(client => {
-        // Context-aware primary vehicle: 
-        // If searching a plate, prioritize showing that specific vehicle
         let primaryVehicle = client.vehicles && client.vehicles.length > 0 ? client.vehicles[0] : null;
 
         if (searchTerm && client.vehicles) {
@@ -131,48 +129,40 @@ function renderClientRows(clients, searchTerm = '') {
             if (matchingVehicle) primaryVehicle = matchingVehicle;
         }
         
-        const extraVehicles = client.vehicles && client.vehicles.length > 1 ? client.vehicles.length - 1 : 0;
-        
         return `
             <tr class="hover:bg-slate-50/50 transition-colors group">
-                <td class="px-4 md:px-6 py-4 cursor-pointer" onclick="viewClientDetail('${client.id}')">
+                <td class="px-4 md:px-6 py-4 cursor-pointer" onclick="viewClientDetail('${client.id}')" data-label="Cliente">
                     <div class="flex items-center gap-3">
                         <div class="w-10 h-10 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center font-bold flex-shrink-0">
                             ${(client.full_name || 'C').charAt(0)}
                         </div>
-                        <div class="min-w-0">
+                        <div class="min-w-0 text-left">
                             <div class="text-xs md:text-sm font-bold text-on-surface truncate hover:text-primary transition-colors">${client.full_name}</div>
                             <div class="text-[10px] text-slate-500 truncate">${client.email || 'Sem e-mail'}</div>
                         </div>
                     </div>
                 </td>
-                <td class="hidden lg:table-cell px-6 py-4 text-sm text-slate-600 font-medium">${client.phone || '-'}</td>
-                <td class="px-4 md:px-6 py-4 text-sm text-slate-600 cursor-pointer" onclick="viewClientDetail('${client.id}')">
-                    <div class="flex items-center gap-2">
-                        <div class="flex flex-col">
-                            <span class="font-black text-on-surface tracking-wider uppercase text-[10px] md:text-xs">${primaryVehicle ? primaryVehicle.license_plate : '-'}</span>
-                            <span class="text-[9px] md:text-[10px] text-slate-500 font-bold uppercase truncate max-w-[80px] md:max-w-none">${primaryVehicle ? primaryVehicle.brand + ' ' + primaryVehicle.model : 'Nenhum'}</span>
-                        </div>
-                        ${extraVehicles > 0 ? `
-                            <div class="bg-slate-100 text-slate-600 text-[10px] font-black px-1.5 py-0.5 rounded-md border border-slate-200 flex-shrink-0" title="Possui mais ${extraVehicles} veículos">
-                                + ${extraVehicles}
-                            </div>
-                        ` : ''}
+                <td class="hidden lg:table-cell px-6 py-4 text-sm text-slate-600 font-medium" data-label="Telefone">${client.phone || '-'}</td>
+                <td class="px-4 md:px-6 py-4 text-sm text-slate-600 cursor-pointer" onclick="viewClientDetail('${client.id}')" data-label="Veículo">
+                    <div class="flex flex-col text-right md:text-left">
+                        <span class="font-black text-on-surface tracking-wider uppercase text-[10px] md:text-xs">${primaryVehicle ? primaryVehicle.license_plate : '-'}</span>
+                        <span class="text-[9px] md:text-[10px] text-slate-500 font-bold uppercase truncate max-w-[120px] md:max-w-none">${primaryVehicle ? primaryVehicle.brand + ' ' + primaryVehicle.model : 'Nenhum'}</span>
                     </div>
                 </td>
-                <td class="hidden xl:table-cell px-6 py-4 text-sm text-slate-600">-</td>
-                <td class="hidden md:table-cell px-6 py-4">
+                <td class="hidden xl:table-cell px-6 py-4 text-sm text-slate-600" data-label="Débitos">-</td>
+                <td class="hidden md:table-cell px-6 py-4" data-label="Status">
                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-green-50 text-green-700 capitalize">Ativo</span>
                 </td>
                 <td class="px-4 md:px-6 py-4 text-right">
-                    <div class="flex items-center justify-end gap-2 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
+                    <div class="flex items-center justify-end gap-2">
                         <button onclick="viewClientDetail('${client.id}')" class="p-2 text-slate-400 hover:text-tertiary transition-colors" title="Ver Detalhes">
                             <span class="material-symbols-outlined text-lg md:text-xl">visibility</span>
                         </button>
                     </div>
                 </td>
             </tr>
-        `}).join('');
+        `;
+    }).join('');
 }
 
 /**

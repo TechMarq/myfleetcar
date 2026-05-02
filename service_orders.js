@@ -164,13 +164,13 @@ function renderServiceOrdersTable(orders) {
 
         return `
             <tr class="hover:bg-slate-50/50 transition-all group">
-                <td class="px-4 md:px-8 py-4 md:py-6 whitespace-nowrap">
+                <td class="px-4 md:px-8 py-4 md:py-6 whitespace-nowrap" data-label="Ordem">
                     <a href="detalhes-ordem.html?id=${order.id}" class="flex flex-col hover:text-orange-600 transition-colors">
                         <span class="text-xs md:text-sm font-black text-slate-900">${osLabel}</span>
                         <span class="text-[9px] text-slate-400 font-bold uppercase tracking-tighter">Ver Detalhes</span>
                     </a>
                 </td>
-                <td class="px-4 py-4 md:py-6">
+                <td class="px-4 py-4 md:py-6" data-label="Veículo / Cliente">
                     <div class="flex flex-col">
                         <div class="flex items-center gap-2">
                             <span class="text-xs md:text-sm font-black text-slate-900 leading-tight uppercase tracking-tight">${vehiclePlate}</span>
@@ -185,20 +185,20 @@ function renderServiceOrdersTable(orders) {
                         </div>
                     </div>
                 </td>
-                <td class="hidden md:table-cell px-4 py-6 whitespace-nowrap">
+                <td class="hidden md:table-cell px-4 py-6 whitespace-nowrap" data-label="Responsável">
                     <span class="text-xs font-semibold text-slate-500">${order.mechanic_name || '--'}</span>
                 </td>
-                <td class="hidden sm:table-cell px-4 py-6 whitespace-nowrap">
+                <td class="hidden sm:table-cell px-4 py-6 whitespace-nowrap" data-label="Entrada">
                     <span class="text-xs font-medium text-slate-500">${new Date((order.entry_date || order.created_at).includes('T') ? (order.entry_date || order.created_at) : (order.entry_date || order.created_at) + 'T12:00:00').toLocaleDateString('pt-BR')}</span>
                 </td>
-                <td class="px-4 py-4 md:py-6 whitespace-nowrap">
+                <td class="px-4 py-4 md:py-6 whitespace-nowrap" data-label="Status">
                     <span onclick='quickStatusUpdate(${JSON.stringify(order).replace(/"/g, "&quot;")})' 
                         class="inline-flex items-center px-2 py-0.5 md:px-3 md:py-1 rounded-lg text-[9px] md:text-[10px] ${statusColors[order.status] || 'bg-slate-100 text-slate-600'} uppercase font-black tracking-widest cursor-pointer hover:brightness-110 transition-all">
                         ${order.status}
                     </span>
                     <div class="sm:hidden mt-1 text-[10px] font-black text-slate-900">R$ ${order.total_amount ? order.total_amount.toLocaleString('pt-BR', { minimumFractionDigits: 2 }) : '0,00'}</div>
                 </td>
-                <td class="hidden sm:table-cell px-4 py-6 whitespace-nowrap text-right">
+                <td class="hidden sm:table-cell px-4 py-6 whitespace-nowrap text-right" data-label="Valor">
                     <span class="text-xs md:text-sm font-black text-slate-900">R$ ${order.total_amount ? order.total_amount.toLocaleString('pt-BR', { minimumFractionDigits: 2 }) : '0,00'}</span>
                 </td>
                 <td class="px-4 md:px-8 py-4 md:py-6 whitespace-nowrap text-right">

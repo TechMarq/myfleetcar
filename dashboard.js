@@ -112,16 +112,16 @@ const Dashboard = {
 
                 return `
                     <tr class="hover:bg-surface-container-high transition-colors">
-                        <td class="px-6 py-4">
+                        <td class="px-6 py-4" data-label="Veículo">
                             <div class="text-sm font-black text-on-surface font-mono tracking-widest uppercase">${plate}</div>
                             <div class="text-[10px] text-slate-500 font-bold mt-0.5">${vehicle}</div>
                         </td>
-                        <td class="px-6 py-4 text-[10px] uppercase font-bold text-slate-500">${customer}</td>
-                        <td class="px-6 py-4 text-xs font-medium text-slate-600">${os.description ? os.description.substring(0,25) + '...' : 'Serviço Automotivo'}</td>
-                        <td class="px-6 py-4">
+                        <td class="px-6 py-4 text-[10px] uppercase font-bold text-slate-500" data-label="Cliente">${customer}</td>
+                        <td class="px-6 py-4 text-xs font-medium text-slate-600" data-label="Serviço">${os.description ? os.description.substring(0,25) + '...' : 'Serviço Automotivo'}</td>
+                        <td class="px-6 py-4" data-label="Status">
                             <span class="px-2 py-1 ${statusColor} rounded text-[10px] font-bold uppercase tracking-widest">${os.status}</span>
                         </td>
-                        <td class="px-6 py-4 text-sm font-black text-on-surface">R$ ${(os.total_amount || 0).toLocaleString('pt-BR', {minimumFractionDigits: 2})}</td>
+                        <td class="px-6 py-4 text-sm font-black text-on-surface text-right" data-label="Valor">R$ ${(os.total_amount || 0).toLocaleString('pt-BR', {minimumFractionDigits: 2})}</td>
                     </tr>
                 `;
             }).join('');

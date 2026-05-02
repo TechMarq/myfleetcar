@@ -1,8 +1,4 @@
 // Common navigation and UI logic for MyFleetCar SaaS
-// Apply fixes immediately to avoid flickering or missed DOMContentLoaded
-if (typeof applyGlobalResponsiveFixes === 'function') {
-    applyGlobalResponsiveFixes();
-}
 
 document.addEventListener('DOMContentLoaded', async () => {
     // 1. Protect the route immediately
@@ -10,8 +6,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         await window.MyFleetCar.checkAuth();
     }
 
+    // Initialize UI components
     setupSidebar();
     updateUserProfile();
+    
+    // Apply mobile responsiveness fixes
+    applyGlobalResponsiveFixes();
 });
 
 function setupSidebar() {
@@ -211,6 +211,22 @@ function applyGlobalResponsiveFixes() {
                 width: 100% !important;
                 left: 0 !important;
                 z-index: 40 !important;
+                height: auto !important;
+            }
+
+            header .h-16 {
+                height: 3.5rem !important;
+                padding-left: 1rem !important;
+                padding-right: 1rem !important;
+            }
+
+            header h1 {
+                font-size: 0.75rem !important;
+            }
+
+            header nav {
+                padding-left: 1rem !important;
+                padding-right: 1rem !important;
             }
             
             .mobile-overlay {
@@ -246,8 +262,8 @@ function applyGlobalResponsiveFixes() {
             }
             
             .dark .bottom-app-bar {
-                background: rgba(15, 23, 42, 0.9);
-                border-top-color: rgba(255,255,255,0.05);
+                background: rgba(15, 23, 42, 0.95);
+                border-top-color: rgba(255,255,255,0.08);
             }
             
             .bottom-bar-item {
@@ -255,66 +271,197 @@ function applyGlobalResponsiveFixes() {
                 flex-direction: column;
                 align-items: center;
                 justify-content: center;
-                color: #64748b;
-                font-size: 0.65rem;
-                font-weight: 600;
-                padding: 0.5rem;
-                gap: 0.25rem;
-                transition: all 0.2s;
+                color: #94a3b8;
+                font-size: 0.6rem;
+                font-weight: 700;
+                padding: 0.4rem 0;
+                gap: 0.15rem;
+                transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
                 text-decoration: none;
                 width: 20%;
+                border-radius: 12px;
             }
             
             .dark .bottom-bar-item {
-                color: #94a3b8;
+                color: #64748b;
             }
             
             .bottom-bar-item.active {
                 color: #ea580c;
+                background: rgba(234, 88, 12, 0.05);
+            }
+
+            .dark .bottom-bar-item.active {
+                background: rgba(234, 88, 12, 0.1);
             }
             
             .bottom-bar-item .material-symbols-outlined {
-                font-size: 1.5rem;
+                font-size: 1.35rem;
+                font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
             }
 
-            .bottom-bar-item.fab-button {
-                transform: translateY(-1rem);
+            .bottom-bar-item.active .material-symbols-outlined {
+                font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            }
+
+            /* Floating Action Button (FAB) */
+            .fab-center {
+                position: relative;
+                top: -1.5rem;
+                z-index: 90;
             }
             
-            .bottom-bar-item.fab-button .fab-circle {
-                background: linear-gradient(135deg, #ea580c, #f97316);
-                border-radius: 50%;
+            .fab-button-main {
                 width: 3.5rem;
                 height: 3.5rem;
+                background: linear-gradient(135deg, #f97316, #ea580c);
+                border-radius: 50%;
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 color: white;
-                box-shadow: 0 10px 20px rgba(234, 88, 12, 0.3);
+                box-shadow: 0 8px 20px rgba(234, 88, 12, 0.4);
+                border: 4px solid #fff;
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            
+            .dark .fab-button-main {
+                border-color: #0f172a;
+            }
+            
+            .fab-button-main.active {
+                transform: rotate(45deg);
+                background: #64748b;
+                box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            }
+
+            /* Quick Action Menu */
+            .quick-actions-menu {
+                position: fixed;
+                bottom: 5.5rem;
+                left: 50%;
+                transform: translateX(-50%) scale(0.9);
+                width: calc(100% - 2rem);
+                max-width: 300px;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+                border-radius: 1.5rem;
+                padding: 1rem;
+                box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+                z-index: 100;
+                display: none;
+                flex-direction: column;
+                gap: 0.5rem;
+                opacity: 0;
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            
+            .dark .quick-actions-menu {
+                background: rgba(30, 41, 59, 0.95);
+                box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            }
+            
+            .quick-actions-menu.active {
+                display: flex;
+                opacity: 1;
+                transform: translateX(-50%) scale(1);
+            }
+            
+            .action-item {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                padding: 0.85rem 1rem;
+                border-radius: 1rem;
+                color: #475569;
+                font-weight: 700;
+                font-size: 0.85rem;
+                transition: all 0.2s;
+                text-decoration: none;
+            }
+            
+            .dark .action-item {
+                color: #cbd5e1;
+            }
+            
+            .action-item:active {
+                background: rgba(234, 88, 12, 0.1);
+                color: #ea580c;
+            }
+            
+            .action-item .material-symbols-outlined {
+                font-size: 1.25rem;
+                color: #ea580c;
             }
         }
         
         @media (max-width: 768px) {
-            /* Fix tables escaping viewport */
-            .overflow-x-auto {
-                max-width: 100vw !important;
-                margin-left: -2rem;
-                margin-right: -2rem;
-                padding-left: 2rem;
-                padding-right: 2rem;
-                border-radius: 0 !important;
+            /* Fix tables escaping viewport and transform into cards */
+            table {
+                border: none !important;
+                background: transparent !important;
+            }
+            thead {
+                display: none;
+            }
+            tbody {
+                display: block;
+                width: 100%;
+            }
+            tr {
+                display: block;
+                margin-bottom: 1.5rem;
+                background: white;
+                border-radius: 1.25rem;
+                padding: 0.75rem;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+                border: 1px solid #f1f5f9 !important;
+                overflow: hidden;
+            }
+            .dark tr {
+                background: #1e293b;
+                border-color: #334155 !important;
+            }
+            td {
+                display: flex !important;
+                justify-content: space-between !important;
+                align-items: center !important;
+                border: none !important;
+                padding: 0.6rem 0.5rem !important;
+                width: 100% !important;
+                text-align: right !important;
+                min-height: 2.5rem;
+            }
+            td:not(:last-child) {
+                border-bottom: 1px solid #f8fafc !important;
+            }
+            .dark td:not(:last-child) {
+                border-bottom-color: #334155 !important;
+            }
+            td:before {
+                content: attr(data-label);
+                font-size: 0.6rem;
+                font-weight: 800;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                color: #94a3b8;
+                text-align: left;
+                margin-right: 1rem;
             }
             
-            /* Prevent iOS Zoom */
-            input, select, textarea {
-                font-size: 16px !important; 
+            /* Clean up spaces */
+            main {
+                padding-top: 5rem !important;
+                padding-bottom: 6rem !important;
+                padding-left: 1rem !important;
+                padding-right: 1rem !important;
+                margin-left: 0 !important;
             }
-            
-            /* Clean up header spaces */
-            .space-y-8 > :not([hidden]) ~ :not([hidden]) {
-                margin-top: 1.5rem !important;
+
+            /* Responsive Grid */
+            .grid {
+                gap: 1rem !important;
             }
-            .p-8 { padding: 1.5rem !important; }
         }
     `;
     document.head.appendChild(style);
@@ -357,48 +504,107 @@ function applyGlobalResponsiveFixes() {
         });
     });
 
-    // 4. Inject Bottom App Bar
-    if (window.innerWidth <= 1024 && !document.querySelector('.bottom-app-bar')) {
-        const bottomBar = document.createElement('nav');
-        bottomBar.className = 'bottom-app-bar lg:hidden';
-        
-        const page = currentPath.split('/').pop() || 'home.html';
-        const isActive = (path) => page.includes(path) ? 'active' : '';
-
-        bottomBar.innerHTML = `
-            <a href="home.html" class="bottom-bar-item ${isActive('home.html')}">
-                <span class="material-symbols-outlined">home</span>
-                <span>Início</span>
-            </a>
-            <a href="lista-ordem.html" class="bottom-bar-item ${isActive('lista-ordem')}">
+        // 4. Inject Quick Actions Menu
+        const actionMenu = document.createElement('div');
+        actionMenu.className = 'quick-actions-menu lg:hidden';
+        actionMenu.id = 'quick-actions-menu';
+        actionMenu.innerHTML = `
+            <a href="nova-ordem.html" class="action-item">
                 <span class="material-symbols-outlined">description</span>
-                <span>Ordens</span>
+                Nova Ordem de Serviço
             </a>
-            <a href="lista-estoque.html" class="bottom-bar-item ${isActive('lista-estoque')}">
-                <span class="material-symbols-outlined">inventory_2</span>
-                <span>Estoque</span>
+            <a href="cadastro-cliente.html" class="action-item">
+                <span class="material-symbols-outlined">person_add</span>
+                Novo Cliente
             </a>
-            <a href="lista-clientes.html" class="bottom-bar-item ${isActive('lista-clientes')}">
-                <span class="material-symbols-outlined">group</span>
-                <span>Clientes</span>
+            <a href="movimentacao-estoque.html" class="action-item">
+                <span class="material-symbols-outlined">inventory</span>
+                Nova Venda Peça
             </a>
-            <button id="mobile-menu-btn" class="bottom-bar-item">
-                <span class="material-symbols-outlined">apps</span>
-                <span>Mais</span>
-            </button>
         `;
-        
-        document.body.appendChild(bottomBar);
+        document.body.appendChild(actionMenu);
 
-        // Bind Menu Button
-        const menuBtn = document.getElementById('mobile-menu-btn');
-        if (menuBtn) {
-            menuBtn.addEventListener('click', (e) => {
+        // 5. Inject Bottom App Bar
+        if (window.innerWidth <= 1024 && !document.querySelector('.bottom-app-bar')) {
+            const bottomBar = document.createElement('nav');
+            bottomBar.className = 'bottom-app-bar lg:hidden';
+            
+            const currentPath = window.location.pathname;
+            const page = currentPath.split('/').pop() || 'home.html';
+            const isActive = (path) => page.includes(path) ? 'active' : '';
+
+            bottomBar.innerHTML = `
+                <a href="home.html" class="bottom-bar-item ${isActive('home.html')}">
+                    <span class="material-symbols-outlined">home</span>
+                    <span>Início</span>
+                </a>
+                <a href="lista-ordem.html" class="bottom-bar-item ${isActive('lista-ordem')}">
+                    <span class="material-symbols-outlined">description</span>
+                    <span>Ordens</span>
+                </a>
+                <div class="fab-center">
+                    <button id="fab-button" class="fab-button-main">
+                        <span class="material-symbols-outlined">add</span>
+                    </button>
+                </div>
+                <a href="lista-estoque.html" class="bottom-bar-item ${isActive('lista-estoque')}">
+                    <span class="material-symbols-outlined">inventory_2</span>
+                    <span>Estoque</span>
+                </a>
+                <button id="mobile-menu-btn" class="bottom-bar-item">
+                    <span class="material-symbols-outlined">apps</span>
+                    <span>Mais</span>
+                </button>
+            `;
+            
+            document.body.appendChild(bottomBar);
+
+            // Bind FAB Button
+            const fabBtn = document.getElementById('fab-button');
+            const quickMenu = document.getElementById('quick-actions-menu');
+            
+            if (fabBtn && quickMenu) {
+                fabBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const isOpening = !quickMenu.classList.contains('active');
+                    
+                    if (isOpening) {
+                        quickMenu.style.display = 'flex';
+                        setTimeout(() => {
+                            quickMenu.classList.add('active');
+                            fabBtn.classList.add('active');
+                        }, 10);
+                    } else {
+                        quickMenu.classList.remove('active');
+                        fabBtn.classList.remove('active');
+                        setTimeout(() => {
+                            quickMenu.style.display = 'none';
+                        }, 300);
+                    }
+                });
+                
+                // Close menu when clicking outside
+                document.addEventListener('click', (e) => {
+                    if (quickMenu.classList.contains('active') && !quickMenu.contains(e.target) && e.target !== fabBtn) {
+                        quickMenu.classList.remove('active');
+                        fabBtn.classList.remove('active');
+                        setTimeout(() => {
+                            quickMenu.style.display = 'none';
+                        }, 300);
+                    }
+                });
+            }
+
+        // Bind All Menu Buttons (Header and Bottom Bar)
+        const menuButtons = document.querySelectorAll('#mobile-menu-btn');
+        menuButtons.forEach(btn => {
+            btn.addEventListener('click', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
                 toggleMenu();
             });
-        }
+        });
     }
 }
 
